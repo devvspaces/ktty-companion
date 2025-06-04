@@ -9,14 +9,14 @@ const lilita = Lilita_One({
 })
 
 export const metadata: Metadata = {
-  title: '$TURT Token',
-  description: 'The slowest, funniest meme token on the chain. Shell yeah!',
+  title: 'SIMPFI',
+  description: 'The future of emotional yield farming. Stake your ego. Earn her attention.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${lilita.className} bg-[var(--background)] text-[var(--foreground)]`}>
+      <body className={`${lilita.className} bg-black text-white`}>
         {children}
       </body>
     </html>
