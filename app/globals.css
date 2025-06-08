@@ -17,6 +17,55 @@
   }
 }
 
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  10% { opacity: 0.8; }
+  20% { opacity: 0.4; }
+  30% { opacity: 0.1; }
+  40% { opacity: 0.6; }
+  50% { opacity: 0.2; }
+  60% { opacity: 0.9; }
+  70% { opacity: 0.3; }
+  80% { opacity: 0.5; }
+  90% { opacity: 0.7; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  10% { opacity: 0.8; }
+  20% { opacity: 0.4; }
+  30% { opacity: 0.1; }
+  40% { opacity: 0.6; }
+  50% { opacity: 0.2; }
+  60% { opacity: 0.9; }
+  70% { opacity: 0.3; }
+  80% { opacity: 0.5; }
+  90% { opacity: 0.7; }
+}
+
+@keyframes glitch {
+  0% { transform: none; opacity: 1; }
+  20% { transform: translate(1px, -1px) skew(0.5deg, 0.5deg); opacity: 0.9; }
+  40% { transform: translate(-1px, 1px) skew(-0.5deg, -0.5deg); opacity: 1; }
+  60% { transform: translate(1px, 1px); opacity: 0.95; }
+  80% { transform: translate(-1px, -1px); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+.glitch {
+  animation: glitch 0.3s infinite;
+}
+
+
+.animate-flicker {
+  animation: flicker 0.6s infinite;
+}
+
+
+.animate-flicker {
+  animation: flicker 0.6s infinite;
+}
+
 .animate-scroll {
   animation: scrollLeft 80s linear infinite;
   display: flex;

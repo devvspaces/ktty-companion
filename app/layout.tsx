@@ -1,25 +1,26 @@
 // app/layout.tsx
 import './globals.css'
-import type { Metadata } from 'next'
-import { Lilita_One } from 'next/font/google'
+import { Inter } from 'next/font/google'
+import { Metadata } from 'next'
+import { WalletAdapterProvider } from '@/lib/wallet'
+import { ReactNode } from 'react'
 
-//trigger redeploy
-
-const lilita = Lilita_One({
-  subsets: ['latin'],
-  weight: '400',
-})
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'SIMPFI',
-  description: 'The future of emotional yield farming. Stake your ego. Earn her attention.',
+  title: 'ALT+F4 – Terminal Closed',
+  description: 'MemeFi ritual interface for $ALT+F4 on Solana.',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${lilita.className} bg-black text-white`}>
-        {children}
+    <html lang="en" className={`${inter.variable} bg-black text-white`}>
+      <body className="min-h-screen bg-black font-mono overflow-hidden">
+        <WalletAdapterProvider>
+          <main className="flex flex-col items-center justify-center w-full h-screen p-4">
+            {children}
+          </main>
+        </WalletAdapterProvider>
       </body>
     </html>
   )
