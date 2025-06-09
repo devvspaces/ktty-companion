@@ -71,7 +71,7 @@ export default function HomePage() {
               onClick={copyAddress}
               className="px-4 py-2 border border-red-500 cursor-pointer hover:bg-red-600 hover:text-white transition"
             >
-              {copied ? '✓ CONTRACT COPIED' : 'CONTRACT: TO BE ANNOUNCED'}
+              {copied ? '✓ CONTRACT COPIED' : '7qB4woPtAbNrxfXqyMjNGdyHpGMmsPZjeEyap8H6pump'}
             </div>
           </div>
 
