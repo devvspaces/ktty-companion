@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function HomePage() {
   const [copied, setCopied] = useState(false)
   const [booted, setBooted] = useState(false)
-  const contractAddress = 'So1aNaALTf4C0nTraCtADDre5s0000'
+  const contractAddress = 'Updated'
 
   useEffect(() => {
     const hasBooted = localStorage.getItem('altf4_booted') === 'true'
