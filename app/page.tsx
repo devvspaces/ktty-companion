@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function HomePage() {
   const [copied, setCopied] = useState(false)
   const [booted, setBooted] = useState(false)
-  const contractAddress = '7qB4woPtAbNrxfXqyMjNGdyHpGMmsPZjeEyap8H6pump'
+  const contractAddress = 'ArqPbCc1vH5Lc6HAsw8xXPiTCr4DvZJHEBHfcyY8pump'
 
   useEffect(() => {
     const hasBooted = localStorage.getItem('altf4_booted') === 'true'
@@ -71,7 +71,7 @@ export default function HomePage() {
               onClick={copyAddress}
               className="px-4 py-2 border border-red-500 cursor-pointer hover:bg-red-600 hover:text-white transition"
             >
-              {copied ? '✓ CONTRACT COPIED' : '7qB4woPtAbNrxfXqyMjNGdyHpGMmsPZjeEyap8H6pump'}
+              {copied ? '✓ CONTRACT COPIED' : 'ArqPbCc1vH5Lc6HAsw8xXPiTCr4DvZJHEBHfcyY8pump'}
             </div>
           </div>
 
