@@ -37,7 +37,7 @@ export default function Home() {
       <div className="flex flex-col items-center space-y-4">
         {/* Twitter Link */}
         <a
-          href="https://x.com/aurafarmersol"
+          href="https://x.com/Devinecatsol"
           target="_blank"
           rel="noopener noreferrer"
           className="w-48 px-6 py-2 bg-pastel-yellow hover:bg-neon-yellow text-black rounded-full font-semibold transition"
