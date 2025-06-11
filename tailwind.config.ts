@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,9 +11,35 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-          shrinePurple: '#c3b3f4',
+        shrinePurple: '#c3b3f4',
+
+        // your “holy” palette:
+        'holy-white': '#f9f8f6',
+        'pastel-yellow': '#fffac2',
+        'neon-yellow': '#ffff33',
+      },
+      keyframes: {
+        glow: {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(255,255,0,0.7)' },
+          '50%':      { boxShadow: '0 0 20px rgba(255,255,0,1)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.8', transform: 'scale(1)' },
+          '50%':      { opacity: '1',   transform: 'scale(1.05)' },
+        },
+      },
+      animation: {
+        'glow-fast': 'glow 1.5s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+      },
+
+      // ← Add this block for your background image
+      backgroundImage: {
+        heaven: "url('/heaven.png')",
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+
+export default config;

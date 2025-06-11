@@ -1,86 +1,64 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Terminal from '@/components/Terminal'
-import BootSequence from '@/components/BootSequence'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { useState } from 'react'
 
-export default function HomePage() {
+export default function Home() {
   const [copied, setCopied] = useState(false)
-  const [booted, setBooted] = useState(false)
-  const contractAddress = 'ArqPbCc1vH5Lc6HAsw8xXPiTCr4DvZJHEBHfcyY8pump'
+  const contract = 'BxnvH5RYnhVFvTCvmZU4Mhc8f27YSyoXH3PdKJhXuF1Z'
 
-  useEffect(() => {
-    const hasBooted = localStorage.getItem('altf4_booted') === 'true'
-    if (hasBooted) {
-      setBooted(true)
-    }
-  }, [])
-
-  const handleBootComplete = () => {
-    setBooted(true)
-    localStorage.setItem('altf4_booted', 'true')
-  }
-
-  const copyAddress = () => {
-    navigator.clipboard.writeText(contractAddress)
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(contract)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setTimeout(() => setCopied(false), 1500)
   }
 
   return (
-    <AnimatePresence mode="wait">
-      {!booted ? (
-        <BootSequence key="boot" onComplete={handleBootComplete} />
-      ) : (
-        <motion.div
-          key="main"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full min-h-screen text-white font-mono relative z-10"
+    <div className="text-center p-6 space-y-8">
+      {/* Title */}
+      <h1 className="text-8xl font-bold animate-glow-fast text-neon-yellow">
+        DEVINE CAT
+      </h1>
+
+      {/* Image + Aura */}
+      <div className="relative inline-block">
+        <div className="absolute inset-0 rounded-xl animate-pulse-glow bg-neon-yellow opacity-30" />
+        <Image
+          src="/divineone.png"
+          alt="Divine Cat"
+          width={500}
+          height={500}
+          className="relative rounded-xl"
+          priority
+        />
+      </div>
+
+      {/* Buttons & Contract */}
+      <div className="flex flex-col items-center space-y-4">
+        {/* Twitter Link */}
+        <a
+          href="https://x.com/aurafarmersol"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-48 px-6 py-2 bg-pastel-yellow hover:bg-neon-yellow text-black rounded-full font-semibold transition"
         >
-          {/* Background mask for logo/buttons */}
-          <div className="w-full bg-black/70 backdrop-blur-sm py-8 flex flex-col items-center space-y-4">
-            <img
-              src="/projectlogo.png"
-              alt="ALT+F4 Logo"
-              className="w-60 h-60 border-4 border-red-500 shadow-red-500/60 shadow-md glitch"
-            />
+          Twitter
+        </a>
 
-            <div className="flex space-x-4">
-              <a
-                href="https://x.com/altf4solana"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-white px-4 py-2 hover:bg-white hover:text-black transition"
-              >
-                TWITTER
-              </a>
-              <Link
-                href="/whitepaper"
-                className="border border-white px-4 py-2 hover:bg-white hover:text-black transition"
-              >
-                WHITEPAPER
-              </Link>
-            </div>
+        {/* Copy Contract Button */}
+        <button
+          onClick={copyToClipboard}
+          className="w-64 px-4 py-2 bg-pastel-yellow hover:bg-neon-yellow text-black rounded-full font-semibold transition"
+        >
+          {copied ? 'Copied!' : 'Copy Contract'}
+        </button>
 
-            <div
-              onClick={copyAddress}
-              className="px-4 py-2 border border-red-500 cursor-pointer hover:bg-red-600 hover:text-white transition"
-            >
-              {copied ? '✓ CONTRACT COPIED' : 'ArqPbCc1vH5Lc6HAsw8xXPiTCr4DvZJHEBHfcyY8pump'}
-            </div>
-          </div>
-
-          {/* Edge-to-edge terminal */}
-          <div className="w-full px-2 sm:px-4 mt-6">
-            <Terminal />
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        {/* Visible Contract (non-wrapping) */}
+        <div className="w-120
+         truncate bg-pastel-yellow text-black rounded-full px-4 py-2">
+          {contract}
+        </div>
+      </div>
+    </div>
   )
 }

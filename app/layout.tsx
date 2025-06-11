@@ -1,26 +1,36 @@
-// app/layout.tsx
 import './globals.css'
-import { Inter } from 'next/font/google'
-import { Metadata } from 'next'
-import { WalletAdapterProvider } from '@/lib/wallet'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-
-export const metadata: Metadata = {
-  title: 'ALT+F4 – Terminal Closed',
-  description: 'MemeFi ritual interface for $ALT+F4 on Solana.',
+export const metadata = {
+  title: 'Divine Cat',
+  description: 'A holy aura around the Divine Cat',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} bg-black text-white`}>
-      <body className="min-h-screen bg-black font-mono overflow-hidden">
-        <WalletAdapterProvider>
-          <main className="flex flex-col items-center justify-center w-full h-screen p-4">
-            {children}
-          </main>
-        </WalletAdapterProvider>
+    <html lang="en" className="h-full">
+      <body className="h-full">
+        {/*  
+          This wrapper: 
+           • Covers the full viewport (h-full) 
+           • Applies your bg-heaven utility 
+           • Centers its child (your page) both vertically & horizontally 
+        */}
+        <div
+          className="
+            h-full
+            bg-heaven
+            bg-cover
+            bg-center
+            bg-fixed
+            flex
+            items-center
+            justify-center
+            px-4
+          "
+        >
+          {children}
+        </div>
       </body>
     </html>
   )
