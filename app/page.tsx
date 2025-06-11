@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 export default function Home() {
   const [copied, setCopied] = useState(false)
-  const contract = 'BxnvH5RYnhVFvTCvmZU4Mhc8f27YSyoXH3PdKJhXuF1Z'
+  const contract = '8B1qpPWN561vm3GX8JTAuGqDWB4fduQFTtcLCvLVpump'
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(contract)
