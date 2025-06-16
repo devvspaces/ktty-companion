@@ -1,37 +1,36 @@
-import './globals.css'
-import type { ReactNode } from 'react'
+'use client';
 
-export const metadata = {
-  title: 'Divine Cat',
-  description: 'A holy aura around the Divine Cat',
-}
+import { useMemo } from 'react';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from '@solana/wallet-adapter-react';
+import {
+  PhantomWalletAdapter,
+  // Add other wallets here if you want
+} from '@solana/wallet-adapter-wallets';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+import '../app/globals.css';
+import '@solana/wallet-adapter-react-ui/styles.css';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const network = WalletAdapterNetwork.Devnet;
+
+  const endpoint = useMemo(() => 'https://api.devnet.solana.com', [network]);
+
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
+
   return (
-    <html lang="en" className="h-full">
-      <body className="h-full">
-        {/*  
-          This wrapper: 
-           • Covers the full viewport (h-full) 
-           • Applies your bg-heaven utility 
-           • Centers its child (your page) both vertically & horizontally 
-        */}
-        <div
-          className="
-            h-full
-            bg-heaven
-            bg-cover
-            bg-center
-            bg-fixed
-            flex
-            items-center
-            justify-center
-            px-4
-          "
-        >
-          {children}
-        </div>
+    <html lang="en">
+      <body>
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>{children}</WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
       </body>
     </html>
-  )
+  );
 }
