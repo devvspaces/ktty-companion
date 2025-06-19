@@ -6,7 +6,7 @@ import {
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui';
 
-const CONTRACT_ADDRESS = 'SoMeSoLaNaCoNtRaCtAdDrEsS1234';
+const CONTRACT_ADDRESS = '5TNndTiVGcUFq8JKbpKohhA6DuxE3VtLocLfpSfUpump';
 
 const Header: React.FC = () => {
   const [copied, setCopied] = useState(false);
