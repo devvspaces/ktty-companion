@@ -1,36 +1,22 @@
-'use client';
+import './globals.css'
+import { ReactNode } from 'react'
+import type { Metadata } from 'next'
+import { WalletConnectionProvider } from '@/lib/WalletProvider'
 
-import { useMemo } from 'react';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from '@solana/wallet-adapter-react';
-import {
-  PhantomWalletAdapter,
-  // Add other wallets here if you want
-} from '@solana/wallet-adapter-wallets';
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 
-import '../app/globals.css';
-import '@solana/wallet-adapter-react-ui/styles.css';
+export const metadata: Metadata = {
+  title: 'WAGMI BAR',
+  description: 'Solana’s Late-Night Speakeasy Web3 Chatroom App',
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const network = WalletAdapterNetwork.Devnet;
-
-  const endpoint = useMemo(() => 'https://api.devnet.solana.com', [network]);
-
-  const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
-
   return (
     <html lang="en">
       <body>
-        <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={wallets} autoConnect>
-            <WalletModalProvider>{children}</WalletModalProvider>
-          </WalletProvider>
-        </ConnectionProvider>
+        <WalletConnectionProvider>
+          {children}
+        </WalletConnectionProvider>
       </body>
     </html>
-  );
+  )
 }

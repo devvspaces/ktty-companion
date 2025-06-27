@@ -1,63 +1,55 @@
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import AuraCat from '../components/AuraCat';
-import AuraMeter from '../components/AuraMeter';
-import TextBox from '../components/TextBox';
-import { useAuraGame } from '../hooks/useAuraGame';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import BarHeader from '@/components/BarHeader'
+
+const rooms = [
+  { name: 'main', label: 'Main Room' },
+  { name: 'wif-only', label: 'WIF Only' },
+  { name: 'cope-corner', label: 'Cope Corner' },
+  { name: 'alpha-leaks', label: 'Alpha Leaks' },
+  { name: 'off-topic', label: 'Off Topic' },
+  { name: 'dev-den', label: 'Dev Den' },
+]
 
 export default function HomePage() {
-  const { state, onTap, restart, auraMax, perfectWindow } = useAuraGame();
-  const [shake, setShake] = useState(false);
-
-  // Handle spacebar tap input and restart key (R)
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        onTap();
-        setShake(true);
-        setTimeout(() => setShake(false), 500);
-      }
-      if ((state.status === 'won' || state.status === 'lost') && e.key.toLowerCase() === 'r') {
-        restart();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onTap, restart, state.status]);
-
-  // Instruction text without timer/level
-  const instructionText = state.status === 'won'
-    ? 'Level Complete! Press R to continue.'
-    : state.status === 'lost'
-    ? 'Time’s up! Press R to retry.'
-    : `Tap Spacebar within ${perfectWindow}ms for perfect combos!`;
-
   return (
-    <>
-      <Header />
-      <main
-        className="pt-20 flex flex-col items-center justify-center min-h-screen text-white px-4"
-        style={{
-          background: 'linear-gradient(180deg, #2c2c5e 0%, #0a0a12 100%)',
-        }}
-      >
-        {/* Level and Timer display */}
-        <div className="mb-4 text-yellow-400 font-mono text-lg select-none">
-          <span className="mr-6">Level: {state.level}</span>
-          <span>Time Left: {state.timeLeft}s</span>
-        </div>
+    <div className="min-h-screen bg-[#0d0b18] text-white font-mono flex flex-col">
+      <BarHeader />
 
-        <AuraCat auraLevel={state.aura} shake={shake} />
-        <AuraMeter auraLevel={state.aura} maxAura={auraMax} />
+      {/* Visual */}
+      <div className="w-full relative aspect-[16/6]">
+       <Image
+  src="/assets/barfront.png"
+  alt="WAGMI BAR Front"
+  fill
+  priority
+  className="object-contain"
+/>
 
-        <div className="relative w-full max-w-4xl mt-6 px-6">
-          <TextBox staticText={instructionText} cueText={state.cue} />
+      </div>
+
+      {/* Chatroom Selector */}
+      <div className="flex-1 p-8 bg-gradient-to-br from-[#1e1a2e] to-[#0d0b18]">
+        <h1 className="text-3xl font-bold mb-6 text-pink-400">
+          Choose Your Chatroom
+        </h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {rooms.map((room) => (
+            <Link
+              key={room.name}
+              href={`/rooms/${room.name}`}
+              className="bg-[#2e2648] hover:bg-pink-600 hover:shadow-lg transition-all p-6 rounded-xl border border-purple-900 flex flex-col items-start"
+            >
+              <div className="text-xl font-bold">{room.label}</div>
+              <div className="text-xs text-purple-300 mt-1">/{room.name}</div>
+            </Link>
+          ))}
         </div>
-      </main>
-    </>
-  );
+      </div>
+    </div>
+  )
 }
