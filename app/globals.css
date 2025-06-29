@@ -2,45 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Pixel Font Setup --- */
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
-/* --- Base Styles --- */
-html,
-body {
-  @apply bg-[#0d0b18] text-white font-mono antialiased;
-  font-family: 'VT323', monospace;
-  min-height: 100%;
-  overflow-x: hidden;
+/* Font smoothing and sacred default structure */
+html, body {
+  @apply bg-black text-holy-white font-mono antialiased;
 }
 
-/* --- Scrollbar Styling (WebKit) --- */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #9b5de5;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-track {
-  background-color: #1e1a2e;
+/* Gold glow utility */
+.glow-gold {
+  text-shadow: 0 0 4px #FFD700, 0 0 10px #FFD700aa;
 }
 
-/* --- Chat Bubbles / Neon Borders --- */
-.bubble {
-  @apply rounded-xl px-4 py-2 bg-[#2e2648] text-sm shadow-inner shadow-black/30;
+/* Terminal styling enhancements */
+.terminal-frame {
+  @apply border border-gold/30 bg-black/80 backdrop-blur-md rounded-xl shadow-xl;
 }
 
-/* --- Neon Button Hover FX --- */
-.neon-button {
-  @apply bg-pink-600 text-white px-4 py-2 rounded shadow transition-all;
-}
-.neon-button:hover {
-  background-color: #ff4ecb;
-  box-shadow: 0 0 10px #ff4ecb;
-}
-
-/* --- Glowing Text Utility --- */
-.glow {
-  text-shadow: 0 0 5px #ff4ecb, 0 0 10px #ff4ecb;
+/* Glowing buttons */
+.glow-button {
+  @apply transition-all border border-gold/40 text-sm px-4 py-2 rounded hover:bg-gold/10 hover:text-gold;
 }
