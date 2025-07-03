@@ -1,19 +1,36 @@
 'use client';
 
-export default function RuneFlicker({ level }: { level: number }) {
-  const runeCount = 5 + level * 3;
-  const runes = Array.from({ length: runeCount }, (_, i) => i);
+import { useEffect, useState } from 'react';
+
+type Rune = {
+  top: string;
+  left: string;
+  delay: string;
+};
+
+export default function RuneFlicker({ level = 1 }: { level?: number }) {
+  const [runes, setRunes] = useState<Rune[]>([]);
+
+  useEffect(() => {
+    const newRunes = Array.from({ length: 8 + level * 2 }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 3}s`,
+    }));
+
+    setRunes(newRunes);
+  }, [level]);
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none">
-      {runes.map((rune) => (
+      {runes.map((rune, i) => (
         <div
-          key={rune}
-          className="absolute w-[8px] h-[8px] bg-gold opacity-10 animate-ping rounded-full"
+          key={i}
+          className="absolute w-[2px] h-[2px] bg-gold rounded-full animate-pulse-glow"
           style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 3}s`,
+            top: rune.top,
+            left: rune.left,
+            animationDelay: rune.delay,
           }}
         />
       ))}
