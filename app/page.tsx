@@ -45,31 +45,36 @@ export default function HomePage() {
 
       {/* Centered content block */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4">
+        
+        {/* HALO TITLE with Divine Effects */}
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-widest bg-gradient-to-r from-yellow-200 via-yellow-50 to-yellow-300 bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient-flow animate-pulse-glow mb-2">
+          HALO
+        </h1>
+
         <h1 className="text-4xl md:text-5xl font-bold text-gold tracking-widest">
           THE ANGELIC COIN
         </h1>
         <p className="text-sm text-white/60 mt-2 font-mono">
-          $HALO — a terminal of fractured divinity
+          A terminal of Holy fractured divinity
         </p>
 
         <div className="mt-6 flex flex-col items-center gap-4 w-full max-w-lg">
-  <a
-    href="https://x.com/theangeliccoin"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="w-full text-center bg-gold text-black font-mono text-base px-6 py-2 rounded-md shadow hover:brightness-110 transition-all"
-  >
-    Twitter
-  </a>
+          <a
+            href="https://x.com/theangeliccoin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center bg-gold text-black font-mono text-base px-6 py-2 rounded-md shadow hover:brightness-110 transition-all"
+          >
+            Twitter
+          </a>
 
-  <button
-    onClick={handleCopy}
-    className="w-full bg-black/70 border border-gold text-gold font-mono text-base px-6 py-2 rounded-md shadow hover:bg-black transition-all"
-  >
-    {copied ? 'Copied!' : CONTRACT}
-  </button>
-</div>
-
+          <button
+            onClick={handleCopy}
+            className="w-full bg-black/70 border border-gold text-gold font-mono text-base px-6 py-2 rounded-md shadow hover:bg-black transition-all"
+          >
+            {copied ? 'Copied!' : CONTRACT}
+          </button>
+        </div>
 
         <div className="mt-10 animate-halo-expand">
           <Terminal />

@@ -38,12 +38,17 @@ const config: Config = {
           '0%': { transform: 'scale(0.8)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        'gradient-flow': {
+          '0%': { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '0% center' },
+        },
       },
       animation: {
         'glow-fast': 'glow 1.5s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
         'divine-reveal': 'divine-expand 0.7s ease-out forwards',
         'halo-expand': 'halo-expand 1s ease-out forwards',
+        'gradient-flow': 'gradient-flow 6s ease-in-out infinite',
       },
       backgroundImage: {
         heaven: "url('/heaven.png')",
