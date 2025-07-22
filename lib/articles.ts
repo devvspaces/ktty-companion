@@ -1869,6 +1869,10 @@ export function getAllArticles() {
   return articles
 }
 
-export function getArticleBySlug(slug: string) {
-  return articles.find((article) => article.slug === slug)
+export function getArticleBySlug(slug: string): Article | null {
+  const article = articles.find((f) => f.slug === slug)
+  return article ?? null
 }
+
+
+

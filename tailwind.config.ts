@@ -60,7 +60,7 @@ const config: Config = {
       backgroundImage: {
         heaven: "url('/heaven.png')",
       },
-      typography: (theme) => ({
+      typography: (theme: (path: string) => string) => ({
         invert: {
           css: {
             thead: {

@@ -190,7 +190,7 @@ export default function NavBar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden px-4 pb-4 bg-black/80 backdrop-blur-md text-sm">
+        <div className="md:hidden relative z-50 px-4 pb-4 bg-black/80 backdrop-blur-md text-sm">
           <ul className="flex flex-col gap-2 font-medium pt-4">
             {navItems.map((item) =>
               item.dropdown ? (

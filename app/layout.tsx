@@ -5,8 +5,8 @@ import NavBar from '@/components/NavBar/NavBar'
 import FloatingCora from '@/components/UI/FloatingCora'
 
 export const metadata = {
-  title: 'KTTY World — Digital Shrine',
-  description: 'A cyber-fantasy shrine for anime gamers and NFT tamers.',
+  title: 'KTTY World',
+  description: 'The 3D Pet Adventure on Ronin Network',
   icons: {
     icon: '/favicon.ico',
   },

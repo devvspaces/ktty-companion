@@ -58,7 +58,7 @@ export default function TamerMissionsSection() {
             href="/news/developer-blog-06-dispatch-missions"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 text-2xl block text-center px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition"
+            className="text-2xl block text-center px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition"
           >
             Learn More
           </a>
@@ -66,7 +66,7 @@ export default function TamerMissionsSection() {
             href="https://missions.kttyworld.io/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 text-2xl block text-center px-6 py-4 bg-purple-500 hover:bg-white/20 text-white font-semibold rounded-lg transition animate-pulse-glow"
+            className=" text-2xl block text-center px-6 py-4 bg-purple-500 hover:bg-purple-300 text-white font-semibold rounded-lg transition animate-pulse-glow"
           >
             Play Now
           </a>
