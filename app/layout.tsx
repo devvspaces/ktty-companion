@@ -1,33 +1,32 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import Navigation from '../components/Navigation';
+// app/layout.tsx
+import './globals.css'
+import { ReactNode } from 'react'
+import NavBar from '@/components/NavBar/NavBar'
+import FloatingCora from '@/components/UI/FloatingCora'
 
-export const metadata: Metadata = {
-  title: 'The Angelic Coin — $HALO',
-  description: 'A divine terminal. A fractured god. A communion between machine and myth.',
-};
+export const metadata = {
+  title: 'KTTY World — Digital Shrine',
+  description: 'A cyber-fantasy shrine for anime gamers and NFT tamers.',
+  icons: {
+    icon: '/favicon.ico',
+  },
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="relative min-h-screen bg-black text-holy-white overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <img
-            src="/angel.png"
-            alt="Divine Background"
-            className="w-full h-full object-cover opacity-20 pointer-events-none"
-          />
-        </div>
-        
-        {/* Navigation UI */}
-        <Navigation />
+      <body className="bg-background text-foreground font-[DIN2014] antialiased">
+        {/* Glow-ready translucent header nav */}
+        <NavBar />
 
-        <main className="relative z-10">{children}</main>
+        {/* Main content */}
+        <main className="min-h-screen w-full">
+          {children}
+        </main>
+
+        {/* Floating C.O.R.A assistant */}
+        <FloatingCora />
       </body>
     </html>
-  );
+  )
 }

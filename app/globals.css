@@ -2,22 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font smoothing and sacred default structure */
+/* Reset margin + padding + overflow */
 html, body {
-  @apply bg-black text-holy-white font-mono antialiased;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Gold glow utility */
-.glow-gold {
-  text-shadow: 0 0 4px #FFD700, 0 0 10px #FFD700aa;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Terminal styling enhancements */
-.terminal-frame {
-  @apply border border-gold/30 bg-black/80 backdrop-blur-md rounded-xl shadow-xl;
+/* ======================
+   FONT: DIN 2014
+====================== */
+@font-face {
+  font-family: 'DIN2014';
+  src: url('/fonts/din2014medium.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'DIN2014';
+  src: url('/fonts/din2014demi.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'DIN2014';
+  src: url('/fonts/din2014light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
 }
 
-/* Glowing buttons */
-.glow-button {
-  @apply transition-all border border-gold/40 text-sm px-4 py-2 rounded hover:bg-gold/10 hover:text-gold;
+/* Base colors */
+:root {
+  --background: #0b0b0f;
+  --foreground: #ededed;
+}
+
+body {
+  @apply text-foreground bg-background;
+  font-family: 'DIN2014', sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+/* Pulse Glow */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(183, 156, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(183, 156, 255, 0.9);
+  }
+}
+.animate-pulse-glow {
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+
+/* Wallet adapter overrides, shimmer, etc. omitted for brevity */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-in-out;
 }
