@@ -10,7 +10,7 @@ export default function NewsSlider() {
     .slice(0, 4)
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
       {articles.map((article) => (
         <Link
           key={article.slug}
@@ -33,14 +33,14 @@ export default function NewsSlider() {
             </p>
           </div>
 
-          {/* Image */}
-          <div className="w-full h-[250px] relative">
+          {/* Responsive Image */}
+          <div className="w-full aspect-[7/4] relative">
             <Image
               src={article.image}
               alt={article.title}
-              width={700}
-              height={300}
-              className="w-full h-full object-fill"
+              fill
+              className="object-cover rounded-b-lg"
+              sizes="(max-width: 768px) 100vw, 25vw"
             />
           </div>
 
