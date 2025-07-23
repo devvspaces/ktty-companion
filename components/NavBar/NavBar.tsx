@@ -27,7 +27,6 @@ const navItems: NavItem[] = [
       { label: 'Story', href: '/story' },
       { label: 'Characters', href: '/#characters' },
       { label: 'Roadmap', href: '/#roadmap' },
-      { label: 'K.O.R.A', href: '/kora' },
     ],
   },
   {
@@ -57,6 +56,10 @@ const navItems: NavItem[] = [
       { label: 'Dune', href: 'https://dune.com/defi__josh/ktty-world', external: true },
     ],
   },
+  {
+    label: 'K.O.R.A',
+    href: '/kora',
+  },
 ]
 
 export default function NavBar() {
@@ -69,12 +72,10 @@ export default function NavBar() {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
         setOpenDropdown(null)
-        setMobileOpen(false)
       }
     }
 
-    // Only enable this behavior on desktop
-    if (window.innerWidth >= 768) {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
@@ -83,28 +84,30 @@ export default function NavBar() {
   const handleMobileNavClick = (href: string, external = false) => {
     if (external) {
       window.open(href, '_blank')
-      setMobileOpen(false)
-      setOpenDropdown(null)
     } else {
       router.push(href)
-      setTimeout(() => {
-        setMobileOpen(false)
-        setOpenDropdown(null)
-      }, 100)
     }
+    setTimeout(() => {
+      setMobileOpen(false)
+      setOpenDropdown(null)
+    }, 100)
   }
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black border-b border-white/10">
       <nav
         ref={navRef}
-        className="max-w-[1920px] w-full mx-auto flex items-center justify-between px-6 md:px-0 py-4"
+        className="relative w-full max-w-[1920px] mx-auto flex items-center justify-between px-6 lg:px-12 py-4"
       >
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/kttywrldlogo.png" alt="KTTY World" width={80} height={80} />
-        </Link>
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/kttywrldlogo.png" alt="KTTY World" width={80} height={80} />
+          </Link>
+        </div>
 
-        <ul className="hidden md:flex gap-6 items-center text-xl font-semibold text-foreground">
+        {/* Center nav links */}
+        <ul className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-8 items-center text-lg font-semibold text-white">
           {navItems.map((item) =>
             item.dropdown ? (
               <li key={item.label} className="relative group">
@@ -118,7 +121,7 @@ export default function NavBar() {
                   <ChevronDown size={14} />
                 </button>
                 {openDropdown === item.label && (
-                  <ul className="absolute top-full left-0 mt-2 bg-black/70 backdrop-blur-md text-sm rounded-md shadow-lg py-2 min-w-[160px]">
+                  <ul className="absolute top-full left-0 mt-2 bg-black/80 backdrop-blur-md text-sm rounded-md shadow-lg py-2 min-w-[160px]">
                     {item.dropdown.map((link) =>
                       link.comingSoon ? (
                         <li
@@ -157,52 +160,52 @@ export default function NavBar() {
           )}
         </ul>
 
-        <div className="hidden md:flex items-center gap-4">
+        {/* Social icons and CTA */}
+        <div className="hidden lg:flex items-center gap-4 ml-auto">
           <Link href="https://x.com/Kttyworld" target="_blank">
-            <Image src="/x-icon.png" alt="X" width={40} height={40} className="w-6 h-6 md:w-8 md:h-8" />
+            <Image src="/x-icon.png" alt="X" width={32} height={32} />
           </Link>
           <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
-            <Image src="/discord-icon.png" alt="Discord" width={40} height={40} className="w-6 h-6 md:w-8 md:h-8" />
+            <Image src="/discord-icon.png" alt="Discord" width={32} height={32} />
           </Link>
           <Link href="https://www.geckoterminal.com/ronin/pools/0x13b617b1b9012612ed6170dc85e3fce4b68c3f5d" target="_blank">
-            <Image src="/gecko-icon.png" alt="Gecko" width={40} height={40} className="w-6 h-6 md:w-8 md:h-8" />
+            <Image src="/gecko-icon.png" alt="Gecko" width={32} height={32} />
           </Link>
           <Link
             href="https://missions.kttyworld.io/missions"
             target="_blank"
-            className="ml-2 px-8 py-3 text-md rounded-lg bg-purple-500 text-white font-bold shadow-md animate-pulse-glow hover:brightness-125 transition-all"
+            className="ml-4 px-6 py-2 text-sm rounded-lg bg-purple-500 text-white font-bold shadow-md animate-pulse-glow hover:brightness-125 transition-all"
           >
             Mission Hub
           </Link>
         </div>
 
-        <button className="md:hidden flex items-center" onClick={() => setMobileOpen(!mobileOpen)}>
+        {/* Hamburger button */}
+        <button className="lg:hidden flex items-center" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden relative z-50 pb-6 bg-black/80 backdrop-blur-md text-sm w-full">
-          <div className="flex flex-col items-center text-center max-w-sm mx-auto">
-            <ul className="flex flex-col gap-4 font-medium pt-4">
+        <div className="lg:hidden relative z-50 pb-6 bg-black/90 backdrop-blur text-white w-full">
+          <div className="flex flex-col items-center text-center max-w-sm mx-auto pt-6 gap-4">
+            <ul className="flex flex-col gap-6 text-lg font-medium w-full px-4">
               {navItems.map((item) =>
                 item.dropdown ? (
-                  <li key={item.label} className="flex flex-col items-center">
-                    <div className="font-semibold text-white">{item.label}</div>
-                    <ul className="flex flex-col gap-1 mt-1 items-center">
+                  <li key={item.label}>
+                    <div className="text-white text-xl font-bold">{item.label}</div>
+                    <ul className="flex flex-col gap-2 mt-1 text-base text-gray-300">
                       {item.dropdown.map((link) =>
                         link.comingSoon ? (
-                          <li
-                            key={link.label}
-                            className="text-gray-500 cursor-default select-none py-1"
-                          >
+                          <li key={link.label} className="text-gray-500 cursor-default select-none">
                             {link.label}
                           </li>
                         ) : (
                           <li key={link.label}>
                             <button
                               onClick={() => handleMobileNavClick(link.href!, link.external)}
-                              className="py-1 text-gray-300 hover:text-purple-300"
+                              className="hover:text-purple-300 transition-all"
                             >
                               {link.label}
                             </button>
@@ -215,7 +218,7 @@ export default function NavBar() {
                   <li key={item.label}>
                     <button
                       onClick={() => handleMobileNavClick(item.href!, item.external)}
-                      className="py-1 text-gray-300 hover:text-purple-300"
+                      className="text-white text-xl font-bold hover:text-purple-300 transition-all"
                     >
                       {item.label}
                     </button>
@@ -226,25 +229,23 @@ export default function NavBar() {
 
             <div className="flex items-center justify-center gap-4 mt-6">
               <Link href="https://x.com/Kttyworld" target="_blank">
-                <Image src="/x-icon.png" alt="X" width={40} height={40} />
+                <Image src="/x-icon.png" alt="X" width={36} height={36} />
               </Link>
               <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
-                <Image src="/discord-icon.png" alt="Discord" width={40} height={40} />
+                <Image src="/discord-icon.png" alt="Discord" width={36} height={36} />
               </Link>
               <Link href="https://www.geckoterminal.com/ronin/pools/0x13b617b1b9012612ed6170dc85e3fce4b68c3f5d" target="_blank">
-                <Image src="/gecko-icon.png" alt="Gecko" width={40} height={40} />
+                <Image src="/gecko-icon.png" alt="Gecko" width={36} height={36} />
               </Link>
             </div>
 
-            <div className="mt-4">
-              <Link
-                href="https://missions.kttyworld.io/missions"
-                target="_blank"
-                className="inline-block px-6 py-2 text-sm rounded-lg bg-purple-500 text-black font-bold shadow-md animate-pulse-glow hover:brightness-125 transition-all"
-              >
-                Mission Hub
-              </Link>
-            </div>
+            <Link
+              href="https://missions.kttyworld.io/missions"
+              target="_blank"
+              className="mt-6 inline-block px-8 py-3 text-sm rounded-lg bg-purple-500 text-white font-bold shadow-md animate-pulse-glow hover:brightness-125 transition-all"
+            >
+              Mission Hub
+            </Link>
           </div>
         </div>
       )}

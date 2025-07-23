@@ -16,15 +16,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className="bg-background text-foreground font-[DIN2014] antialiased">
-        {/* Glow-ready translucent header nav */}
+        {/* Full-width glow header */}
         <NavBar />
 
-        {/* Main content */}
+        {/* Full-width body wrapper */}
         <main className="min-h-screen w-full">
           {children}
         </main>
 
-        {/* Floating C.O.R.A assistant */}
+        {/* Floating assistant UI */}
         <FloatingCora />
       </body>
     </html>
