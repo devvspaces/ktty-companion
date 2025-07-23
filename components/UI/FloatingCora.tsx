@@ -35,8 +35,10 @@ export default function FloatingCora() {
         <Link href="/kora">
           <div
             className={clsx(
-              'w-[250px] h-[250px] rounded-xl overflow-hidden border border-white/20 shadow-xl transition-all duration-300',
-              'hover:border-pink-500 hover:shadow-[0_0_24px_4px_rgba(255,0,144,0.8)]'
+              'rounded-xl overflow-hidden border border-white/20 shadow-xl transition-all duration-300',
+              'hover:border-pink-500 hover:shadow-[0_0_24px_4px_rgba(255,0,144,0.8)]',
+              // Responsive sizing
+              'w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] lg:w-[250px] lg:h-[250px]'
             )}
           >
             <Image

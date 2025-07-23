@@ -1,18 +1,32 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getAllArticles } from '@/lib/articles'
 
 const CATEGORIES = ['Update', 'Dev Blog', 'Announcement', 'Event', 'Lore']
 const SORT_OPTIONS = ['Newest', 'Oldest']
-const ITEMS_PER_PAGE = 9
 
 export default function NewsPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [sortBy, setSortBy] = useState('Newest')
   const [page, setPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(9)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerPage(8)
+      } else {
+        setItemsPerPage(9)
+      }
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const articles = getAllArticles()
 
@@ -40,10 +54,10 @@ export default function NewsPage() {
 
   const paginatedArticles = useMemo(() => {
     return filteredArticles.slice(
-      (page - 1) * ITEMS_PER_PAGE,
-      page * ITEMS_PER_PAGE
+      (page - 1) * itemsPerPage,
+      page * itemsPerPage
     )
-  }, [filteredArticles, page])
+  }, [filteredArticles, page, itemsPerPage])
 
   return (
     <div className="min-h-screen w-full px-4 md:px-12 pt-32 pb-10 text-foreground">
@@ -96,7 +110,7 @@ export default function NewsPage() {
       {/* News Grid */}
       <section
         className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 transition-opacity duration-300 ease-in-out animate-fade-in"
-        key={selectedCategories.join(',') + sortBy + page}
+        key={selectedCategories.join(',') + sortBy + page + itemsPerPage}
       >
         {paginatedArticles.map((article) => {
           const formattedDate = new Date(article.date).toLocaleDateString(
@@ -132,7 +146,7 @@ export default function NewsPage() {
                   {article.title}
                 </h3>
 
-                <div className="relative w-full h-[350px] mb-3 overflow-hidden rounded-md">
+                <div className="relative w-full aspect-[7/4] mb-3 overflow-hidden rounded-md">
                   <Image
                     src={article.image}
                     alt={article.title}
@@ -152,7 +166,7 @@ export default function NewsPage() {
       </section>
 
       {/* Pagination */}
-      {filteredArticles.length > ITEMS_PER_PAGE && (
+      {filteredArticles.length > itemsPerPage && (
         <div className="flex justify-center mt-10 gap-4">
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
@@ -164,12 +178,12 @@ export default function NewsPage() {
           <button
             onClick={() =>
               setPage((p) =>
-                p < Math.ceil(filteredArticles.length / ITEMS_PER_PAGE)
+                p < Math.ceil(filteredArticles.length / itemsPerPage)
                   ? p + 1
                   : p
               )
             }
-            disabled={page >= Math.ceil(filteredArticles.length / ITEMS_PER_PAGE)}
+            disabled={page >= Math.ceil(filteredArticles.length / itemsPerPage)}
             className="px-4 py-2 bg-white/10 text-sm rounded-md hover:bg-white/20 disabled:opacity-30"
           >
             Next
