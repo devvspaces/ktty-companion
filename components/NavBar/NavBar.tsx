@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, Menu, X } from 'lucide-react'
-import clsx from 'clsx'
+import { useRouter } from 'next/navigation'
 
 type NavLink = {
   label: string
@@ -25,8 +25,8 @@ const navItems: NavItem[] = [
     label: 'Game',
     dropdown: [
       { label: 'Story', href: '/story' },
-      { label: 'Characters', href: '/#characters' }, // Already correct
-      { label: 'Roadmap', href: '/#roadmap' },       // Already correct
+      { label: 'Characters', href: '/#characters' },
+      { label: 'Roadmap', href: '/#roadmap' },
       { label: 'K.O.R.A', href: '/kora' },
     ],
   },
@@ -52,18 +52,18 @@ const navItems: NavItem[] = [
   {
     label: 'Project',
     dropdown: [
-      { label: 'Team', href: '/#team',  },
-      { label: 'Whitepaper', href: 'https://ktty-world.gitbook.io/ktty-world/project/welcome-to-ktty-world', external: true,},
-      { label: 'Dune', href: 'https://dune.com/defi__josh/ktty-world', external: true,},
+      { label: 'Team', href: '/#team' },
+      { label: 'Whitepaper', href: 'https://ktty-world.gitbook.io/ktty-world/project/welcome-to-ktty-world', external: true },
+      { label: 'Dune', href: 'https://dune.com/defi__josh/ktty-world', external: true },
     ],
   },
 ]
-
 
 export default function NavBar() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const navRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,9 +72,27 @@ export default function NavBar() {
         setMobileOpen(false)
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+
+    // Only enable this behavior on desktop
+    if (window.innerWidth >= 768) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
   }, [])
+
+  const handleMobileNavClick = (href: string, external = false) => {
+    if (external) {
+      window.open(href, '_blank')
+      setMobileOpen(false)
+      setOpenDropdown(null)
+    } else {
+      router.push(href)
+      setTimeout(() => {
+        setMobileOpen(false)
+        setOpenDropdown(null)
+      }, 100)
+    }
+  }
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black border-b border-white/10">
@@ -82,12 +100,10 @@ export default function NavBar() {
         ref={navRef}
         className="max-w-[1920px] w-full mx-auto flex items-center justify-between px-6 md:px-0 py-4"
       >
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image src="/kttywrldlogo.png" alt="KTTY World" width={80} height={80} />
         </Link>
 
-        {/* Desktop Nav */}
         <ul className="hidden md:flex gap-6 items-center text-xl font-semibold text-foreground">
           {navItems.map((item) =>
             item.dropdown ? (
@@ -141,38 +157,16 @@ export default function NavBar() {
           )}
         </ul>
 
-        {/* Social + CTA */}
         <div className="hidden md:flex items-center gap-4">
-  <Link href="https://x.com/Kttyworld" target="_blank">
-    <Image
-      src="/x-icon.png"
-      alt="X"
-      width={40}
-      height={40}
-      className="w-6 h-6 md:w-8 md:h-8" // Adjust this as needed
-    />
-  </Link>
-  <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
-    <Image
-      src="/discord-icon.png"
-      alt="Discord"
-      width={40}
-      height={40}
-      className="w-6 h-6 md:w-8 md:h-8"
-    />
-  </Link>
-  <Link
-    href="https://www.geckoterminal.com/ronin/pools/0x13b617b1b9012612ed6170dc85e3fce4b68c3f5d"
-    target="_blank"
-  >
-    <Image
-      src="/gecko-icon.png"
-      alt="Gecko"
-      width={40}
-      height={40}
-      className="w-6 h-6 md:w-8 md:h-8"
-    />
-  </Link>
+          <Link href="https://x.com/Kttyworld" target="_blank">
+            <Image src="/x-icon.png" alt="X" width={40} height={40} className="w-6 h-6 md:w-8 md:h-8" />
+          </Link>
+          <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
+            <Image src="/discord-icon.png" alt="Discord" width={40} height={40} className="w-6 h-6 md:w-8 md:h-8" />
+          </Link>
+          <Link href="https://www.geckoterminal.com/ronin/pools/0x13b617b1b9012612ed6170dc85e3fce4b68c3f5d" target="_blank">
+            <Image src="/gecko-icon.png" alt="Gecko" width={40} height={40} className="w-6 h-6 md:w-8 md:h-8" />
+          </Link>
           <Link
             href="https://missions.kttyworld.io/missions"
             target="_blank"
@@ -182,84 +176,76 @@ export default function NavBar() {
           </Link>
         </div>
 
-        {/* Mobile Toggle */}
         <button className="md:hidden flex items-center" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden relative z-50 px-4 pb-4 bg-black/80 backdrop-blur-md text-sm">
-          <ul className="flex flex-col gap-2 font-medium pt-4">
-            {navItems.map((item) =>
-              item.dropdown ? (
-                <li key={item.label}>
-                  <div className="font-semibold mb-1">{item.label}</div>
-                  <ul className="ml-4 space-y-1">
-                    {item.dropdown.map((link) =>
-                      link.comingSoon ? (
-                        <li
-                          key={link.label}
-                          className="text-gray-500 cursor-default select-none py-1"
-                        >
-                          {link.label}
-                        </li>
-                      ) : (
-                        <li key={link.label}>
-                          <Link
-                            href={link.href!}
-                            target={link.external ? '_blank' : '_self'}
-                            className="block py-1 text-gray-300 hover:text-purple-300"
-                            onClick={() => {
-                              setOpenDropdown(null)
-                              setMobileOpen(false)
-                            }}
+        <div className="md:hidden relative z-50 pb-6 bg-black/80 backdrop-blur-md text-sm w-full">
+          <div className="flex flex-col items-center text-center max-w-sm mx-auto">
+            <ul className="flex flex-col gap-4 font-medium pt-4">
+              {navItems.map((item) =>
+                item.dropdown ? (
+                  <li key={item.label} className="flex flex-col items-center">
+                    <div className="font-semibold text-white">{item.label}</div>
+                    <ul className="flex flex-col gap-1 mt-1 items-center">
+                      {item.dropdown.map((link) =>
+                        link.comingSoon ? (
+                          <li
+                            key={link.label}
+                            className="text-gray-500 cursor-default select-none py-1"
                           >
                             {link.label}
-                          </Link>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </li>
-              ) : (
-                <li key={item.label}>
-                  <Link
-                    href={item.href!}
-                    target={item.external ? '_blank' : '_self'}
-                    className="block py-2 text-gray-300 hover:text-purple-300"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              )
-            )}
-          </ul>
+                          </li>
+                        ) : (
+                          <li key={link.label}>
+                            <button
+                              onClick={() => handleMobileNavClick(link.href!, link.external)}
+                              className="py-1 text-gray-300 hover:text-purple-300"
+                            >
+                              {link.label}
+                            </button>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </li>
+                ) : (
+                  <li key={item.label}>
+                    <button
+                      onClick={() => handleMobileNavClick(item.href!, item.external)}
+                      className="py-1 text-gray-300 hover:text-purple-300"
+                    >
+                      {item.label}
+                    </button>
+                  </li>
+                )
+              )}
+            </ul>
 
-          <div className="flex items-center gap-4 mt-6">
-            <Link href="https://x.com/Kttyworld" target="_blank">
-              <Image src="/x-icon.png" alt="X" width={40} height={40} />
-            </Link>
-            <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
-              <Image src="/discord-icon.png" alt="Discord" width={40} height={40} />
-            </Link>
-            <Link
-              href="https://www.geckoterminal.com/ronin/pools/0x13b617b1b9012612ed6170dc85e3fce4b68c3f5d"
-              target="_blank"
-            >
-              <Image src="/gecko-icon.png" alt="Gecko" width={40} height={40} />
-            </Link>
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <Link href="https://x.com/Kttyworld" target="_blank">
+                <Image src="/x-icon.png" alt="X" width={40} height={40} />
+              </Link>
+              <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
+                <Image src="/discord-icon.png" alt="Discord" width={40} height={40} />
+              </Link>
+              <Link href="https://www.geckoterminal.com/ronin/pools/0x13b617b1b9012612ed6170dc85e3fce4b68c3f5d" target="_blank">
+                <Image src="/gecko-icon.png" alt="Gecko" width={40} height={40} />
+              </Link>
+            </div>
+
+            <div className="mt-4">
+              <Link
+                href="https://missions.kttyworld.io/missions"
+                target="_blank"
+                className="inline-block px-6 py-2 text-sm rounded-lg bg-purple-500 text-black font-bold shadow-md animate-pulse-glow hover:brightness-125 transition-all"
+              >
+                Mission Hub
+              </Link>
+            </div>
           </div>
-
-          <Link
-            href="https://missions.kttyworld.io/missions"
-            target="_blank"
-            className="mt-4 inline-block px-4 py-2 text-sm rounded-lg bg-purple-500 text-black font-bold shadow-md animate-pulse-glow hover:brightness-125 transition-all"
-          >
-            Mission Hub
-          </Link>
         </div>
       )}
     </header>

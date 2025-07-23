@@ -1551,7 +1551,7 @@ Dev-KTTY
   },
   {
     newsid: '14',
-    title: 'Getting Started with Tamer Dismatch Missions',
+    title: 'Tamer Dismatch Missions: Quick Start',
     image: '/images/news/blogimage14.png',
     excerpt: 'A Quick start guide to Dispatch Missions',
     slug: 'getting-started-with-tamer-dispatch-missions',
