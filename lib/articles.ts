@@ -1862,6 +1862,56 @@ Until Next Time!
 Dev KTTY
     `
   },
+   {
+    newsid: '17',
+    title: 'More NULL KTTY Details',
+    image: '/images/news/blogimage17.png',
+    excerpt: 'Some milestone reveals around NULL KTTYs',
+    slug: 'more-null-ktty-details',
+    tags: ['Announcement'],
+    date: '2025-07-24',
+    content: `
+## Hello Tamers!
+
+We have officially crossed the **75% minted milestone** for our KTTY Tamers mint.
+
+The team would like to thank you for your continued conviction and support.
+
+There was a time where we were collectively looking towards our **15% minted milestone** in order to be able to reveal the first batch of tamers…and fast forward…after alot of hard work…building and innovation…and we can finally say we are in the final stretch of 25%!
+
+Thank you. Thank you and Thank you again.
+
+## Null KTTY Companion Details
+
+Previously we teased a further reveal on the upcoming KTTY Companions mint that would come at 50% and 75%.
+
+Seeing as we have smashed through both milestones at once…here we go.
+
+To be more precise:
+
+1.  The **"First 100"** will receive a free **airdrop 1:1** of Null KTTYs.
+    
+2.  **9 Lives** Community Role holders will be **eligible to participate in an exclusive Null KTTY Claim/Mint**.
+    
+3.  Holders of Tamers with **Fallen Personality Traits** will be eligible to redeem **1 Null KTTY for each qualifying Tamer held.**
+    
+4.  There will be a small reservation for the team/marketing/partnerships.
+    
+5.  The remaining Null KTTYs will be available in the broader KTTY Companions Mint.
+    
+
+Many of you may wonder "where is the full breakdown? WE WANT THE NUMBERS NOW!"
+
+And to that we will say that our current focus is the **KTTY Tamers Mint**
+
+We have a full breakdown of the numbers for our KTTYs that we will be releasing after we mint out.
+
+Stay tuned until then.
+
+KTTY World Team
+
+    `
+  },
 
 ]
 
