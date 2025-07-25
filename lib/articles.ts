@@ -1891,22 +1891,31 @@ To be more precise:
 
 1.  The **"First 100"** will receive a free **airdrop 1:1** of Null KTTYs.
     
-2.  **9 Lives** Community Role holders will be **eligible to participate in an exclusive Null KTTY Claim/Mint**.
+2.  **9 Lives** Community Role holders will be **eligible to participate in an exclusive Null KTTY Mint**.
     
-3.  Holders of Tamers with **Fallen Personality Traits** will be eligible to redeem **1 Null KTTY for each qualifying Tamer held.**
+3.  Holders of Tamers with **Fallen Personality Traits** will be eligible to mint **1 Null KTTY for each qualifying Tamer held.**
     
 4.  There will be a small reservation for the team/marketing/partnerships.
     
 5.  The remaining Null KTTYs will be available in the broader KTTY Companions Mint.
+
+## NULL KTTY Allocation
+
+There will only ever be a total of **2000 Gen 0 NULL KTTYs**
+
+Below you can see a full breakdown of how they will be allocated.
     
+| Group                        | Total Number           | Category       |
+|-----------------------------|------------------------|----------------|
+| First 100                   | 100                    | Free Airdrop   |
+| 9 Lives Holders*            | 740                    | Private Mint   |
+| Fallen Personality Holders  | 832                    | Private Mint   |
+| Public                      | 168 + Unclaimed NFTs   | Public Mint    |
+| Team                        | 60                     | Reserved       |
+| Marketing                   | 60                     | Reserved       |
+| Treasury                    | 40                     | Reserved       |
 
-Many of you may wonder "where is the full breakdown? WE WANT THE NUMBERS NOW!"
-
-And to that we will say that our current focus is the **KTTY Tamers Mint**
-
-We have a full breakdown of the numbers for our KTTYs that we will be releasing after we mint out.
-
-Stay tuned until then.
+Stay tuned for more information on the KTTY Companion Collection and the KTTY Breeding System.
 
 KTTY World Team
 
