@@ -163,12 +163,12 @@ export default function HomePage() {
   {/* Button Row */}
 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 w-full px-4">
   <a
-    href="https://mint.kttyworld.io/"
+    href="/tamers"
     target="_blank"
     rel="noopener noreferrer"
     className="w-full px-6 py-4 text-2xl font-bold text-white bg-white/10 rounded-xl shadow hover:bg-white/20  transition text-center"
   >
-    Mint Now
+    Rarity
   </a>
   <a
     href="/news/ktty-dev-blog-02"

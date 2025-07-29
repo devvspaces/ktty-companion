@@ -43,7 +43,7 @@ const navItems: NavItem[] = [
   {
     label: 'NFTs',
     dropdown: [
-      { label: 'KTTY Tamers', href: 'https://mint.kttyworld.io/' },
+      { label: 'KTTY Tamers', href: '/tamers' },
       { label: 'KTTY Companions', comingSoon: true },
       { label: 'KTTY Condos', comingSoon: true },
     ],
