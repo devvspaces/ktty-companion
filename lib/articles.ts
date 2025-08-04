@@ -1693,7 +1693,7 @@ Until Next Time.
     content: `
 ## Introduction
 
-At KTTY WORLD Gaming Solutions Ltd., we believe that intellectual property (IP) rights are not just a legal formality — they are the foundation of Web3 ownership.
+At KTTY WORLD Gaming Solutions Ltd., we believe that intellectual property (IP) rights are not just a legal formality; they are the foundation of Web3 ownership.
 
 While many NFT projects continue to use community-owned NFTs in marketing campaigns without credit or compensation, we’re committed to doing things differently.
 
@@ -1701,7 +1701,7 @@ We’re proud to introduce the KTTY WORLD IP Rewards Framework, a community-firs
 
 ## The Value of Your NFT’s IP
 
-When you purchase a KTTY WORLD NFT, you’re not just buying art — you’re investing in a digital identity that you own.
+When you purchase a KTTY WORLD NFT, you’re not just buying art; you’re investing in a digital identity that you own.
 
 Your NFT may become iconic, recognizable, or representative of a movement within Web3. That has real value. We’ve seen time and time again in Web2 how brands license imagery, pay royalties, and respect creators’ rights.
 
@@ -1731,7 +1731,7 @@ Your NFT is used as a featured image or embedded in official articles, press rel
 
 To make this system scalable, efficient, and transparent, we’ve built KORA, our AI-powered modular ecosystem manager.
 
-KORA continuously scans all KTTY WORLD content — from social media to blog posts and marketing decks — and cross-references every NFT image used with our on-chain ownership database. If she detects that the NFT used in our media belongs to a community member and not the core project, she automatically flags the usage, categorizes it, and issues the corresponding IP reward payment in $RON directly to the holder’s wallet.
+KORA continuously scans all KTTY WORLD content, from social media to blog posts and marketing decks, and cross-references every NFT image used with our on-chain ownership database. If she detects that the NFT used in our media belongs to a community member and not the core project, she automatically flags the usage, categorizes it, and issues the corresponding IP reward payment in $RON directly to the holder’s wallet.
 
 This means:
 
@@ -1741,7 +1741,7 @@ This means:
 
 • No delays.
 
-Just real ownership and real reward — automatically.
+Just real ownership and real reward, automatically.
 
 ## Why This Matters
 
@@ -1755,7 +1755,7 @@ Your NFT is a digital asset with utility and earning potential.
 
 • Real Utility: Beyond staking, governance, or metadata upgrades, IP rewards add a tangible economic layer to your NFT.
 
-• Respecting Web3 Principles: Ownership on-chain means ownership with benefits — not just a JPG.
+• Respecting Web3 Principles: Ownership on-chain means ownership with benefits, not just a JPG.
 
 ## How to Track Your IP Rewards
 
@@ -1779,7 +1779,7 @@ Only NFTs purchased from verified KTTY WORLD collections are eligible for IP rew
 
 • Royalty Sync:
 
-Rewards do not replace secondary royalties, but are additive — a new revenue layer.
+Rewards do not replace secondary royalties, but are additive, a new revenue layer.
 
 • Team Transparency:
 
@@ -1791,13 +1791,12 @@ If you prefer not to have your NFT used in any promotions, you may opt out via y
 
 ## A Step Toward the Future
 
-This system is more than just an incentive — it’s a statement of intent. At KTTY WORLD, we believe in building fairer ecosystems, where ownership means empowerment, and where your creativity and participation are respected and rewarded.
+This system is more than just an incentive; it’s a statement of intent. At KTTY WORLD, we believe in building fairer ecosystems, where ownership means empowerment, and where your creativity and participation are respected and rewarded.
 
-Whether you’re a collector, a builder, or just someone who loves great art — we’re here to make sure that your contributions matter in every sense of the word.
+Whether you’re a collector, a builder, or just someone who loves great art, we’re here to make sure that your contributions matter in every sense of the word.
 
-Let’s reshape what NFT ownership means — together.
-
-**KTTY Team**
+Let’s reshape what NFT ownership means, together.
+ 
     `
   },
   {

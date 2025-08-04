@@ -35,7 +35,7 @@ export default function StoryPage() {
         <blockquote className="border-l-4 border-purple-500 pl-4 italic text-gray-300">
           <p>If you are reading this…</p>
           <br></br>
-<p>It means I’m not alone. I don’t know how I got here. All I know is that I when I woke up, ny cat, Momo, was talking to me. With words. And not just that—she could do things. Things she couldn’t do before. Like fly, and cast spells. Like magic y’know? 
+<p>It means I’m not alone. I don’t know how I got here. All I know is that I when I woke up, my cat, Momo, was talking to me. With words. And not just that—she could do things. Things she couldn’t do before. Like fly, and cast spells. Like magic y’know? 
 </p>
 <br></br>
 <p>
