@@ -1929,9 +1929,10 @@ KTTY World Team
     tags: ['Announcement'],
     date: '2025-08-22',
     content: `
-## Hello Tamers!
+Hello Tamers!
 
 # Season 2 Introduction
+
 
 This next iteration will work slightly differently from our first, as we are adopting an **“Open-mission format.”**
 
@@ -1979,6 +1980,7 @@ The updated formula introduces the following improvements:
     
 -   **(NEW) Jackpot:** A small chance to gain bonus points and a **+1 ultra item roll.**
     
+
 ### 2. Mission Reward Bonuses
 
 **(NEW) Party Composition Bonuses:**
@@ -1999,7 +2001,11 @@ These bonuses join the already existing stack of bonuses and they are designed t
 
 We’ve added a **Mission Completion Rewards screen**, showing a full breakdown of your mission loot and unlocked bonuses.
 
-Flex in front of your rivals by sharing directly to Twitter!
+Flex in front of your rivals by sharing directly to X (formerly known as Twitter).
+
+### 4. Mobile Playability
+
+Mobile users will finally be able to run missions on their mobile phones.
 
 ## Phase 2 (TBC)
 
@@ -2044,6 +2050,18 @@ We’re introducing a **30-day Daily Attendance Calendar** to reward Tamers for 
 -   **Grand Reward:** A major prize on the final day.
     
 This will provide another way to earn materials in preparation for the **Tamer Forge Update.**
+
+### 9. QOL Changes
+
+We are looking to add a host of quality of life features that make engaging with the mission hub easier. 
+
+A few to look out for are as follows:
+
+-   **Recommended Archetype Filtering**
+-   ** Resend Tamer Team Feature**
+-   ** Optimal Team Auto Select**
+
+As well as a few more helpful features that have been suggested along the way.
 
 ## Pay to Win vs Pay for Convenience
 
