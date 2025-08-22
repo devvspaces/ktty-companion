@@ -1929,7 +1929,7 @@ KTTY World Team
     tags: ['Announcement'],
     date: '2025-08-22',
     content: `
-Hello Tamers!
+## Hello Tamers!
 
 # Season 2 Introduction
 
@@ -2009,7 +2009,7 @@ Mobile users will finally be able to run missions on their mobile phones.
 
 ## Phase 2 (TBC)
 
-### 4. Mission Stamina
+### 5. Mission Stamina
 
 We will soon introduce a **daily stamina system** for missions. Each mission will consume stamina, and once depleted you’ll need to wait for the daily reset...**unless you replenish it.**
 
@@ -2019,7 +2019,7 @@ We will soon introduce a **daily stamina system** for missions. Each mission wil
     
 This system makes PAW the daily driver while keeping KTTY as a premium option for extended play without breaking balance.
 
-### 5. Risk Re-roll Mechanic
+### 6. Risk Re-roll Mechanic
 
 You’ll be able to re-roll your mission rewards using **PAW** or **KTTY**:
 
@@ -2029,17 +2029,17 @@ You’ll be able to re-roll your mission rewards using **PAW** or **KTTY**:
 
 ## Phase 3 (TBC)
     
-### 6. Removal of 4-Tamer Requirement
+### 7. Removal of 4-Tamer Requirement
 
 To expand farming options, missions will soon allow as few as **1 Tamer.**
 
 Synergy remains key: 4-Tamer parties will still offer the best rewards, but synergy bonuses will still be achievable with **2 or 3-Tamer teams.**
 
-### 7. Mission Duration Reduction
+### 8. Mission Duration Reduction
 
 You’ll soon be able to spend **PAW** or **KTTY** to reduce mission durations, up to a cap announced at launch.
 
-### 8. Attendance Calendar
+### 9. Attendance Calendar
 
 We’re introducing a **30-day Daily Attendance Calendar** to reward Tamers for consistent logins.
 
@@ -2051,7 +2051,7 @@ We’re introducing a **30-day Daily Attendance Calendar** to reward Tamers for 
     
 This will provide another way to earn materials in preparation for the **Tamer Forge Update.**
 
-### 9. QOL Changes
+### 10. QOL Changes
 
 We are looking to add a host of quality of life features that make engaging with the mission hub easier. 
 
