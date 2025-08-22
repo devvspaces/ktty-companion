@@ -1978,7 +1978,7 @@ The updated formula introduces the following improvements:
 -   **(NEW) Critical Success:** A small chance to earn **2× mission points.**
     
 -   **(NEW) Jackpot:** A small chance to gain bonus points and a **+1 ultra item roll.**
-
+    
 ### 2. Mission Reward Bonuses
 
 **(NEW) Party Composition Bonuses:**
@@ -2044,6 +2044,16 @@ We’re introducing a **30-day Daily Attendance Calendar** to reward Tamers for 
 -   **Grand Reward:** A major prize on the final day.
     
 This will provide another way to earn materials in preparation for the **Tamer Forge Update.**
+
+## Pay to Win vs Pay for Convenience
+
+Our approach to using both **PAW** and **KTTY** is straightforward.
+
+-   **PAW** is a free resource earned through missions.
+    
+-   **KTTY** is our premium project currency.
+    
+By supporting both, we ensure that all players can access convenience features, while also giving those who wish to invest further a premium path—striking a healthy balance between accessibility and progression.
 
 ## Conclusion
 
