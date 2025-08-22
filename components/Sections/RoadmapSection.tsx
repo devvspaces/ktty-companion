@@ -35,7 +35,7 @@ const PHASES = [
     image: '/images/roadmap/phase4.png',
     headline: 'Phase 4: Tamer Missions',
     description:
-      'Dispatch Tamers into the wild—earn rewards, explore Felycia, and uncover hidden synergies.',
+      'Dispatch Tamers into the wild—earn rewards, explore Felysia, and uncover hidden synergies.',
   },
   {
     id: 'phase5',

@@ -1374,7 +1374,7 @@ From breeding rights to economic participation, from symbolic honours to unique 
 
 ## The Nine Lives Matter
 
-This is more than a role. It’s a legacy, a spiritual bond, and a set of privileges designed for those shaping the past, present, and future of of the world of Felycia. From breeding rights to early ecosystem participation, from symbolic honors to gameplay advantage Nine Lives holders are the heart of the KTTYverse.
+This is more than a role. It’s a legacy, a spiritual bond, and a set of privileges designed for those shaping the past, present, and future of of the world of Felysia. From breeding rights to early ecosystem participation, from symbolic honors to gameplay advantage Nine Lives holders are the heart of the KTTYverse.
     `
   },
   {

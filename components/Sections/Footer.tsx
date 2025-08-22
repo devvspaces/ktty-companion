@@ -14,7 +14,7 @@ export default function Footer() {
         <Image src="/kttywrldlogo.png" alt="KTTY World Logo" fill className="object-contain" />
       </div>
       <p className="text-gray-300 text-base leading-relaxed max-w-xs">
-        A 3D Openworld Pet Collection adventure through the magical world of Felycia
+        A 3D Openworld Pet Collection adventure through the magical world of Felysia
       </p>
       <div className="flex gap-4 mt-2 justify-center sm:justify-start">
         <a href="https://twitter.com/kttyworld" target="_blank" rel="noopener noreferrer">

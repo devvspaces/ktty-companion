@@ -1374,7 +1374,7 @@ From breeding rights to economic participation, from symbolic honours to unique 
 
 ## The Nine Lives Matter
 
-This is more than a role. It’s a legacy, a spiritual bond, and a set of privileges designed for those shaping the past, present, and future of of the world of Felycia. From breeding rights to early ecosystem participation, from symbolic honors to gameplay advantage Nine Lives holders are the heart of the KTTYverse.
+This is more than a role. It’s a legacy, a spiritual bond, and a set of privileges designed for those shaping the past, present, and future of of the world of Felysia. From breeding rights to early ecosystem participation, from symbolic honors to gameplay advantage Nine Lives holders are the heart of the KTTYverse.
     `
   },
   {
@@ -1920,7 +1920,142 @@ KTTY World Team
 
     `
   },
+{
+    newsid: '18',
+    title: 'Season 2: "Open Missions" Update Preview',
+    image: '/images/news/blogimage18.png',
+    excerpt: 'Patch Preview Details for the New Season',
+    slug: 'season-2-dispatch-mission-update',
+    tags: ['Announcement'],
+    date: '2025-08-22',
+    content: `
+## Hello Tamers!
 
+# Season 2 Introduction
+
+This next iteration will work slightly differently from our first, as we are adopting an **“Open-mission format.”**
+
+What does this mean for you, the players?
+
+Simply put - we’re shifting the focus toward the most important upcoming aspect of the project: **collecting items that will be used in the Tamer Forge.**
+
+### Key points to note:
+
+-   There will be no specified end dates.
+    
+-   We will announce more frequent reward periods for Tamers on the leaderboard.
+    
+-   A number of development patches will be introduced over the course of the **“Open-Mission”** in phases.  
+
+Now, without further ado…on to what’s new!
+
+# Update Preview
+
+Here’s a rundown of what will be released as part of our **“Open-Mission”** rollout:
+
+## Phase 1 (23/08/2025)
+
+### 1. Mission Points Formula Changes
+
+We’ve been hard at work revamping our mission points formula, with a focus on rewarding effort and smart team selection.
+
+Back in Season 1, our formula was:
+
+**Points = (Base Points × Tier Multiplier) + Synergy Bonus (Recommended Archetypes) + Mission Completion Modifiers**
+
+This led to many players favoring Basic Mission spam, with little incentive to field stronger teams.
+
+The updated formula introduces the following improvements:
+
+-   **(UPDATE) Mission Tier Multiplier:** Adjusted to better differentiate basic vs. higher-tier missions.
+    
+-   **(NEW) Flat Mission Tier Bonuses:** Extra points awarded for higher-tier missions.
+    
+-   **(NEW) Personality Synergy Bonus:** More points for higher-synergy teams.
+    
+-   **(NEW) Streak Bonus:** A multi-level bonus for completing missions of the same type 3+ times.
+    
+-   **(NEW) Critical Success:** A small chance to earn **2× mission points.**
+    
+-   **(NEW) Jackpot:** A small chance to gain bonus points and a **+1 ultra item roll.**
+
+### 2. Mission Reward Bonuses
+
+**(NEW) Party Composition Bonuses:**
+
+-   **Unified Blessing:** +20% Paw, +10% Rare Item Chance, +1 Additional Item Roll
+    
+-   **Resonant Overdrive:** +15% Paw, +15% Rare Item Chance
+    
+-   **Tension Surge:** +10% Paw, +10% Rare Item Chance, +1 Additional Item Roll
+    
+-   **Phase Harmony:** +10% Paw, +5% Rare Item Chance
+    
+Please Note: These particular bonuses are **NOT** stackable.
+
+These bonuses join the already existing stack of bonuses and they are designed to reward diverse team comps and playstyles.
+
+### 3. UI: Rewards Screen
+
+We’ve added a **Mission Completion Rewards screen**, showing a full breakdown of your mission loot and unlocked bonuses.
+
+Flex in front of your rivals by sharing directly to Twitter!
+
+## Phase 2 (TBC)
+
+### 4. Mission Stamina
+
+We will soon introduce a **daily stamina system** for missions. Each mission will consume stamina, and once depleted you’ll need to wait for the daily reset...**unless you replenish it.**
+
+-   **PAW Refills:** Up to **3 full restores per day** with PAW.
+    
+-   **KTTY Refills:** After PAW is used, KTTY can restore stamina. The first few refills restore **full stamina**, but subsequent ones restore only **50%.**
+    
+This system makes PAW the daily driver while keeping KTTY as a premium option for extended play without breaking balance.
+
+### 5. Risk Re-roll Mechanic
+
+You’ll be able to re-roll your mission rewards using **PAW** or **KTTY**:
+
+-   **PAW Re-Roll:** Riskier - you may lose some rewards, keep them, or boost them.
+    
+-   **KTTY Re-Roll:** Premium and safer - you’ll either keep or boost rewards, never lose.
+
+## Phase 3 (TBC)
+    
+### 6. Removal of 4-Tamer Requirement
+
+To expand farming options, missions will soon allow as few as **1 Tamer.**
+
+Synergy remains key: 4-Tamer parties will still offer the best rewards, but synergy bonuses will still be achievable with **2 or 3-Tamer teams.**
+
+### 7. Mission Duration Reduction
+
+You’ll soon be able to spend **PAW** or **KTTY** to reduce mission durations, up to a cap announced at launch.
+
+### 8. Attendance Calendar
+
+We’re introducing a **30-day Daily Attendance Calendar** to reward Tamers for consistent logins.
+
+-   **Daily Rewards:** Useful items and resources.
+    
+-   **Weekly Bonuses:** Extra rewards for consecutive attendance.
+    
+-   **Grand Reward:** A major prize on the final day.
+    
+This will provide another way to earn materials in preparation for the **Tamer Forge Update.**
+
+## Conclusion
+
+We’ve seen an incredible surge in activity since launch, and we want you to see firsthand the effort we’re putting in to make **Tamer Missions** one of the most rewarding gaming experiences on Ronin.
+
+Your feedback and continued engagement are vital as we take the platform to the next level together.
+
+Until next time,  
+
+**– Dev KTTY**
+    `
+  },
 ]
 
 export function getAllArticles() {

@@ -10,7 +10,7 @@ const CHARACTER_TYPES = {
     badge: '/images/characters/tamerbadge.png',
     image: '/images/characters/tamers.png',
     description:
-      'Tamers are the brave hearts who connect with KTTYS. They guide, protect, and shape the future of Felycia.',
+      'Tamers are the brave hearts who connect with KTTYS. They guide, protect, and shape the future of Felysia.',
   },
   ktty: {
     label: 'The KTTYs',
