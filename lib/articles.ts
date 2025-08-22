@@ -1933,7 +1933,6 @@ KTTY World Team
 
 # Season 2 Introduction
 
-
 This next iteration will work slightly differently from our first, as we are adopting an **“Open-mission format.”**
 
 What does this mean for you, the players?
@@ -1980,7 +1979,6 @@ The updated formula introduces the following improvements:
     
 -   **(NEW) Jackpot:** A small chance to gain bonus points and a **+1 ultra item roll.**
     
-
 ### 2. Mission Reward Bonuses
 
 **(NEW) Party Composition Bonuses:**
@@ -2058,8 +2056,8 @@ We are looking to add a host of quality of life features that make engaging with
 A few to look out for are as follows:
 
 -   **Recommended Archetype Filtering**
--   ** Resend Tamer Team Feature**
--   ** Optimal Team Auto Select**
+-   **Resend Tamer Team Feature**
+-   **Optimal Team Auto Select**
 
 As well as a few more helpful features that have been suggested along the way.
 
