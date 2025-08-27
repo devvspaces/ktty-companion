@@ -2098,11 +2098,11 @@ Hello Tamers!
 The new season of **Tamer Missions** is well underway, and with it comes our biggest set of balance and feature updates yet.  
 Today we’re pulling back the curtain on the changes that will shape the meta for this new phase.
 
-## **Main Changes**
+# **Main Changes**
 
 Here’s everything coming with our **Open-Mission** rollout.
 
-### **1. Points Rebalancing**
+## **1. Points Rebalancing**
 
 Back in Season 1, our formula looked like this:
 
@@ -2118,7 +2118,7 @@ In this new Season we’ve rebuilt the system from the ground up to make:
     
 -   **Synergy** more valuable at all levels
 
-#### **Mission Points Re-adjustment**
+## **Mission Points Re-adjustment**
 
 Points now scale more aggressively across mission tiers. Lower tiers remain accessible for casual play, while high-synergy, high-tier missions now pay off in a _big_ way.
 
@@ -2129,7 +2129,7 @@ Points now scale more aggressively across mission tiers. Lower tiers remain acce
 | **Extended** | 12–23 hours   | 12h              |
 | **Epic**     | 24–48 hours   | 48h              |
 
-#### **Duration Efficiency Scaling**
+## **Duration Efficiency Scaling**
 
 The longer the mission, the more your **synergy %** is worth.
 
@@ -2143,7 +2143,7 @@ For example:
     
 -   That same **40%** on an **Epic (48h)** run gets amplified by both the tier multiplier _and_ the efficiency curve
     
-#### **Synergy Curve Adjustments**
+## **Synergy Curve Adjustments**
 
 We’ve smoothed the scaling so every % gain feels meaningful:
 
@@ -2152,43 +2152,69 @@ We’ve smoothed the scaling so every % gain feels meaningful:
 **80% Synergy** → Strong cohesion, major jump in points and loot  
 **100% Synergy** → Maximum potential, often with Composition Bonuses layered on top
 
-#### **Bonus Types You Can Stack**
+## **Bonus Types You Can Stack**
 
 **Perfect Match** – Exact recommended archetypes → extra points & 1 bonus roll
 
-![Perfect Match](/images/news/newscontent/perfectmatch.png)
+<img src="/images/news/newscontent/perfectmatch.png" alt="Perfect Match" class="badge-single" />
 
 **Persistent Bond** – Same lineup for 3+ missions → loyalty bonus & 1 bonus roll
 
-![Persistent Bond](/images/news/newscontent/persistentbond.png)
+<img src="/images/news/newscontent/persistentbond.png" alt="Persistent Bond" class="badge-single" />
 
-**Streak Bonus** – Chain missions of the same type without breaking streak → up to **Level 4** for huge point boosts
+**Streak Bonus** – A **Streak Bonus** is earned when you run missions of the **same type** back-to-back without breaking the chain.  
 
-![Streak Bonus](/images/news/newscontent/hotstreak.png)
+<img src="/images/news/newscontent/hotstreak.png" alt="Streak Bonus" class="badge-single" />
+
+The longer the streak, the higher the **point multiplier** you’ll unlock.
+
+| Streak Level | Consecutive Missions | Bonus Points Formula |
+|--------------|----------------------|----------------------|
+| **Level 1**  | 3 missions in a row  | Base Points × 1.05   |
+| **Level 2**  | 5 missions in a row  | Base Points × 1.10   |
+| **Level 3**  | 7 missions in a row  | Base Points × 1.15   |
+| **Level 4**  | 10 missions in a row | Base Points × 1.20   |
+
+### **How It Works in Practice**
+
+If your mission would normally earn **500 points**:
+
+-   At **Level 1**, you’d score **525 points** instead.
+    
+-   At **Level 4**, that same run would net you **600 points**.
+
+The bonus stacks **on top of** other point modifiers like **Synergy**, **Perfect Match**, and **Persistent Bond**, making streak play one of the fastest ways to climb the leaderboard.
+
+**Pro Tip:**  
+If you’re aiming for maximum efficiency, plan your missions in batches so you can hit **Level 4** streaks during long-duration missions — the multiplier has a bigger impact on higher base points.
 
 **Synergy Bands** – _Semi-aligned_, _Synergized_, and _True Harmony_ each grant Paw and rare item bonuses
 
-![Semi-aligned](/images/news/newscontent/semi.png)
-![Synergized](/images/news/newscontent/synergized.png)
-![True Harmony](/images/news/newscontent/harmony.png)
+<div class="badge-row">
+  <img src="/images/news/newscontent/semi.png" alt="Semi-aligned" class="badge-img" />
+  <img src="/images/news/newscontent/synergized.png" alt="Synergized" class="badge-img" />
+  <img src="/images/news/newscontent/harmony.png" alt="True Harmony" class="badge-img" />
+</div>
 
 **Party Composition Bonuses** – Special setups like _Prime Ascendance_ or _Unified Blessing_ add unique perks on top of everything else.
 
-![Phase Harmony](/images/news/newscontent/phase.png)
-![Tension Surge](/images/news/newscontent/pawpawgauntlet.png)
-![Unified Blessing](/images/news/newscontent/unified.png)
-![Resonant Overdrive](/images/news/newscontent/resonant.png)
-![Prime Ascendance](/images/news/newscontent/pawpawgauntlet.png)
+<div class="badge-row">
+  <img src="/images/news/newscontent/phase.png" alt="Phase Harmony" class="badge-img" />
+  <img src="/images/news/newscontent/tension.png" alt="Tension Surge" class="badge-img" />
+  <img src="/images/news/newscontent/unified.png" alt="Unified Blessing" class="badge-img" />
+  <img src="/images/news/newscontent/resonant.png" alt="Resonant Overdrive" class="badge-img" />
+  <img src="/images/news/newscontent/primea.png" alt="Prime Ascendance" class="badge-img" />
+</div>
 
 **Critical Points Chance** – Higher synergy increases the chance of a rare “Critical” result that multiplies your total points (1.25× to 2.5× depending on tier)
 
-![Critical Success](/images/news/newscontent/critical.png)
+<img src="/images/news/newscontent/critical.png" alt="Critical Success" class="badge-single" />
 
 **Jackpot Chance** – Ultra item rolls and bonus scaling points unlocked at Extended/Epic tiers, scaling from 1% at low synergy to 5% at max synergy
 
-![Jackpot](/images/news/newscontent/lucky7.png)
+<img src="/images/news/newscontent/lucky7.png" alt="Jackpot" class="badge-single" />
 
-#### **Partial Archetype Bonus**
+### **Partial Archetype Bonus**
 
 Even if you can’t secure a Perfect Match, bringing 1–3 recommended archetypes will now grant partial point bonuses (+2, +4, or +8 points depending on matches). This makes near-perfect teams feel more rewarding without replacing the incentive to go all-in.
 
@@ -2202,7 +2228,7 @@ To break into **thousands of points** on a 48h Epic run, stack _everything_:
         
     -   4× Prime = **Prime Ascendance** (guaranteed 100% synergy)
 
-#### **Other Ways to Hit 100% Synergy (Without Primes)**
+### **Other Ways to Hit 100% Synergy (Without Primes)**
 
 While **4× Prime** is the easiest path to a guaranteed 100% Synergy, there are a few advanced team setups that can get you there too:
 
@@ -2236,7 +2262,7 @@ These builds are harder to pull off and usually require more planning than the P
     
     -   _Prime Ascendance_, _Unified Blessing_, _Resonant Overdrive_, _Tension Surge_, _Phase Harmony_ all stack with synergy bands
         
-#### **Example Points Simulation (Season 2)**
+### **Example Points Simulation (Season 2)**
 
 No bonuses except synergy applied, actual runs can be much higher.
 
@@ -2248,9 +2274,9 @@ No bonuses except synergy applied, actual runs can be much higher.
 | **80%**   | ~78 pts    | ~165 pts      | ~280 pts       | ~560 pts   |
 | **100%**  | ~88 pts    | ~185 pts      | ~315 pts       | ~630 pts   |
 
-### **2. Personality Tier & Synergy**
+## **2. Personality Tier & Synergy**
 
-#### **Prime Personalities**
+### **Prime Personalities**
 
 ![Primes](/images/news/newscontent/primep.png)
 
@@ -2260,7 +2286,7 @@ Now the clear leaders of Felysia:
     
 -   4× Prime = **Prime Ascendance** + 50% Paw Token rewards + 10% Ultra item chance + 1 guaranteed Ultra roll (Epic only)
    
-#### **Heroic & Fallen Personalities**
+### **Heroic & Fallen Personalities**
 
 ![Fallen](/images/news/newscontent/fallenp.png)
 ![Heroic](/images/news/newscontent/herop.png)
@@ -2269,7 +2295,7 @@ Now the clear leaders of Felysia:
     
 -   If they share aspects, they can now score positively together
     
-#### **Standard Personalities**
+### **Standard Personalities**
 
 ![Standard](/images/news/newscontent/standardp.png)
 
@@ -2277,7 +2303,7 @@ Now the clear leaders of Felysia:
     
 -   Still strong, but 100% Synergy now requires integrating Heroic, Fallen, or Prime
 
-### **3. Bonuses UI Visual Overhaul**
+## **3. Bonuses UI Visual Overhaul**
 
 -   Bonus badges are now visible in the Assign Tamers and Active Mission views
 
@@ -2287,7 +2313,7 @@ Now the clear leaders of Felysia:
 
 ![Badge Tooltips](/images/news/newscontent/bonustooltip.png)
 
-### **4. Auto Assign Feature**
+## **4. Auto Assign Feature**
 
 The new **Auto Assign** instantly builds your team based on your goal:
 
@@ -2301,7 +2327,7 @@ The new **Auto Assign** instantly builds your team based on your goal:
     
 -   **Best Team** – Balanced approach
 
-### **5. Misc**
+## **5. Misc**
 
 -   Multiple mobile optimisations for smaller screens
     
@@ -2330,7 +2356,7 @@ Once empty, you can:
 
 This is just the opening move in our larger **$KTTY** utility plan so make sure to grab some if your bag is running thin. From this point out we will continuously be adding ways to utilise your $KTTY, paving the way to making this a living, breathing and functional ecosystem!
 
-## **Conclusion**
+# **Conclusion**
 
 Since launch, activity has exploded, and every patch is designed to raise the ceiling for what’s possible while keeping the loop rewarding for all player types.
 

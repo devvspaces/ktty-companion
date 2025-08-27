@@ -92,3 +92,24 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.4s ease-in-out;
 }
+
+.prose .badge-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose .badge-row .badge-img {
+  width: 200px;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.badge-single {
+  display: block;
+  margin: 0.75rem auto; /* centers & adds space */
+  max-width: 200px;      /* control size */
+  height: auto;         /* keep aspect ratio */
+}
