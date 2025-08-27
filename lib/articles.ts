@@ -2082,6 +2082,265 @@ Until next time,
 **– Dev KTTY**
     `
   },
+  {
+    newsid: '19',
+    title: '"Open Missions" Balance Patch 1 Notes',
+    image: '/images/news/blogimage19.png',
+    excerpt: 'Details on our first balance patch for the Open Season',
+    slug: 'open-season-balance-patch-1',
+    tags: ['Announcement'],
+    date: '2025-08-27',
+    content: `
+# **Open Season Balance Patch 1 Notes**
+
+Hello Tamers!
+
+The new season of **Tamer Missions** is well underway, and with it comes our biggest set of balance and feature updates yet.  
+Today we’re pulling back the curtain on the changes that will shape the meta for this new phase.
+
+## **Main Changes**
+
+Here’s everything coming with our **Open-Mission** rollout.
+
+### **1. Points Rebalancing**
+
+Back in Season 1, our formula looked like this:
+
+**Points = (Base Points × Tier Multiplier) + Synergy Bonus + Mission Completion Modifiers**
+
+It worked, but it didn’t _push_ high-performance teams far enough ahead, and some scaling elements were either too flat or too punishing.
+
+In this new Season we’ve rebuilt the system from the ground up to make:
+
+-   **Performance-based bonuses** more rewarding
+    
+-   **Tier scaling** more impactful
+    
+-   **Synergy** more valuable at all levels
+
+#### **Mission Points Re-adjustment**
+
+Points now scale more aggressively across mission tiers. Lower tiers remain accessible for casual play, while high-synergy, high-tier missions now pay off in a _big_ way.
+
+| Mission Tier | Duration Range | Example Duration |
+|--------------|---------------|------------------|
+| **Basic**    | 0–2 hours     | 2h               |
+| **Standard** | 4–8 hours     | 6h               |
+| **Extended** | 12–23 hours   | 12h              |
+| **Epic**     | 24–48 hours   | 48h              |
+
+#### **Duration Efficiency Scaling**
+
+The longer the mission, the more your **synergy %** is worth.
+
+We now apply an _efficiency scale_ on top of the Tier Multiplier, meaning that two teams with the same synergy can earn very different scores depending on mission length.  
+
+This curve rewards high-synergy teams more on long missions, especially beyond 80% synergy.
+
+For example:
+
+-   **40% Synergy** on a short mission feels like a modest boost
+    
+-   That same **40%** on an **Epic (48h)** run gets amplified by both the tier multiplier _and_ the efficiency curve
+    
+#### **Synergy Curve Adjustments**
+
+We’ve smoothed the scaling so every % gain feels meaningful:
+
+**40% Synergy** → Solid baseline, your team is starting to click  
+**60% Synergy** → Competitive range, noticeable boost in rewards  
+**80% Synergy** → Strong cohesion, major jump in points and loot  
+**100% Synergy** → Maximum potential, often with Composition Bonuses layered on top
+
+#### **Bonus Types You Can Stack**
+
+**Perfect Match** – Exact recommended archetypes → extra points & 1 bonus roll
+
+![Perfect Match](/images/news/newscontent/perfectmatch.png)
+
+**Persistent Bond** – Same lineup for 3+ missions → loyalty bonus & 1 bonus roll
+
+![Persistent Bond](/images/news/newscontent/persistentbond.png)
+
+**Streak Bonus** – Chain missions of the same type without breaking streak → up to **Level 4** for huge point boosts
+
+![Streak Bonus](/images/news/newscontent/hotstreak.png)
+
+**Synergy Bands** – _Semi-aligned_, _Synergized_, and _True Harmony_ each grant Paw and rare item bonuses
+
+![Semi-aligned](/images/news/newscontent/semi.png)
+![Synergized](/images/news/newscontent/synergized.png)
+![True Harmony](/images/news/newscontent/harmony.png)
+
+**Party Composition Bonuses** – Special setups like _Prime Ascendance_ or _Unified Blessing_ add unique perks on top of everything else.
+
+![Phase Harmony](/images/news/newscontent/phase.png)
+![Tension Surge](/images/news/newscontent/pawpawgauntlet.png)
+![Unified Blessing](/images/news/newscontent/unified.png)
+![Resonant Overdrive](/images/news/newscontent/resonant.png)
+![Prime Ascendance](/images/news/newscontent/pawpawgauntlet.png)
+
+**Critical Points Chance** – Higher synergy increases the chance of a rare “Critical” result that multiplies your total points (1.25× to 2.5× depending on tier)
+
+![Critical Success](/images/news/newscontent/critical.png)
+
+**Jackpot Chance** – Ultra item rolls and bonus scaling points unlocked at Extended/Epic tiers, scaling from 1% at low synergy to 5% at max synergy
+
+![Jackpot](/images/news/newscontent/lucky7.png)
+
+#### **Partial Archetype Bonus**
+
+Even if you can’t secure a Perfect Match, bringing 1–3 recommended archetypes will now grant partial point bonuses (+2, +4, or +8 points depending on matches). This makes near-perfect teams feel more rewarding without replacing the incentive to go all-in.
+
+### **How to Max Your Points**
+
+To break into **thousands of points** on a 48h Epic run, stack _everything_:
+
+1.  **Hit 100% Synergy**
+    
+    -   Primes give a flat synergy boost (+6% each)
+        
+    -   4× Prime = **Prime Ascendance** (guaranteed 100% synergy)
+
+#### **Other Ways to Hit 100% Synergy (Without Primes)**
+
+While **4× Prime** is the easiest path to a guaranteed 100% Synergy, there are a few advanced team setups that can get you there too:
+
+-   **Full Heroic or Full Fallen Lineup** – A perfectly balanced team made entirely of Heroic or entirely of Fallen personalities, each playing a different role, can push you to the cap.
+    
+-   **Heroic + Fallen Rivalry** – A mixed Heroic/Fallen team can still reach 100% if every member pairs well with the others and the lineup is tightly coordinated.
+    
+-   **Phase Harmony Build** – Special team combinations that create “Phase Harmony” can unlock powerful bonuses that help bridge the gap to full synergy.
+    
+-   **Perfectly Balanced Team** – A squad where every member complements the others without a weak link can, in rare cases, max out synergy without any Primes.
+    
+These builds are harder to pull off and usually require more planning than the Prime route, but they give skilled Tamers alternative ways to chase maximum rewards.
+        
+2.  **Secure a Perfect Match**
+    
+    -   Exact recommended archetypes = bonus points & loot roll
+        
+3.  **Maintain a Persistent Bond**
+    
+    -   Same team 3 missions in a row = loyalty bonus roll
+        
+4.  **Max Your Streak**
+    
+    -   Streak Level 4 = highest streak multiplier
+        
+5.  **Pick Long Missions**
+    
+    -   Epic (48h) = max Tier Multiplier + longest efficiency curve
+        
+6.  **Stack Party Composition Bonuses**
+    
+    -   _Prime Ascendance_, _Unified Blessing_, _Resonant Overdrive_, _Tension Surge_, _Phase Harmony_ all stack with synergy bands
+        
+#### **Example Points Simulation (Season 2)**
+
+No bonuses except synergy applied, actual runs can be much higher.
+
+| Synergy % | Basic (2h) | Standard (6h) | Extended (12h) | Epic (48h) |
+|-----------|------------|---------------|----------------|------------|
+| **0%**    | ~48 pts    | ~105 pts      | ~175 pts       | ~350 pts   |
+| **40%**   | ~58 pts    | ~125 pts      | ~210 pts       | ~420 pts   |
+| **60%**   | ~68 pts    | ~145 pts      | ~245 pts       | ~490 pts   |
+| **80%**   | ~78 pts    | ~165 pts      | ~280 pts       | ~560 pts   |
+| **100%**  | ~88 pts    | ~185 pts      | ~315 pts       | ~630 pts   |
+
+### **2. Personality Tier & Synergy**
+
+#### **Prime Personalities**
+
+![Primes](/images/news/newscontent/primep.png)
+
+Now the clear leaders of Felysia:
+
+-   +6% Synergy per Prime in the party
+    
+-   4× Prime = **Prime Ascendance** + 50% Paw Token rewards + 10% Ultra item chance + 1 guaranteed Ultra roll (Epic only)
+   
+#### **Heroic & Fallen Personalities**
+
+![Fallen](/images/news/newscontent/fallenp.png)
+![Heroic](/images/news/newscontent/herop.png)
+
+-   The old _penalty_ for mixing Heroic and Fallen is gone
+    
+-   If they share aspects, they can now score positively together
+    
+#### **Standard Personalities**
+
+![Standard](/images/news/newscontent/standardp.png)
+
+-   All-Standard teams now cap synergy lower than top-tier mixes
+    
+-   Still strong, but 100% Synergy now requires integrating Heroic, Fallen, or Prime
+
+### **3. Bonuses UI Visual Overhaul**
+
+-   Bonus badges are now visible in the Assign Tamers and Active Mission views
+
+![Bonus Badges](/images/news/newscontent/bonusbadges.png)
+    
+-   Hover to see the exact bonus name and effect
+
+![Badge Tooltips](/images/news/newscontent/bonustooltip.png)
+
+### **4. Auto Assign Feature**
+
+The new **Auto Assign** instantly builds your team based on your goal:
+
+![Auto Assign](/images/news/newscontent/autoassign.png)
+
+-   **Max Points** – Highest scoring potential
+    
+-   **Max Synergy** – Highest synergy %
+    
+-   **Max Item Rolls** – Loot-first priority
+    
+-   **Best Team** – Balanced approach
+
+### **5. Misc**
+
+-   Multiple mobile optimisations for smaller screens
+    
+-   Layout improvements for easier navigation
+   
+## **KTTY Utility**
+
+With longer missions becoming the meta, we’re about to head into introducing $KTTY as a premium tool for power players in our next patch.
+
+### **1. Mission Duration Reduction**
+
+Spend **PAW** or **KTTY** to shorten missions, up to a set cap to preserve balance.
+
+### **2. Mission Stamina**
+
+Missions will consume daily stamina.
+
+Once empty, you can:
+
+-   Use **PAW** – Up to 3 full restores per day
+    
+-   Use **KTTY** – After PAW is used, KTTY refills give full stamina at first, then 50% for subsequent uses
+
+**PAW** = the daily driver  
+**KTTY** = the premium fuel
+
+This is just the opening move in our larger **$KTTY** utility plan so make sure to grab some if your bag is running thin. From this point out we will continuously be adding ways to utilise your $KTTY, paving the way to making this a living, breathing and functional ecosystem!
+
+## **Conclusion**
+
+Since launch, activity has exploded, and every patch is designed to raise the ceiling for what’s possible while keeping the loop rewarding for all player types.
+
+Your feedback and theory-crafting fuel our momentum. Together, we’re building one of the most rewarding gaming experiences on Ronin.
+
+Until next time,  
+
+**– Dev KTTY**
+    `
+  }
 ]
 
 export function getAllArticles() {
