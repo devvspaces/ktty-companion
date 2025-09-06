@@ -11,13 +11,13 @@ export type Article = {
 
 const articles: Article[] = [
   {
-    newsid: '1',
-    title: 'KTTY Tamers NFT Mint Details',
-    image: '/images/news/blogimage1.png',
-    excerpt: 'The KTTY Tamers Mint has officially been announced.',
-    slug: 'ktty-tamers-mint-details',
-    tags: ['Announcement'],
-    date: '2025-04-01',
+    newsid: "1",
+    title: "KTTY Tamers NFT Mint Details",
+    image: "/images/news/blogimage1.png",
+    excerpt: "The KTTY Tamers Mint has officially been announced.",
+    slug: "ktty-tamers-mint-details",
+    tags: ["Announcement"],
+    date: "2025-04-01",
     content: `
    # It's Official!
 
@@ -64,16 +64,16 @@ If you are new to the concept of Tamers, please head over to our **KTTY Paper**.
 **Time Window:** Open until Mint Out
 
 **Allocation:** Remainder from previous rounds
-    `
+    `,
   },
   {
-    newsid: '2',
-    title: 'Developer Blog 01',
-    image: '/images/news/blogimage2.png',
-    excerpt: 'The KTTY World Project so Far...',
-    slug: 'ktty-dev-blog-01',
-    tags: ['Dev Blog'],
-    date: '2025-04-04',
+    newsid: "2",
+    title: "Developer Blog 01",
+    image: "/images/news/blogimage2.png",
+    excerpt: "The KTTY World Project so Far...",
+    slug: "ktty-dev-blog-01",
+    tags: ["Dev Blog"],
+    date: "2025-04-04",
     content: `
 # Hello Tamers!
 
@@ -168,16 +168,16 @@ Until Next Time…
 Yours Sincerely,
 
 **Dev KTTY**      
-    `
+    `,
   },
   {
-    newsid: '3',
-    title: 'Crack the Code! Meow Cypher!',
-    image: '/images/news/blogimage3.png',
-    excerpt: 'The Meow Cypher Event Details are here',
-    slug: 'meow-cypher-event',
-    tags: ['Event'],
-    date: '2025-04-05',
+    newsid: "3",
+    title: "Crack the Code! Meow Cypher!",
+    image: "/images/news/blogimage3.png",
+    excerpt: "The Meow Cypher Event Details are here",
+    slug: "meow-cypher-event",
+    tags: ["Event"],
+    date: "2025-04-05",
     content: `
 The Meow Cipher is a fun and engaging way to test your skills, solve clues, and unlock a wallet filled with over $1,000 worth of prizes, including NFTs, tokens, and assets from the Ronin ecosystem.
 
@@ -228,16 +228,16 @@ Once the wallet is unlocked, the first person to complete all steps will win the
 -   Think about recurring themes and words we use often.
     
 -   Be fast but accurate – only the first correct entry wins the wallet!
-    `
+    `,
   },
   {
-    newsid: '4',
-    title: 'Developer Blog 02 - The Tamer Trait Matrix',
-    image: '/images/news/blogimage4.png',
-    excerpt: 'Details Tamer NFT Collection and some its gamified layers',
-    slug: 'ktty-dev-blog-02',
-    tags: ['Dev Blog'],
-    date: '2025-04-15',
+    newsid: "4",
+    title: "Developer Blog 02 - The Tamer Trait Matrix",
+    image: "/images/news/blogimage4.png",
+    excerpt: "Details Tamer NFT Collection and some its gamified layers",
+    slug: "ktty-dev-blog-02",
+    tags: ["Dev Blog"],
+    date: "2025-04-15",
     content: `
 
 Dev KTTY here again reporting for duty, live from the basement!
@@ -342,16 +342,16 @@ I look forward to hearing your feedback and eventually seeing your excitement wh
 Until then, it's back to the basement for me!
 
 ##### Dev-KTTY
-    `
+    `,
   },
   {
-    newsid: '5',
-    title: 'Developer Blog 03 (Part I) - Personalities',
-    image: '/images/news/blogimage5.png',
-    excerpt: 'An Introduction to Tamer Personalities',
-    slug: 'developer-blog-03-personalities',
-    tags: ['Dev Blog'],
-    date: '2025-05-04',
+    newsid: "5",
+    title: "Developer Blog 03 (Part I) - Personalities",
+    image: "/images/news/blogimage5.png",
+    excerpt: "An Introduction to Tamer Personalities",
+    slug: "developer-blog-03-personalities",
+    tags: ["Dev Blog"],
+    date: "2025-05-04",
     content: `
 
 “Not all Tamers shape the world. Some are shaped by it.”  
@@ -557,16 +557,16 @@ In the next blog this week, we will look at **Archetypes.**
 Until then.
 
 Dev-KTTY
-    `
+    `,
   },
   {
-    newsid: '6',
-    title: 'Develeoper Blog 03 (Part II) - Archetypes',
-    image: '/images/news/blogimage6.png',
-    excerpt: 'An Introduction to Tamer Archetypes',
-    slug: 'develeoper-blog-03-archetypes',
-    tags: ['Dev Blog'],
-    date: '2025-05-07',
+    newsid: "6",
+    title: "Develeoper Blog 03 (Part II) - Archetypes",
+    image: "/images/news/blogimage6.png",
+    excerpt: "An Introduction to Tamer Archetypes",
+    slug: "develeoper-blog-03-archetypes",
+    tags: ["Dev Blog"],
+    date: "2025-05-07",
     content: `
 
 _“Personality is the why. Archetype is the how.”_  
@@ -770,16 +770,16 @@ We’re focused on releasing a lot of information in the weeks ahead; especially
 See you in Part III.
 
 **Dev KTTY**
-    `
+    `,
   },
   {
-    newsid: '7',
-    title: '$KTTY Staking is now Live!',
-    image: '/images/news/blogimage7.png',
-    excerpt: 'An Introduction to $KTTY Staking',
-    slug: 'ktty-token-staking-live',
-    tags: ['Update'],
-    date: '2025-05-10',
+    newsid: "7",
+    title: "$KTTY Staking is now Live!",
+    image: "/images/news/blogimage7.png",
+    excerpt: "An Introduction to $KTTY Staking",
+    slug: "ktty-token-staking-live",
+    tags: ["Update"],
+    date: "2025-05-10",
     content: `
      Hello Tamers,
 
@@ -816,16 +816,16 @@ You can also head to the Staking Tiers section and select "Stake at this tier" t
 |  5 | 20M+ $KTTY          | 180 days       | 2.5% fixed in $KTTY + CAG + ZEE + KEVAI + REAL + REYE          |
 
 
-    `
+    `,
   },
   {
-    newsid: '8',
-    title: 'Tamer Dispatch Missions (Coming Soon)',
-    image: '/images/news/blogimage8.png',
-    excerpt: 'Details on the upcoming Tamer Missions Update',
-    slug: 'tamer-dispatch-missions-incoming',
-    tags: ['Announcement'],
-    date: '2025-05-13',
+    newsid: "8",
+    title: "Tamer Dispatch Missions (Coming Soon)",
+    image: "/images/news/blogimage8.png",
+    excerpt: "Details on the upcoming Tamer Missions Update",
+    slug: "tamer-dispatch-missions-incoming",
+    tags: ["Announcement"],
+    date: "2025-05-13",
     content: `
 ## What Are Dispatch Missions?
 
@@ -953,16 +953,16 @@ Stay tuned. Season 1 Dispatch Missions are just the first ripple in the waves.
   
 
 **Dev KTTY**
-`
+`,
   },
   {
-    newsid: '9',
-    title: 'Developer Blog 04 - Introducing K.O.R.A',
-    image: '/images/news/blogimage9.png',
-    excerpt: 'An introduction to the KTTY AI agent',
-    slug: 'developer-blog-04-introducing-cora',
-    tags: ['Dev Blog','Update'],
-    date: '2025-05-27',
+    newsid: "9",
+    title: "Developer Blog 04 - Introducing K.O.R.A",
+    image: "/images/news/blogimage9.png",
+    excerpt: "An introduction to the KTTY AI agent",
+    slug: "developer-blog-04-introducing-cora",
+    tags: ["Dev Blog", "Update"],
+    date: "2025-05-27",
     content: `
 ## [Beep boop…]
 
@@ -1019,16 +1019,16 @@ We are fascinated with AI and what his has accomplished already for the world. T
 Stay tuned for regular updates!
 
 DEV-KTTY
-    `
+    `,
   },
   {
-    newsid: '10',
-    title: 'New Tamers Mint Framework',
-    image: '/images/news/blogimage10.png',
-    excerpt: 'We are introducing a change to the Tamers Mint',
-    slug: 'new-tamers-mint-framework',
-    tags: ['Announcement'],
-    date: '2025-06-03',
+    newsid: "10",
+    title: "New Tamers Mint Framework",
+    image: "/images/news/blogimage10.png",
+    excerpt: "We are introducing a change to the Tamers Mint",
+    slug: "new-tamers-mint-framework",
+    tags: ["Announcement"],
+    date: "2025-06-03",
     content: `
 ## Why We Introduced a New Mint Framework And What It Means for You
 
@@ -1156,16 +1156,16 @@ This structure aims to reduce the barrier to entry for new players and make mint
 You trusted us to build. You voted to shape our future. Now, with deeper rewards and greater fairness, we move forward together.
 
 **- KTTY World Team**
-    `
+    `,
   },
   {
-    newsid: '11',
-    title: 'Developer Blog 05 – Enter the NULL Realm',
-    image: '/images/news/blogimage11.png',
-    excerpt: 'An update to the current KTTY World Story',
-    slug: 'developer-blog-05-enter-the-null-realm',
-    tags: ['Dev Blog','Lore'],
-    date: '2025-06-10',
+    newsid: "11",
+    title: "Developer Blog 05 – Enter the NULL Realm",
+    image: "/images/news/blogimage11.png",
+    excerpt: "An update to the current KTTY World Story",
+    slug: "developer-blog-05-enter-the-null-realm",
+    tags: ["Dev Blog", "Lore"],
+    date: "2025-06-10",
     content: `
 ## Hello Tamers
 
@@ -1273,16 +1273,16 @@ Every entry is a breadcrumb: hints to hidden breeding conditions, secret mechani
 We look forward to telling more of this story as time goes on!
 
 Dev KTTY
-`
+`,
   },
   {
-    newsid: '12',
-    title: 'The Nine Lives Faction Introduction',
-    image: '/images/news/blogimage12.png',
-    excerpt: 'Details on the 9 Lives Community Role and its Benefits',
-    slug: 'the-nine-lives-faction-introduction',
-    tags: ['Lore'],
-    date: '2025-07-14',
+    newsid: "12",
+    title: "The Nine Lives Faction Introduction",
+    image: "/images/news/blogimage12.png",
+    excerpt: "Details on the 9 Lives Community Role and its Benefits",
+    slug: "the-nine-lives-faction-introduction",
+    tags: ["Lore"],
+    date: "2025-07-14",
     content: `
 ## **Introducing The Ninth Circle**
 
@@ -1375,16 +1375,16 @@ From breeding rights to economic participation, from symbolic honours to unique 
 ## The Nine Lives Matter
 
 This is more than a role. It’s a legacy, a spiritual bond, and a set of privileges designed for those shaping the past, present, and future of of the world of Felysia. From breeding rights to early ecosystem participation, from symbolic honors to gameplay advantage Nine Lives holders are the heart of the KTTYverse.
-    `
+    `,
   },
   {
-    newsid: '13',
-    title: 'Developer Blog 06 - Dispatch Missions',
-    image: '/images/news/blogimage13.png',
-    excerpt: 'An in-depth look at Tamer Dispatch Missions',
-    slug: 'developer-blog-06-dispatch-missions',
-    tags: ['Dev Blog'],
-    date: '2025-07-07',
+    newsid: "13",
+    title: "Developer Blog 06 - Dispatch Missions",
+    image: "/images/news/blogimage13.png",
+    excerpt: "An in-depth look at Tamer Dispatch Missions",
+    slug: "developer-blog-06-dispatch-missions",
+    tags: ["Dev Blog"],
+    date: "2025-07-07",
     content: `
 ## Hey Tamers,
 
@@ -1547,16 +1547,16 @@ We are quickly approaching our open testing phase which will be followed by the 
 We look forward to seeing how you choose to play…as well as what you uncover over time!
 
 Dev-KTTY
-    `
+    `,
   },
   {
-    newsid: '14',
-    title: 'Tamer Dispatch Missions: Quick Start',
-    image: '/images/news/blogimage14.png',
-    excerpt: 'A Quick start guide to Dispatch Missions',
-    slug: 'getting-started-with-tamer-dispatch-missions',
-    tags: ['Update'],
-    date: '2025-07-19',
+    newsid: "14",
+    title: "Tamer Dispatch Missions: Quick Start",
+    image: "/images/news/blogimage14.png",
+    excerpt: "A Quick start guide to Dispatch Missions",
+    slug: "getting-started-with-tamer-dispatch-missions",
+    tags: ["Update"],
+    date: "2025-07-19",
     content: `
 ## Introduction
 
@@ -1680,16 +1680,16 @@ We look forward to see how you make use of the mission hub!
 Until Next Time.
 
 **Dev-KTTY**
-    `
+    `,
   },
-   {
-    newsid: '15',
-    title: 'IP Rights, Rewards and your NFTs',
-    image: '/images/news/blogimage15.png',
-    excerpt: 'A Guide to your NFTs and IP Rights',
-    slug: 'ip-rights-and-our-nfts',
-    tags: ['Announcement'],
-    date: '2025-07-19',
+  {
+    newsid: "15",
+    title: "IP Rights, Rewards and your NFTs",
+    image: "/images/news/blogimage15.png",
+    excerpt: "A Guide to your NFTs and IP Rights",
+    slug: "ip-rights-and-our-nfts",
+    tags: ["Announcement"],
+    date: "2025-07-19",
     content: `
 ## Introduction
 
@@ -1797,16 +1797,16 @@ Whether you’re a collector, a builder, or just someone who loves great art, we
 
 Let’s reshape what NFT ownership means, together.
  
-    `
+    `,
   },
   {
-    newsid: '16',
-    title: 'The Tamer Gear Forge',
-    image: '/images/news/blogimage16.png',
-    excerpt: 'An introduction to the upcoming Tamer Gear Forge',
-    slug: 'tamer-gear-forge-introduction',
-    tags: ['Announcement'],
-    date: '2025-07-22',
+    newsid: "16",
+    title: "The Tamer Gear Forge",
+    image: "/images/news/blogimage16.png",
+    excerpt: "An introduction to the upcoming Tamer Gear Forge",
+    slug: "tamer-gear-forge-introduction",
+    tags: ["Announcement"],
+    date: "2025-07-22",
     content: `
 ## Hello Tamers!
 
@@ -1859,16 +1859,16 @@ What will you create? Only time will tell!
 Until Next Time!
 
 Dev KTTY
-    `
+    `,
   },
-   {
-    newsid: '17',
-    title: 'More NULL KTTY Details',
-    image: '/images/news/blogimage17.png',
-    excerpt: 'Some milestone reveals around NULL KTTYs',
-    slug: 'more-null-ktty-details',
-    tags: ['Announcement'],
-    date: '2025-07-24',
+  {
+    newsid: "17",
+    title: "More NULL KTTY Details",
+    image: "/images/news/blogimage17.png",
+    excerpt: "Some milestone reveals around NULL KTTYs",
+    slug: "more-null-ktty-details",
+    tags: ["Announcement"],
+    date: "2025-07-24",
     content: `
 ## Hello Tamers!
 
@@ -1918,16 +1918,16 @@ Stay tuned for more information on the KTTY Companion Collection and the KTTY Br
 
 KTTY World Team
 
-    `
+    `,
   },
-{
-    newsid: '18',
+  {
+    newsid: "18",
     title: 'Season 2: "Open Missions" Update Preview',
-    image: '/images/news/blogimage18.png',
-    excerpt: 'Patch Preview Details for the New Season',
-    slug: 'season-2-dispatch-mission-update',
-    tags: ['Announcement'],
-    date: '2025-08-22',
+    image: "/images/news/blogimage18.png",
+    excerpt: "Patch Preview Details for the New Season",
+    slug: "season-2-dispatch-mission-update",
+    tags: ["Announcement"],
+    date: "2025-08-22",
     content: `
 ## Hello Tamers!
 
@@ -2080,16 +2080,16 @@ Your feedback and continued engagement are vital as we take the platform to the 
 Until next time,  
 
 **– Dev KTTY**
-    `
+    `,
   },
   {
-    newsid: '19',
+    newsid: "19",
     title: '"Open Missions" Balance Patch 1 Notes',
-    image: '/images/news/blogimage19.png',
-    excerpt: 'Details on our first balance patch for the Open Season',
-    slug: 'open-season-balance-patch-1',
-    tags: ['Announcement'],
-    date: '2025-08-27',
+    image: "/images/news/blogimage19.png",
+    excerpt: "Details on our first balance patch for the Open Season",
+    slug: "open-season-balance-patch-1",
+    tags: ["Update"],
+    date: "2025-08-27",
     content: `
 # **Open Season Balance Patch 1 Notes**
 
@@ -2365,9 +2365,52 @@ Your feedback and theory-crafting fuel our momentum. Together, we’re building 
 Until next time,  
 
 **– Dev KTTY**
-    `
-  }
-]
+    `,
+  },
+  {
+    newsid: "20",
+    title: '"Tamer Mission Boost Feature',
+    image: "/images/news/blogimage20.png",
+    excerpt: "Spend KTTY or PAW to reduce your mission timers",
+    slug: "ktty-mission-boost-feature",
+    tags: ["Update"],
+    date: "2025-09-06",
+    content: `
+# Tamers Mission Boosting Feature
+
+Spending PAW or KTTY will now allow you to boost your missions.
+
+That's right, you will now be able to speed up mission timers at the cost of:
+
+- 1.5x Boost for 2000 PAW (Limited to 2 times every 7 days)
+
+- 2x Boost for 2000 $KTTY (Unlimited Use)
+
+<img src="/images/news/newscontent/boostmission.png" alt="Boost Missions" class="img-single" />
+
+## How to Boost:
+
+1. Send your Tamers on a mission
+2. On the Missions Page click the "Boost" Button
+3. Select your boost option
+4. Lock in your Boost
+
+It's that simple.
+
+## Important Note
+
+The way we have set it up is so that on a 10 hour mission, should you decide to boost after 5 hours with $KTTY, you will complete the mission right away because if you had boosted from the start, the max amount of time you would be shaving off is 5 hours.
+
+tl:dr: The Boost takes place with respect to the total mission duration.
+
+This is the first of many uses for both PAW and KTTY.
+
+Stay tuned.
+
+**DEV-KTTY**
+    `,
+  },
+];
 
 export function getAllArticles() {
   return articles

@@ -113,3 +113,10 @@ body {
   max-width: 200px;      /* control size */
   height: auto;         /* keep aspect ratio */
 }
+
+.img-single {
+  display: block;
+  margin: 0.75rem auto; /* centers & adds space */
+  max-width: 800px;      /* control size */
+  height: auto;         /* keep aspect ratio */
+}
