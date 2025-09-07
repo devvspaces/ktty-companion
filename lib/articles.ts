@@ -2397,6 +2397,16 @@ That's right, you will now be able to speed up mission timers at the cost of:
 
 It's that simple.
 
+## Where is the $KTTY spent going?
+
+Our plan is as follows:
+
+The KTTY Earned will be split 3 ways
+
+- Some will go towards Leaderboard Rewards
+- Some will be burnt
+- Some will go back to the project
+
 ## Important Note
 
 The way we have set it up is so that on a 10 hour mission, should you decide to boost after 5 hours with $KTTY, you will complete the mission right away because if you had boosted from the start, the max amount of time you would be shaving off is 5 hours.
