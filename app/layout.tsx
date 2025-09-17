@@ -2,7 +2,6 @@
 import './globals.css'
 import { ReactNode } from 'react'
 import NavBar from '@/components/NavBar/NavBar'
-import FloatingCora from '@/components/UI/FloatingCora'
 
 export const metadata = {
   title: 'KTTY World',
@@ -23,9 +22,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main className="min-h-screen w-full">
           {children}
         </main>
-
-        {/* Floating assistant UI */}
-        <FloatingCora />
       </body>
     </html>
   )

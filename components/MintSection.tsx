@@ -1,0 +1,97 @@
+"use client";
+
+import { useState } from "react";
+import MintRounds from "./MintRounds";
+import ImageWall from "./ImageWall";
+import LeaderboardModal from "./LeaderboardModal";
+import MyBagModal from "./MyBagModal";
+
+export default function MintSection() {
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showBag, setShowBag] = useState(false);
+
+  // Example leaderboard data
+  const leaderboard = [
+    { rank: 1, wallet: "0x1234...abcd", mints: 50 },
+    { rank: 2, wallet: "0x5678...efgh", mints: 42 },
+    { rank: 3, wallet: "0x9abc...ijkl", mints: 38 },
+  ];
+
+  const minted = 2763;
+  const totalSupply = 10000;
+  const percent = Math.round((minted / totalSupply) * 100);
+
+  return (
+    <section
+      id="mint"
+      className="w-full px-4 md:px-12 pt-12 pb-4 md:pt-16 md:pb-16 text-foreground"
+    >
+      {/* Heading */}
+      <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-8">
+        Mint KTTYs
+      </h2>
+
+      {/* Progress bar */}
+      <div className="w-full mb-10">
+        <div className="flex justify-between text-base md:text-xl mb-3 px-1">
+          <span className="text-gray-300">{percent}% minted</span>
+          <span className="font-semibold">
+            {minted}/{totalSupply}
+          </span>
+        </div>
+        <div className="w-full h-3 bg-black/60 border border-white/20 rounded-md overflow-hidden">
+          <div
+            className="h-3 bg-blue-500 rounded"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Mobile: ImageWall above MintRounds */}
+      <div className="block md:hidden mb-10">
+        <ImageWall />
+      </div>
+
+      {/* Two-column layout for medium+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <MintRounds />
+        <div className="hidden md:block">
+          <ImageWall />
+        </div>
+      </div>
+
+      {/* Bottom buttons */}
+      <div className="grid grid-cols-3 gap-4 mt-10">
+        <button
+          onClick={() => setShowLeaderboard(true)}
+          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition"
+        >
+          Leaderboard
+        </button>
+        <button
+          onClick={() => setShowBag(true)}
+          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition"
+        >
+          My Bag
+        </button>
+        <button
+          disabled
+          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/40 border border-white/10 rounded-md font-semibold opacity-50"
+        >
+          <span className="block md:hidden">Summon</span>
+          <span className="hidden md:block">Summon KTTYs</span>
+        </button>
+      </div>
+
+      {/* Leaderboard Modal */}
+      <LeaderboardModal
+        show={showLeaderboard}
+        onClose={() => setShowLeaderboard(false)}
+        leaderboard={leaderboard}
+      />
+
+      {/* My Bag Modal */}
+      <MyBagModal isOpen={showBag} onClose={() => setShowBag(false)} />
+    </section>
+  );
+}
