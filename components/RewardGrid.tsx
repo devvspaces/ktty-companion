@@ -1,0 +1,160 @@
+"use client";
+
+import Image from "next/image";
+
+type Reward = {
+  id: string;
+  name: string;
+  image: string;
+  borderColor?: string; // 🔹 glow color
+  items: { name: string; image: string }[];
+};
+
+export default function RewardGrid({
+  rewards,
+  onBack,
+  onSummonAgain,
+}: {
+  rewards: Reward[];
+  onBack: () => void;
+  onSummonAgain: () => void;
+}) {
+  const kttyRewards = rewards;
+  const minorItems: Record<
+    string,
+    { name: string; image: string; count: number }
+  > = {};
+
+  rewards.forEach((r) => {
+    r.items.forEach((item) => {
+      if (!minorItems[item.name]) {
+        minorItems[item.name] = { ...item, count: 0 };
+      }
+      minorItems[item.name].count += 1;
+    });
+  });
+
+  const isTenPull = rewards.length === 10;
+  const rows = isTenPull ? [3, 4, 3] : [2, 3];
+  let kttyIndex = 0;
+
+  return (
+    <div className="fixed inset-0 z-[999] flex flex-col items-center justify-between text-white bg-gradient-to-b from-[#0a1d3b] to-[#091024] p-6 overflow-y-auto">
+      <h2 className="text-2xl sm:text-5xl font-bold mb-6 text-center animate-fadeInUp delay-0">
+        Your New KTTY Friends!
+      </h2>
+
+      {/* KTTY Rewards */}
+      <div className="flex flex-col gap-6 flex-1 items-center w-full">
+        {rows.map((count, rowIdx) => (
+          <div
+            key={rowIdx}
+            className={`flex justify-center gap-3 sm:gap-4 md:gap-6 w-full animate-fadeInUp`}
+            style={{ animationDelay: `${rowIdx * 0.4}s` }}
+          >
+            {Array.from({ length: count }).map((_, i) => {
+              const reward = kttyRewards[kttyIndex++];
+              if (!reward) return null;
+
+              const glow = reward.borderColor || "#a855f7";
+
+              return (
+                <div
+                  key={reward.id}
+                  className="bg-black/40 rounded-lg p-2 sm:p-3 flex flex-col items-center animate-fadeInUp"
+                  style={{
+                    animationDelay: `${rowIdx * 0.4 + i * 0.2}s`,
+                    border: `2px solid ${glow}`,
+                    boxShadow: `0 0 12px ${glow}, 0 0 24px ${glow}`,
+                  }}
+                >
+                  <div
+                    className={`relative mb-2 ${
+                      isTenPull
+                        ? "w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20"
+                        : "w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
+                    }`}
+                  >
+                    <Image
+                      src={reward.image}
+                      alt={reward.name}
+                      fill
+                      className="object-contain rounded"
+                    />
+                  </div>
+                  <p className="text-xs sm:text-sm font-bold mb-1 text-center whitespace-nowrap">
+                    {reward.name} #{reward.id}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      {/* Minor rewards */}
+      <div
+        className="w-full max-w-4xl mt-8 animate-fadeInUp delay-1000"
+      >
+        <h3 className="text-3xl font-semibold mb-4 text-center">
+          Other Rewards
+        </h3>
+        <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-4 justify-items-center">
+          {Object.values(minorItems).map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-black/40 border border-yellow-400 rounded-lg p-2 flex flex-col items-center animate-fadeInUp"
+              style={{
+                animationDelay: `${1.2 + idx * 0.1}s`,
+                boxShadow: `0 0 10px rgba(255,215,0,0.8), 0 0 20px rgba(255,215,0,0.6)`,
+              }}
+            >
+              <div className="relative w-12 h-12 mb-1">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-xs text-center">{item.name}</span>
+              <span className="text-xs font-bold text-yellow-300">
+                x{item.count}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-between w-full max-w-md mt-10 animate-fadeInUp delay-2000">
+        <button
+          onClick={onBack}
+          className="flex-1 max-w-[120px] px-4 py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
+        >
+          Back
+        </button>
+        <button
+          onClick={onSummonAgain}
+          className="flex-1 max-w-[150px] px-4 py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
+        >
+          Summon Again
+        </button>
+      </div>
+
+      <style jsx>{`
+        .animate-fadeInUp {
+          opacity: 0;
+          transform: translateY(10px);
+          animation: fadeInUp 0.6s forwards;
+        }
+        @keyframes fadeInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}

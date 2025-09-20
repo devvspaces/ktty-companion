@@ -39,8 +39,9 @@ export default function NavBar() {
             <Image
               src="/kttywrldlogo.png"
               alt="KTTY World"
-              width={80}
-              height={80}
+              width={40}
+              height={40}
+              className="lg:w-[100px] lg:h-[80px] w-[60px] h-[40px]"
             />
           </Link>
         </div>
