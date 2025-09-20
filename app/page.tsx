@@ -10,7 +10,7 @@ export default function NewsPage() {
       {/* Banner */}
       <div className="w-full mb-8 md:mb-12 overflow-hidden rounded-xl">
         <Image
-          src="/images/news/newsbanner.png"
+          src="/images/mint/compbnr.png"
           alt="News Banner"
           width={2048}
           height={512}
