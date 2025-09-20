@@ -5,20 +5,29 @@ import MintRounds from "./MintRounds";
 import ImageWall from "./ImageWall";
 import LeaderboardModal from "./LeaderboardModal";
 import MyBagModal from "./MyBagModal";
+import { useLeaderboard } from "@/hooks/useLeaderboard";
+import { useMintRounds } from "@/hooks/useMintRounds";
 
 export default function MintSection() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBag, setShowBag] = useState(false);
 
-  // Example leaderboard data
-  const leaderboard = [
-    { rank: 1, wallet: "0x1234...abcd", mints: 50 },
-    { rank: 2, wallet: "0x5678...efgh", mints: 42 },
-    { rank: 3, wallet: "0x9abc...ijkl", mints: 38 },
-  ];
+  // Get real leaderboard data from smart contract
+  const { 
+    topMinters: leaderboard, 
+    userMints, 
+    userRank, 
+    totalUniqueMinters,
+    isLoading: isLeaderboardLoading,
+    error: leaderboardError 
+  } = useLeaderboard();
 
-  const minted = 2763;
-  const totalSupply = 10000;
+
+  // Load round data from smart contract
+  const { rounds, currentRound, isLoading, error } = useMintRounds();
+
+  const minted = rounds.reduce((sum, round) => sum + round.minted, 0);
+  const totalSupply = rounds.reduce((sum, round) => sum + round.supply, 0);
   const percent = Math.round((minted / totalSupply) * 100);
 
   return (
@@ -31,7 +40,7 @@ export default function MintSection() {
         Mint KTTYs
       </h2>
 
-      {/* Progress bar */}
+      {/* Global Progress bar */}
       <div className="w-full mb-10">
         <div className="flex justify-between text-base md:text-xl mb-3 px-1">
           <span className="text-gray-300">{percent}% minted</span>
@@ -64,9 +73,10 @@ export default function MintSection() {
       <div className="grid grid-cols-3 gap-4 mt-10">
         <button
           onClick={() => setShowLeaderboard(true)}
-          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition"
+          disabled={isLeaderboardLoading}
+          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition disabled:opacity-50"
         >
-          Leaderboard
+          {isLeaderboardLoading ? 'Loading...' : 'Leaderboard'}
         </button>
         <button
           onClick={() => setShowBag(true)}
@@ -88,6 +98,11 @@ export default function MintSection() {
         show={showLeaderboard}
         onClose={() => setShowLeaderboard(false)}
         leaderboard={leaderboard}
+        userMints={userMints}
+        userRank={userRank}
+        totalUniqueMinters={totalUniqueMinters}
+        isLoading={isLeaderboardLoading}
+        error={leaderboardError || null}
       />
 
       {/* My Bag Modal */}

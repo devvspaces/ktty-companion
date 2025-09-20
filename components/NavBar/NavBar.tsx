@@ -6,12 +6,24 @@ import { useRef, useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import LeaderboardModal from "../LeaderboardModal";
 import MyBagModal from "../MyBagModal";
+import WalletButton from "../WalletButton";
+import { useLeaderboard } from "@/hooks/useLeaderboard";
 
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBag, setShowBag] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+
+  // Get real leaderboard data from smart contract
+  const {
+    topMinters: leaderboard,
+    userMints,
+    userRank,
+    totalUniqueMinters,
+    isLoading: isLeaderboardLoading,
+    error: leaderboardError
+  } = useLeaderboard();
 
   // Close mobile nav on outside click (desktop only)
   useEffect(() => {
@@ -76,19 +88,22 @@ export default function NavBar() {
           </li>
         </ul>
 
-        {/* Social icons */}
+        {/* Wallet and Social icons */}
         <div className="hidden lg:flex items-center gap-4 ml-auto">
-          <Link href="https://x.com/Kttyworld" target="_blank">
-            <Image src="/x-icon.png" alt="X" width={32} height={32} />
-          </Link>
-          <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
-            <Image
-              src="/discord-icon.png"
-              alt="Discord"
-              width={32}
-              height={32}
-            />
-          </Link>
+          <WalletButton />
+          <div className="flex items-center gap-4">
+            <Link href="https://x.com/Kttyworld" target="_blank">
+              <Image src="/x-icon.png" alt="X" width={32} height={32} />
+            </Link>
+            <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
+              <Image
+                src="/discord-icon.png"
+                alt="Discord"
+                width={32}
+                height={32}
+              />
+            </Link>
+          </div>
         </div>
 
         {/* Hamburger button */}
@@ -143,6 +158,10 @@ export default function NavBar() {
               </li>
             </ul>
 
+            <div className="mt-6 w-full px-4">
+              <WalletButton fullWidth />
+            </div>
+
             <div className="flex items-center justify-center gap-4 mt-6">
               <Link href="https://x.com/Kttyworld" target="_blank">
                 <Image src="/x-icon.png" alt="X" width={36} height={36} />
@@ -167,11 +186,12 @@ export default function NavBar() {
       <LeaderboardModal
         show={showLeaderboard}
         onClose={() => setShowLeaderboard(false)}
-        leaderboard={[
-          { rank: 1, wallet: "0x1234...abcd", mints: 50 },
-          { rank: 2, wallet: "0x5678...efgh", mints: 42 },
-          { rank: 3, wallet: "0x9abc...ijkl", mints: 38 },
-        ]}
+        leaderboard={leaderboard}
+        userMints={userMints}
+        userRank={userRank}
+        totalUniqueMinters={totalUniqueMinters}
+        isLoading={isLeaderboardLoading}
+        error={leaderboardError || null}
       />
 
       {/* My Bag Modal */}

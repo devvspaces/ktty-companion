@@ -2,6 +2,8 @@
 
 import { X } from "lucide-react";
 import Image from "next/image";
+import { useUserBooks } from "@/hooks/useUserBooks";
+import { useAccount } from "wagmi";
 
 type Item = {
   id: string;
@@ -11,40 +13,6 @@ type Item = {
   description: string;
 };
 
-const items: Item[] = [
-  {
-    id: "bookprp",
-    name: "Amethyst Summoning Book",
-    image: "/images/mybag/bookprp.png",
-    count: 2,
-    description:
-      "Used to summon rare KTTYs aligned with celestial constellations.",
-  },
-  {
-    id: "bookgrn",
-    name: "Emerald Summoning Book",
-    image: "/images/mybag/bookgrn.png",
-    count: 1,
-    description:
-      "Holds the power of the forest. Grants you a special KTTY summon.",
-  },
-  {
-    id: "bookred",
-    name: "Ruby Summoning Book",
-    image: "/images/mybag/bookred.png",
-    count: 4,
-    description: "Infused with fire. Summons fiery and powerful KTTYs.",
-  },
-  {
-    id: "goldtk",
-    name: "Golden Ticket",
-    image: "/images/mybag/goldtk.png",
-    count: 3,
-    description:
-      "1 Golden Ticket = 1 Entry into the $2,500 raffle. 500 exist across the collection.",
-  },
-];
-
 export default function MyBagModal({
   isOpen,
   onClose,
@@ -52,6 +20,49 @@ export default function MyBagModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { address } = useAccount();
+  const { 
+    coreKttyCount, 
+    nullKttyCount, 
+    oneOfOneCount, 
+    goldenTicketCount,
+    totalBooks,
+    isLoading, 
+    error 
+  } = useUserBooks();
+
+  // Build items array from real data
+  const items: Item[] = [
+    {
+      id: "bookprp",
+      name: "Amethyst Summoning Book",
+      image: "/images/mybag/bookprp.png",
+      count: coreKttyCount,
+      description: "Used to summon rare KTTYs aligned with celestial constellations.",
+    },
+    {
+      id: "bookgrn",
+      name: "Emerald Summoning Book",
+      image: "/images/mybag/bookgrn.png",
+      count: nullKttyCount,
+      description: "Holds the power of the forest. Grants you a special KTTY summon.",
+    },
+    {
+      id: "bookred",
+      name: "Ruby Summoning Book",
+      image: "/images/mybag/bookred.png",
+      count: oneOfOneCount,
+      description: "Infused with fire. Summons fiery and powerful KTTYs.",
+    },
+    {
+      id: "goldtk",
+      name: "Golden Ticket",
+      image: "/images/mybag/goldtk.png",
+      count: goldenTicketCount,
+      description: "1 Golden Ticket = 1 Entry into the $2,500 raffle. 500 exist across the collection.",
+    },
+  ];
+
   if (!isOpen) return null;
 
   return (
@@ -73,35 +84,73 @@ export default function MyBagModal({
           My Bag
         </h2>
 
-        {/* Grid (always 2 columns, scales spacing and item size) */}
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="relative flex flex-col items-center p-3 sm:p-4 bg-white/5 rounded-lg border border-white/20 hover:bg-white/10 transition group"
-            >
-              <div className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 mb-3">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <p className="font-semibold text-sm sm:text-base md:text-lg text-center">
-                {item.name}
-              </p>
-              <span className="absolute top-2 left-2 bg-black/70 px-1.5 py-0.5 text-xs sm:text-sm md:text-base rounded">
-                x{item.count}
-              </span>
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-lg text-gray-300">Loading your books...</div>
+          </div>
+        )}
 
-              {/* Tooltip (desktop only) */}
-              <div className="hidden sm:block absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 transition bg-black/90 text-sm text-gray-300 p-3 rounded-md w-56 mt-2 z-20">
-                {item.description}
-              </div>
+        {/* Error State */}
+        {error && !isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-lg text-red-400 text-center">
+              <p>Failed to load your books</p>
+              <p className="text-sm mt-2 text-gray-400">{error}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
+
+        {/* No Wallet Connected */}
+        {!address && !isLoading && !error && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-lg text-gray-300 text-center">
+              <p>Connect your wallet to view your books</p>
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {address && !isLoading && !error && totalBooks === 0 && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-lg text-gray-300 text-center">
+              <p>No summoning books found</p>
+              <p className="text-sm mt-2 text-gray-400">Mint some books to get started!</p>
+            </div>
+          </div>
+        )}
+
+        {/* Books Grid */}
+        {address && !isLoading && !error && totalBooks > 0 && (
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+            {items.map((item) => (
+              <div
+                key={item.id}
+                className="relative flex flex-col items-center p-3 sm:p-4 bg-white/5 rounded-lg border border-white/20 hover:bg-white/10 transition group"
+              >
+                <div className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 mb-3">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <p className="font-semibold text-sm sm:text-base md:text-lg text-center">
+                  {item.name}
+                </p>
+                <span className="absolute top-2 left-2 bg-black/70 px-1.5 py-0.5 text-xs sm:text-sm md:text-base rounded">
+                  x{item.count}
+                </span>
+
+                {/* Tooltip (desktop only) */}
+                <div className="hidden sm:block absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 transition bg-black/90 text-sm text-gray-300 p-3 rounded-md w-56 mt-2 z-20">
+                  {item.description}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Neon border glow */}

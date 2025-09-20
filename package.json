@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "@sky-mavis/tanto-wagmi": "^0.0.11",
     "@solana/spl-token": "^0.4.13",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-phantom": "^0.9.28",
@@ -17,12 +19,15 @@
     "@solana/wallet-adapter-react-ui": "^0.9.39",
     "@solana/wallet-adapter-wallets": "^0.19.37",
     "@solana/web3.js": "^1.98.2",
+    "@tanstack/react-query": "^5.89.0",
+    "@wagmi/cli": "^2.5.1",
     "build": "^0.1.4",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.16.0",
     "graphql": "^16.11.0",
     "lucide-react": "^0.511.0",
+    "merkletreejs": "^0.6.0",
     "next": "^15.1.8",
     "npm": "^11.4.1",
     "nprogress": "^0.2.0",
@@ -33,7 +38,9 @@
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.1",
     "rehype-raw": "^7.0.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "viem": "^2.37.6",
+    "wagmi": "^2.17.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

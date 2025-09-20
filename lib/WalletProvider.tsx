@@ -1,34 +1,23 @@
 'use client'
 
-import { FC, ReactNode, useMemo } from 'react'
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-} from '@solana/wallet-adapter-wallets'
-import { clusterApiUrl } from '@solana/web3.js'
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base' // ✅ FIX
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { WagmiProvider } from 'wagmi'
+import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit'
+import { config } from '@/lib/wagmi'
+import { ReactNode } from 'react'
 
-import '@solana/wallet-adapter-react-ui/styles.css'
+import '@rainbow-me/rainbowkit/styles.css'
 
-export const WalletConnectionProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const network = WalletAdapterNetwork.Mainnet // ✅ Use enum, not string
-  const endpoint = clusterApiUrl(network)
+const queryClient = new QueryClient()
 
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
-    ],
-    [network]
-  )
-
+export const WalletConnectionProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
