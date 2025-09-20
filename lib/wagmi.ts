@@ -9,6 +9,7 @@ export const config = createConfig({
     [saigon.id]: http(),
   },
   multiInjectedProviderDiscovery: false,
+  // @ts-ignore
   connectors: [roninWallet()],
   ssr: true,
 });
