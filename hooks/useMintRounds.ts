@@ -188,31 +188,15 @@ export function useMintRounds(): MintRoundsData {
         // Round 3 shows current active pool based on the logic:
         // Pool 1 first, then Pool 2, then buckets
         if (currentRound >= 3) {
-          if (poolStatus.pool1Remaining > 0) {
-            const pool1Minted = poolStatus.pool1Length - poolStatus.pool1Remaining;
-            return {
-              minted: pool1Minted,
-              supply: poolStatus.pool1Length,
-              progress: poolStatus.pool1Length > 0 ? Math.round((pool1Minted / poolStatus.pool1Length) * 100) : 0,
-            };
-          } else if (poolStatus.pool2Remaining > 0) {
-            const pool2Minted = poolStatus.pool2Length - poolStatus.pool2Remaining;
-            return {
-              minted: pool2Minted,
-              supply: poolStatus.pool2Length,
-              progress: poolStatus.pool2Length > 0 ? Math.round((pool2Minted / poolStatus.pool2Length) * 100) : 0,
-            };
-          } else {
-            // Show bucket progress
-            const totalBucketSupply = poolStatus.bucketsTotal.reduce((sum, total) => sum + total, 0);
-            const totalBucketRemaining = poolStatus.bucketsRemaining.reduce((sum, remaining) => sum + remaining, 0);
-            const bucketMinted = totalBucketSupply - totalBucketRemaining;
-            return {
-              minted: bucketMinted,
-              supply: totalBucketSupply,
-              progress: totalBucketSupply > 0 ? Math.round((bucketMinted / totalBucketSupply) * 100) : 0,
-            };
-          }
+          // Show bucket progress
+          const totalBucketSupply = poolStatus.bucketsTotal.reduce((sum, total) => sum + total, 0);
+          const totalBucketRemaining = poolStatus.bucketsRemaining.reduce((sum, remaining) => sum + remaining, 0);
+          const bucketMinted = totalBucketSupply - totalBucketRemaining;
+          return {
+            minted: bucketMinted,
+            supply: totalBucketSupply,
+            progress: totalBucketSupply > 0 ? Math.round((bucketMinted / totalBucketSupply) * 100) : 0,
+          };
         } else {
           // Round 3 hasn't started, show bucket totals
           const totalBucketSupply = poolStatus.bucketsTotal.reduce((sum, total) => sum + total, 0);
@@ -226,30 +210,14 @@ export function useMintRounds(): MintRoundsData {
       case 4:
         // Round 4 continues whatever is left from round 3
         if (currentRound >= 4) {
-          if (poolStatus.pool1Remaining > 0) {
-            const pool1Minted = poolStatus.pool1Length - poolStatus.pool1Remaining;
-            return {
-              minted: pool1Minted,
-              supply: poolStatus.pool1Length,
-              progress: poolStatus.pool1Length > 0 ? Math.round((pool1Minted / poolStatus.pool1Length) * 100) : 0,
-            };
-          } else if (poolStatus.pool2Remaining > 0) {
-            const pool2Minted = poolStatus.pool2Length - poolStatus.pool2Remaining;
-            return {
-              minted: pool2Minted,
-              supply: poolStatus.pool2Length,
-              progress: poolStatus.pool2Length > 0 ? Math.round((pool2Minted / poolStatus.pool2Length) * 100) : 0,
-            };
-          } else {
-            const totalBucketSupply = poolStatus.bucketsTotal.reduce((sum, total) => sum + total, 0);
-            const totalBucketRemaining = poolStatus.bucketsRemaining.reduce((sum, remaining) => sum + remaining, 0);
-            const bucketMinted = totalBucketSupply - totalBucketRemaining;
-            return {
-              minted: bucketMinted,
-              supply: totalBucketSupply,
-              progress: totalBucketSupply > 0 ? Math.round((bucketMinted / totalBucketSupply) * 100) : 0,
-            };
-          }
+          const totalBucketSupply = poolStatus.bucketsTotal.reduce((sum, total) => sum + total, 0);
+          const totalBucketRemaining = poolStatus.bucketsRemaining.reduce((sum, remaining) => sum + remaining, 0);
+          const bucketMinted = totalBucketSupply - totalBucketRemaining;
+          return {
+            minted: bucketMinted,
+            supply: totalBucketSupply,
+            progress: totalBucketSupply > 0 ? Math.round((bucketMinted / totalBucketSupply) * 100) : 0,
+          };
         } else {
           return { minted: 0, supply: 0, progress: 0 };
         }
