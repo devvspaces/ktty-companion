@@ -26,8 +26,8 @@ export default function MintSection() {
   // Load round data from smart contract
   const { rounds, currentRound, isLoading, error } = useMintRounds();
 
-  const minted = rounds.reduce((sum, round) => sum + round.minted, 0);
-  const totalSupply = rounds.reduce((sum, round) => sum + round.supply, 0);
+  const minted = rounds.filter(round => round.id != 4).reduce((sum, round) => sum + round.minted, 0);
+  const totalSupply = rounds.filter(round => round.id != 4).reduce((sum, round) => sum + round.supply, 0);
   const percent = Math.round((minted / totalSupply) * 100);
 
   return (
