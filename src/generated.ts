@@ -143,32 +143,6 @@ export const kttyWorldMintingAbi = [
   {
     type: 'function',
     inputs: [
-      { name: 'bookId', internalType: 'uint256', type: 'uint256' },
-      { name: 'nftId', internalType: 'uint256', type: 'uint256' },
-      { name: 'toolIds', internalType: 'uint256[3]', type: 'uint256[3]' },
-      { name: 'goldenTicketId', internalType: 'uint256', type: 'uint256' },
-      { name: 'nftType', internalType: 'string', type: 'string' },
-    ],
-    name: 'addBook',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'bookIds', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'nftIds', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'toolIds', internalType: 'uint256[3][]', type: 'uint256[3][]' },
-      { name: 'goldenTicketIds', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'nftTypes', internalType: 'string[]', type: 'string[]' },
-    ],
-    name: 'batchAddBooks',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
       { name: 'roundNumber', internalType: 'uint256', type: 'uint256' },
       {
         name: 'paymentType',
@@ -190,6 +164,13 @@ export const kttyWorldMintingAbi = [
       { name: 'endTime', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'configureRound',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'distributeSpilloverToBuckets',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -249,7 +230,7 @@ export const kttyWorldMintingAbi = [
     outputs: [
       {
         name: '',
-        internalType: 'struct KttyWorldMinting.Book',
+        internalType: 'struct DummyBooks.Book',
         type: 'tuple',
         components: [
           { name: 'nftId', internalType: 'uint256', type: 'uint256' },
@@ -393,7 +374,7 @@ export const kttyWorldMintingAbi = [
     outputs: [
       {
         name: '',
-        internalType: 'struct KttyWorldMinting.Book[]',
+        internalType: 'struct DummyBooks.Book[]',
         type: 'tuple[]',
         components: [
           { name: 'nftId', internalType: 'uint256', type: 'uint256' },
@@ -433,6 +414,7 @@ export const kttyWorldMintingAbi = [
       { name: '_companions', internalType: 'address', type: 'address' },
       { name: '_tools', internalType: 'address', type: 'address' },
       { name: '_collectibles', internalType: 'address', type: 'address' },
+      { name: '_books', internalType: 'address', type: 'address' },
       { name: '_kttyToken', internalType: 'address', type: 'address' },
       { name: '_treasuryWallet', internalType: 'address', type: 'address' },
       {
@@ -538,6 +520,18 @@ export const kttyWorldMintingAbi = [
       { name: '', internalType: 'bytes', type: 'bytes' },
     ],
     name: 'onERC1155Received',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'onERC721Received',
     outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
     stateMutability: 'pure',
   },
@@ -833,6 +827,19 @@ export const kttyWorldMintingAbi = [
       },
     ],
     name: 'RoundUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'totalBooksDistributed',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'SpilloverDistributed',
   },
   {
     type: 'event',
@@ -1214,6 +1221,15 @@ export const useReadKttyWorldMintingOnErc1155Received =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"onERC721Received"`
+ */
+export const useReadKttyWorldMintingOnErc721Received =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldMintingAbi,
+    functionName: 'onERC721Received',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"owner"`
  */
 export const useReadKttyWorldMintingOwner = /*#__PURE__*/ createUseReadContract(
@@ -1246,24 +1262,6 @@ export const useWriteKttyWorldMinting = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"addBook"`
- */
-export const useWriteKttyWorldMintingAddBook =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: kttyWorldMintingAbi,
-    functionName: 'addBook',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"batchAddBooks"`
- */
-export const useWriteKttyWorldMintingBatchAddBooks =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: kttyWorldMintingAbi,
-    functionName: 'batchAddBooks',
-  })
-
-/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"configurePayment"`
  */
 export const useWriteKttyWorldMintingConfigurePayment =
@@ -1279,6 +1277,15 @@ export const useWriteKttyWorldMintingConfigureRound =
   /*#__PURE__*/ createUseWriteContract({
     abi: kttyWorldMintingAbi,
     functionName: 'configureRound',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"distributeSpilloverToBuckets"`
+ */
+export const useWriteKttyWorldMintingDistributeSpilloverToBuckets =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldMintingAbi,
+    functionName: 'distributeSpilloverToBuckets',
   })
 
 /**
@@ -1414,24 +1421,6 @@ export const useSimulateKttyWorldMinting =
   /*#__PURE__*/ createUseSimulateContract({ abi: kttyWorldMintingAbi })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"addBook"`
- */
-export const useSimulateKttyWorldMintingAddBook =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: kttyWorldMintingAbi,
-    functionName: 'addBook',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"batchAddBooks"`
- */
-export const useSimulateKttyWorldMintingBatchAddBooks =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: kttyWorldMintingAbi,
-    functionName: 'batchAddBooks',
-  })
-
-/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"configurePayment"`
  */
 export const useSimulateKttyWorldMintingConfigurePayment =
@@ -1447,6 +1436,15 @@ export const useSimulateKttyWorldMintingConfigureRound =
   /*#__PURE__*/ createUseSimulateContract({
     abi: kttyWorldMintingAbi,
     functionName: 'configureRound',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"distributeSpilloverToBuckets"`
+ */
+export const useSimulateKttyWorldMintingDistributeSpilloverToBuckets =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldMintingAbi,
+    functionName: 'distributeSpilloverToBuckets',
   })
 
 /**
@@ -1669,6 +1667,15 @@ export const useWatchKttyWorldMintingRoundUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: kttyWorldMintingAbi,
     eventName: 'RoundUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `eventName` set to `"SpilloverDistributed"`
+ */
+export const useWatchKttyWorldMintingSpilloverDistributedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldMintingAbi,
+    eventName: 'SpilloverDistributed',
   })
 
 /**
