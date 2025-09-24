@@ -21,47 +21,74 @@ export default function MyBagModal({
   onClose: () => void;
 }) {
   const { address } = useAccount();
-  const { 
-    coreKttyCount, 
-    nullKttyCount, 
-    oneOfOneCount, 
-    goldenTicketCount,
+  const {
+    amethystCount,
+    emeraldCount,
+    rubyCount,
+    blacksmithCount,
+    luckyCount,
+    oneEyeCount,
+    corruptCount,
     totalBooks,
-    isLoading, 
-    error 
+    isLoading,
+    error,
   } = useUserBooks();
 
   // Build items array from real data
-  const items: Item[] = [
-    {
-      id: "bookprp",
-      name: "Amethyst Summoning Book",
-      image: "/images/mybag/bookprp.png",
-      count: coreKttyCount,
-      description: "Used to summon rare KTTYs aligned with celestial constellations.",
-    },
-    {
-      id: "bookgrn",
-      name: "Emerald Summoning Book",
-      image: "/images/mybag/bookgrn.png",
-      count: nullKttyCount,
-      description: "Holds the power of the forest. Grants you a special KTTY summon.",
-    },
-    {
-      id: "bookred",
-      name: "Ruby Summoning Book",
-      image: "/images/mybag/bookred.png",
-      count: oneOfOneCount,
-      description: "Infused with fire. Summons fiery and powerful KTTYs.",
-    },
-    {
-      id: "goldtk",
-      name: "Golden Ticket",
-      image: "/images/mybag/goldtk.png",
-      count: goldenTicketCount,
-      description: "1 Golden Ticket = 1 Entry into the $2,500 raffle. 500 exist across the collection.",
-    },
-  ];
+const items: Item[] = [
+  {
+    id: "amethystbk",
+    name: "Amethyst Summoning Book",
+    image: "/images/mybag/amethystbk.png",
+    count: amethystCount, // using placeholder
+    description:
+      "A book glowing with celestial energy. Summons mystical KTTYs.",
+  },
+  {
+    id: "emeraldbk",
+    name: "Emerald Summoning Book",
+    image: "/images/mybag/emeraldbk.png",
+    count: emeraldCount, // using placeholder
+    description: "Holds the power of the forest. Summons nature-blessed KTTYs.",
+  },
+  {
+    id: "rubybk",
+    name: "Ruby Summoning Book",
+    image: "/images/mybag/rubybk.png",
+    count: rubyCount, // using placeholder
+    description: "Burning with fire. Summons fierce and fiery KTTYs.",
+  },
+  {
+    id: "bsmithbk",
+    name: "Blacksmith’s Manual",
+    image: "/images/mybag/bsmithbk.png",
+    count: blacksmithCount, // temp, until hook returns this
+    description: "An ancient manual of forging. Used to summon crafted KTTYs.",
+  },
+  {
+    id: "luckybk",
+    name: "Lucky Tome",
+    image: "/images/mybag/luckybk.png",
+    count: luckyCount, // temp
+    description: "Said to bring good fortune. Sometimes grants rare summons.",
+  },
+  {
+    id: "oneeyebk",
+    name: "One Eye Bible",
+    image: "/images/mybag/oneeyebk.png",
+    count: oneEyeCount, // temp
+    description:
+      "Carved with ominous sigils. Summons cursed or powerful KTTYs.",
+  },
+  {
+    id: "cursebk",
+    name: "Corrupted Tome",
+    image: "/images/mybag/cursebk.png",
+    count: corruptCount, // temp
+    description: "Seething with unstable magic. Summons corrupted KTTYs.",
+  },
+];
+
 
   if (!isOpen) return null;
 
@@ -115,7 +142,9 @@ export default function MyBagModal({
           <div className="flex items-center justify-center py-12">
             <div className="text-lg text-gray-300 text-center">
               <p>No summoning books found</p>
-              <p className="text-sm mt-2 text-gray-400">Mint some books to get started!</p>
+              <p className="text-sm mt-2 text-gray-400">
+                Mint some books to get started!
+              </p>
             </div>
           </div>
         )}
@@ -157,7 +186,9 @@ export default function MyBagModal({
       <style jsx>{`
         .border-neon {
           border-color: #9b5cff;
-          box-shadow: 0 0 10px #9b5cff, 0 0 20px #9b5cff;
+          box-shadow:
+            0 0 10px #9b5cff,
+            0 0 20px #9b5cff;
         }
       `}</style>
     </div>

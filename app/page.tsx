@@ -20,7 +20,10 @@ export default function NewsPage() {
       </div>
 
       {/* Intro Text */}
-      <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
+      <div className="text-center max-w-3xl mx-auto mb-8 mt-8 md:mb-12">
+        <h2 className="text-white text-2xl sm:text-5xl md:text-6xl lg:text-5xl font-bold  mb-8">
+          KTTY Companion Mint
+        </h2>
         <p className="text-gray-300 text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed">
           KTTY’s are fragments of our souls. A magical representation of who we
           are, good or bad. It is time to summon yours now and take your next

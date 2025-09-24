@@ -20,6 +20,8 @@ export default function RewardGrid({
   onSummonAgain: () => void;
 }) {
   const kttyRewards = rewards;
+
+  // 🔹 Collect minor rewards, grouped by name+image (rarities stay separate)
   const minorItems: Record<
     string,
     { name: string; image: string; count: number }
@@ -27,16 +29,40 @@ export default function RewardGrid({
 
   rewards.forEach((r) => {
     r.items.forEach((item) => {
-      if (!minorItems[item.name]) {
-        minorItems[item.name] = { ...item, count: 0 };
+      const key = `${item.name}-${item.image}`;
+      if (!minorItems[key]) {
+        minorItems[key] = { ...item, count: 0 };
       }
-      minorItems[item.name].count += 1;
+      minorItems[key].count += 1;
     });
   });
 
+  // 🔹 Decide KTTY layout
   const isTenPull = rewards.length === 10;
   const rows = isTenPull ? [3, 4, 3] : [2, 3];
   let kttyIndex = 0;
+
+  // 🔹 Rarity glow map
+  const rarityGlow: Record<string, { border: string; shadow: string }> = {
+    Standard: {
+      border: "#cd7f32",
+      shadow: "0 0 12px #cd7f32, 0 0 24px #b87333",
+    },
+    Advanced: {
+      border: "#C0C0C0",
+      shadow: "0 0 12px #C0C0C0, 0 0 24px #A9A9A9",
+    },
+    Prismatic: {
+      border: "#FFD700",
+      shadow: "0 0 12px #FFD700, 0 0 24px #FFA500",
+    },
+  };
+
+  function getRarityStyle(name: string) {
+    if (name.includes("Prismatic")) return rarityGlow.Prismatic;
+    if (name.includes("Advanced")) return rarityGlow.Advanced;
+    return rarityGlow.Standard; // default
+  }
 
   return (
     <div className="fixed inset-0 z-[999] flex flex-col items-center justify-between text-white bg-gradient-to-b from-[#0a1d3b] to-[#091024] p-6 overflow-y-auto">
@@ -49,7 +75,7 @@ export default function RewardGrid({
         {rows.map((count, rowIdx) => (
           <div
             key={rowIdx}
-            className={`flex justify-center gap-3 sm:gap-4 md:gap-6 w-full animate-fadeInUp`}
+            className="flex justify-center gap-3 sm:gap-4 md:gap-6 w-full animate-fadeInUp"
             style={{ animationDelay: `${rowIdx * 0.4}s` }}
           >
             {Array.from({ length: count }).map((_, i) => {
@@ -93,37 +119,98 @@ export default function RewardGrid({
       </div>
 
       {/* Minor rewards */}
-      <div
-        className="w-full max-w-4xl mt-8 animate-fadeInUp delay-1000"
-      >
+      <div className="w-full max-w-4xl mt-8 animate-fadeInUp delay-1000">
         <h3 className="text-3xl font-semibold mb-4 text-center">
           Other Rewards
         </h3>
-        <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-4 justify-items-center">
-          {Object.values(minorItems).map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-black/40 border border-yellow-400 rounded-lg p-2 flex flex-col items-center animate-fadeInUp"
-              style={{
-                animationDelay: `${1.2 + idx * 0.1}s`,
-                boxShadow: `0 0 10px rgba(255,215,0,0.8), 0 0 20px rgba(255,215,0,0.6)`,
-              }}
-            >
-              <div className="relative w-12 h-12 mb-1">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-xs text-center">{item.name}</span>
-              <span className="text-xs font-bold text-yellow-300">
-                x{item.count}
-              </span>
+
+        {isTenPull ? (
+          // 🔹 10x pull → scrollable area
+          <div className="max-h-40 sm:max-h-64 overflow-y-auto pr-1">
+            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2 sm:gap-4 justify-items-center">
+              {Object.values(minorItems).map((item, idx) => {
+                const { border, shadow } = getRarityStyle(item.name);
+
+                return (
+                  <div
+                    key={idx}
+                    className="bg-black/40 rounded-lg relative animate-fadeInUp"
+                    style={{
+                      animationDelay: `${1.2 + idx * 0.1}s`,
+                      border: `2px solid ${border}`,
+                      boxShadow: shadow,
+                    }}
+                  >
+                    {/* Item image */}
+                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain rounded"
+                      />
+                    </div>
+
+                    {/* Count overlay */}
+                    {item.count > 1 && (
+                      <span className="absolute bottom-0 right-0 text-[10px] sm:text-xs font-bold bg-black/70 px-1 rounded-tl-md text-yellow-300">
+                        x{item.count}
+                      </span>
+                    )}
+
+                    {/* Name visible only on sm+ */}
+                    <span className="hidden sm:block text-xs text-center mt-1">
+                      {item.name}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          // 🔹 5x pull → fixed height, always 2 rows, larger icons
+          <div className="h-48 sm:h-56 md:h-64">
+            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2 sm:gap-4 justify-items-center">
+              {Object.values(minorItems).map((item, idx) => {
+                const { border, shadow } = getRarityStyle(item.name);
+
+                return (
+                  <div
+                    key={idx}
+                    className="bg-black/40 rounded-lg relative animate-fadeInUp"
+                    style={{
+                      animationDelay: `${1.2 + idx * 0.1}s`,
+                      border: `2px solid ${border}`,
+                      boxShadow: shadow,
+                    }}
+                  >
+                    {/* Item image */}
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain rounded"
+                      />
+                    </div>
+
+                    {/* Count overlay */}
+                    {item.count > 1 && (
+                      <span className="absolute bottom-0 right-0 text-[11px] sm:text-sm font-bold bg-black/70 px-1 rounded-tl-md text-yellow-300">
+                        x{item.count}
+                      </span>
+                    )}
+
+                    {/* Name visible only on sm+ */}
+                    <span className="hidden sm:block text-xs text-center mt-1">
+                      {item.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Buttons */}

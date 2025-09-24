@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@heroicons/react": "^2.2.0",
     "@rainbow-me/rainbowkit": "^2.2.8",
     "@sky-mavis/tanto-wagmi": "^0.0.11",
-    "@heroicons/react": "^2.2.0",
     "@solana/spl-token": "^0.4.13",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-phantom": "^0.9.28",
@@ -40,8 +40,8 @@
     "react-syntax-highlighter": "^15.6.1",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
-    "viem": "^2.37.6",
-    "wagmi": "^2.17.0"
+    "viem": "^2.37.8",
+    "wagmi": "^2.17.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
