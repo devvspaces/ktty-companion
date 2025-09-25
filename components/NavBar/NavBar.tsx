@@ -69,7 +69,12 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <span className="text-gray-500">Summon KTTYs</span>
+            <Link
+              href="/summon"
+              className="hover:text-purple-300 transition-all"
+            >
+              Summon KTTYs
+            </Link>
           </li>
           <li>
             <button
@@ -131,9 +136,12 @@ export default function NavBar() {
                 </Link>
               </li>
               <li>
-                <span className="text-gray-500 text-xl font-bold">
+                <Link
+                  href="/summon"
+                  className="hover:text-purple-300 transition-all"
+                >
                   Summon KTTYs
-                </span>
+                </Link>
               </li>
               <li>
                 <button

@@ -9,14 +9,14 @@ export interface NotificationOptions {
  * Show success notification
  */
 export function showSuccessNotification(message: string, options?: NotificationOptions) {
-  const { duration = 4000, txHash } = options || {};
+  const { duration = 2000, txHash } = options || {};
   
   if (txHash) {
     // Show success with clickable transaction link
     toast.success(
       `${message}`,
       {
-        duration: 8000,
+        duration: 2000,
         style: {
           background: '#10B981',
           color: '#fff',
@@ -53,7 +53,7 @@ export function showSuccessNotification(message: string, options?: NotificationO
  * Show error notification
  */
 export function showErrorNotification(message: string, options?: NotificationOptions) {
-  const { duration = 6000 } = options || {};
+  const { duration = 2000 } = options || {};
   
   toast.error(message, {
     duration,
@@ -93,7 +93,7 @@ export function showLoadingNotification(message: string): string {
  * Show info notification
  */
 export function showInfoNotification(message: string, options?: NotificationOptions) {
-  const { duration = 4000 } = options || {};
+  const { duration = 2000 } = options || {};
   
   toast(message, {
     duration,
@@ -158,12 +158,38 @@ export function showMintNotification(stage: 'simulating' | 'pending' | 'success'
     case 'success':
       showSuccessNotification(
         `Successfully minted ${quantity || 1} book${quantity !== 1 ? 's' : ''}!`, 
-        { txHash, duration: 6000 }
+        { txHash, duration: 2000 }
       );
       break;
     
     case 'error':
       showErrorNotification(error || 'Minting failed. Please try again.');
+      break;
+  }
+}
+
+/**
+ * Show open books notification
+ */
+export function showOpenBooksNotification(stage: 'simulating' | 'pending' | 'success' | 'error', data?: { quantity?: number; txHash?: string; error?: string }) {
+  const { quantity, txHash, error } = data || {};
+  
+  switch (stage) {
+    case 'simulating':
+      return showLoadingNotification('Validating book opening...');
+    
+    case 'pending':
+      return showLoadingNotification(`Opening ${quantity || 1} book${quantity !== 1 ? 's' : ''}...`);
+    
+    case 'success':
+      showSuccessNotification(
+        `Successfully opened ${quantity || 1} book${quantity !== 1 ? 's' : ''}! Your rewards are ready.`, 
+        { txHash, duration: 3000 }
+      );
+      break;
+    
+    case 'error':
+      showErrorNotification(error || 'Opening books failed. Please try again.');
       break;
   }
 }

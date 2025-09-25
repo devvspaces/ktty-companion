@@ -56,7 +56,7 @@ export function useWhitelistValidation(): WhitelistValidationData {
     error: round1Error 
   } = useReadKttyWorldMintingGetWhitelistStatus({
     address: contractAddress,
-    args: address ? [1n, address] : undefined,
+    args: address ? [BigInt(1), address] : undefined,
     query: {
       enabled: !!address,
     },
@@ -69,7 +69,7 @@ export function useWhitelistValidation(): WhitelistValidationData {
     error: round2Error 
   } = useReadKttyWorldMintingGetWhitelistStatus({
     address: contractAddress,
-    args: address ? [2n, address] : undefined,
+    args: address ? [BigInt(2), address] : undefined,
     query: {
       enabled: !!address,
     },

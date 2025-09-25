@@ -9,12 +9,27 @@ import SummonBookModal from "@/components/SummonBookModal";
 import { Reward } from "@/lib/reward";
 import { minorRewards } from "@/lib/tools";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAccount } from "wagmi";
+import { useUserBooks, BookDetail } from "@/hooks/useUserBooks";
+import { useOpenBooks } from "@/hooks/useOpenBooks";
+import { extractBookIds } from "@/lib/bookSelection";
 
 type Book = {
   id: string;
   icon: string;
   amount: number;
   color: string;
+};
+
+// At the top of SummonsPage
+const seriesToColor: Record<string, string> = {
+  "Emerald Book": "emerald",
+  "Ruby Book": "ruby",
+  "Amethyst Book": "amethyst",
+  "Blacksmith's Manual": "bsmith",
+  "Lucky Tome": "lucky",
+  "One Eye Bible": "oneeye",
+  "Corrupted Tome": "corrupt",
 };
 
 // 🔹 Hook to detect screen size with 3 tiers
@@ -37,47 +52,77 @@ function useScreenSize() {
 }
 
 export default function SummonsPage() {
+  const { address } = useAccount();
+  const {
+    amethystCount,
+    emeraldCount,
+    rubyCount,
+    blacksmithCount,
+    luckyCount,
+    oneEyeCount,
+    corruptCount,
+    booksMap,
+    totalBooks,
+    isLoading,
+    error,
+  } = useUserBooks();
+
+  const {
+    openBooks,
+    isLoading: isOpeningBooks,
+    openTxHash,
+    isWaitingForOpen,
+  } = useOpenBooks();
+
+  // State for selected books from the modal
+  const [selectedBooksForSummon, setSelectedBooksForSummon] = useState<
+    BookDetail[]
+  >([]);
+  const [pendingSelection, setPendingSelection] = useState<
+    Record<string, number>
+  >({});
+
   const inventory: Book[] = [
     {
       id: "Emerald Book",
       icon: "/images/mybag/emeraldbk.png",
-      amount: 21,
+      amount: emeraldCount,
       color: "emerald",
     },
     {
       id: "Ruby Book",
       icon: "/images/mybag/rubybk.png",
-      amount: 64,
+      amount: rubyCount,
       color: "ruby",
     },
     {
       id: "Amethyst Book",
       icon: "/images/mybag/amethystbk.png",
-      amount: 14,
+      amount: amethystCount,
       color: "amethyst",
     },
     {
-      id: "Blacksmith’s Manual",
+      id: "Blacksmith's Manual",
       icon: "/images/mybag/bsmithbk.png",
-      amount: 18,
+      amount: blacksmithCount,
       color: "bsmith",
     },
     {
       id: "Lucky Tome",
       icon: "/images/mybag/luckybk.png",
-      amount: 23,
+      amount: luckyCount,
       color: "lucky",
     },
     {
       id: "One Eye Bible",
       icon: "/images/mybag/oneeyebk.png",
-      amount: 64,
+      amount: oneEyeCount,
       color: "oneeye",
     },
     {
       id: "Corrupted Tome",
       icon: "/images/mybag/cursebk.png",
-      amount: 12,
+      amount: corruptCount,
       color: "corrupt",
     },
   ];
@@ -255,8 +300,12 @@ export default function SummonsPage() {
     return "ruby";
   }
 
-  // Summon setup
-  const handleSummon = (count: number, selection: Record<string, number>) => {
+  // Summon setup - now called after successful book opening
+  const handleSummon = (
+    selectedBooks: BookDetail[],
+    selection: Record<string, number>
+  ) => {
+    const count = selectedBooks.length;
     setSummonCount(count);
     setShowFlash(true);
     setFadeOut(false);
@@ -265,25 +314,32 @@ export default function SummonsPage() {
     const theme = getBatchTheme(selection, inventory);
     setSelectedBookColor(theme);
 
-    const mockRewards: Reward[] = Array.from({ length: count }).map((_, i) => {
-      const bookId = Object.keys(selection)[i % Object.keys(selection).length];
-      const book = inventory.find((b) => b.id === bookId);
+    // Create rewards using the actual selected books with book IDs
+    const mockRewards: Reward[] = selectedBooks.map((book, i) => {
+      const color = seriesToColor[book.series] || "purple"; // ✅ safe lookup
+
       return {
-        id: String(i + 1),
+        id: book.nftId.toString(),
         name: "KTTY",
         image: `/images/rewards/kttys/ktty${(i % 10) + 1}.png`,
         breed: "Lumen",
         identity: "Dawn",
         expression: "Happy",
-        borderColor: book?.color || "purple",
-        book: book?.color,
+        borderColor: color,
+        book: color,
         items: [
           {
             name: "Prismatic Hammer",
-            image: "/images/otherrewards/hammer.png",
+            image: "/images/otherrewards/prshammer.png",
           },
-          { name: "Advanced Anvil", image: "/images/otherrewards/anvil.png" },
-          { name: "Standard Tongs", image: "/images/otherrewards/tongs.png" },
+          {
+            name: "Advanced Anvil",
+            image: "/images/otherrewards/advanvil.png",
+          },
+          {
+            name: "Standard Tongs",
+            image: "/images/otherrewards/stntongs.png",
+          },
         ],
       };
     });
@@ -332,6 +388,48 @@ export default function SummonsPage() {
   };
 
   const handleSkipToGrid = () => setStep("grid");
+
+  // Handle book selection and opening
+  const handleBookSelection = async (
+    selectedBooks: BookDetail[],
+    selection: Record<string, number>
+  ) => {
+    try {
+      // Store the selected books and selection for later use
+      setSelectedBooksForSummon(selectedBooks);
+      setPendingSelection(selection);
+
+      // Extract book IDs and open books
+      const bookIds = extractBookIds(selectedBooks);
+      await openBooks(bookIds);
+    } catch (error) {
+      console.error("Error opening books:", error);
+    }
+  };
+
+  // Watch for successful book opening and trigger animation
+  useEffect(() => {
+    // Check if we have selected books, no longer opening, and we have a successful tx
+    if (
+      selectedBooksForSummon.length > 0 &&
+      !isOpeningBooks &&
+      !isWaitingForOpen &&
+      openTxHash
+    ) {
+      // Trigger the summon animation with the selected books
+      handleSummon(selectedBooksForSummon, pendingSelection);
+
+      // Clear the selected books after using them
+      setSelectedBooksForSummon([]);
+      setPendingSelection({});
+    }
+  }, [
+    selectedBooksForSummon,
+    isOpeningBooks,
+    isWaitingForOpen,
+    openTxHash,
+    pendingSelection,
+  ]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
@@ -510,12 +608,13 @@ export default function SummonsPage() {
       <SummonBookModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onConfirm={(selection) => {
+        onConfirm={(selectedBooks, selection) => {
           setShowModal(false);
-          if (pendingCount) handleSummon(pendingCount, selection);
+          handleBookSelection(selectedBooks, selection);
         }}
         countRequired={pendingCount || 0}
         inventory={inventory}
+        booksMap={booksMap || {}}
       />
 
       <style jsx>{`
