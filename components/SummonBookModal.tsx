@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { BookDetail } from '@/hooks/useUserBooks';
+import { selectBooksFromMap, validateBookSelection } from '@/lib/bookSelection';
+import { showErrorNotification } from '@/lib/notifications';
 
 type Book = {
   id: string;
@@ -16,12 +19,14 @@ export default function SummonBookModal({
   onConfirm,
   countRequired,
   inventory,
+  booksMap,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (selection: Record<string, number>) => void;
+  onConfirm: (selectedBooks: BookDetail[], selection: Record<string, number>) => void;
   countRequired: number;
   inventory: Book[];
+  booksMap: Record<string, BookDetail[]>;
 }) {
   const [selection, setSelection] = useState<Record<string, number>>({});
 
@@ -67,6 +72,40 @@ export default function SummonBookModal({
 
     const useAmount = Math.min(book.amount, countRequired);
     setSelection({ [id]: useAmount });
+  };
+
+  const handleSingleBookSelect = (book: Book) => {
+    try {
+      // Validate that we have books available in the map
+      const validation = validateBookSelection({ [book.id]: 1 }, booksMap);
+      if (!validation.isValid) {
+        showErrorNotification(validation.error || 'Book selection invalid');
+        return;
+      }
+
+      // Select random book from the map
+      const selectedBooks = selectBooksFromMap({ [book.id]: 1 }, booksMap);
+      onConfirm(selectedBooks, { [book.id]: 1 });
+    } catch (error) {
+      showErrorNotification(error instanceof Error ? error.message : 'Failed to select book');
+    }
+  };
+
+  const handleMultipleBookConfirm = () => {
+    try {
+      // Validate selection
+      const validation = validateBookSelection(selection, booksMap);
+      if (!validation.isValid) {
+        showErrorNotification(validation.error || 'Book selection invalid');
+        return;
+      }
+
+      // Select random books from the map
+      const selectedBooks = selectBooksFromMap(selection, booksMap);
+      onConfirm(selectedBooks, selection);
+    } catch (error) {
+      showErrorNotification(error instanceof Error ? error.message : 'Failed to select books');
+    }
   };
 
   if (!isOpen) return null;
@@ -162,7 +201,7 @@ export default function SummonBookModal({
           </>
         ) : (
           <button
-            onClick={() => onConfirm({ [book.id]: 1 })}
+            onClick={() => handleSingleBookSelect(book)}
             className="mt-2 px-4 py-1 bg-purple-600 rounded hover:bg-purple-500 disabled:opacity-50"
             disabled={book.amount <= 0}
           >
@@ -214,7 +253,7 @@ export default function SummonBookModal({
                 Cancel
               </button>
               <button
-                onClick={() => onConfirm(selection)}
+                onClick={handleMultipleBookConfirm}
                 className="flex-1 px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 disabled:opacity-50"
                 disabled={totalSelected !== countRequired}
               >

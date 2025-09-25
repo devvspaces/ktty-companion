@@ -7,19 +7,20 @@ import LeaderboardModal from "./LeaderboardModal";
 import MyBagModal from "./MyBagModal";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { useMintRounds } from "@/hooks/useMintRounds";
+import Link from "next/link";
 
 export default function MintSection() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBag, setShowBag] = useState(false);
 
   // Get real leaderboard data from smart contract
-  const { 
-    topMinters: leaderboard, 
-    userMints, 
-    userRank, 
+  const {
+    topMinters: leaderboard,
+    userMints,
+    userRank,
     totalUniqueMinters,
     isLoading: isLeaderboardLoading,
-    error: leaderboardError 
+    error: leaderboardError
   } = useLeaderboard();
 
 
@@ -84,13 +85,13 @@ export default function MintSection() {
         >
           My Bag
         </button>
-        <button
-          disabled
-          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/40 border border-white/10 rounded-md font-semibold opacity-50"
-        >
-          <span className="block md:hidden">Summon</span>
-          <span className="hidden md:block">Summon KTTYs</span>
-        </button>
+        <Link href="/summon">
+          <button
+            className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition"
+          >
+            <span className="block md:hidden">Summon</span>
+            <span className="hidden md:block">Summon KTTYs</span>
+          </button></Link>
       </div>
 
       {/* Leaderboard Modal */}

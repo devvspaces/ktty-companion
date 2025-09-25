@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useAccount } from "wagmi";
 import {
   useReadKttyWorldMintingGetUserBooksDetails,
+  useReadKttyWorldMintingGetUserBooks,
   useWatchKttyWorldMintingBooksMintedEvent,
   useWatchKttyWorldMintingBookOpenedEvent,
 } from "@/src/generated";
@@ -20,13 +21,21 @@ export interface UserBooksData {
   totalBooks: number;
   isLoading: boolean;
   error: string | null;
+  booksMap?: Record<string, BookDetail[]>;
+}
+
+export interface BookDetail {
+  id: bigint; // The actual book ID from getUserBooks
+  nftId: bigint; // The associated NFT ID
+  toolIds: readonly [bigint, bigint, bigint];
+  goldenTicketId: bigint;
+  hasGoldenTicket: boolean;
+  series: string;
 }
 
 export function useUserBooks(): UserBooksData {
   const { address } = useAccount();
   const [error, setError] = useState<string | null>(null);
-  const [seriesMap, setSeriesMap] = useState<Record<string, string>>({}); // nftId → series
-  const [metaLoading, setMetaLoading] = useState(false);
 
   // Handle contract address loading
   let contractAddress: `0x${string}` | undefined;
@@ -48,13 +57,24 @@ export function useUserBooks(): UserBooksData {
     };
   }
 
-  // Read raw user books
+  // Read user book details
   const {
     data: userBooksData,
     isLoading: isLoadingBooks,
     error: booksError,
     refetch: refetchUserBooks,
   } = useReadKttyWorldMintingGetUserBooksDetails({
+    address: contractAddress,
+    args: address ? [address] : undefined,
+  });
+
+  // Read user book IDs (in same order as book details)
+  const {
+    data: userBookIds,
+    isLoading: isLoadingBookIds,
+    error: bookIdsError,
+    refetch: refetchBookIds,
+  } = useReadKttyWorldMintingGetUserBooks({
     address: contractAddress,
     args: address ? [address] : undefined,
   });
@@ -66,7 +86,10 @@ export function useUserBooks(): UserBooksData {
       const userMinted = logs.some(
         (log) => log.args.buyer?.toLowerCase() === address?.toLowerCase()
       );
-      if (userMinted) refetchUserBooks();
+      if (userMinted) {
+        refetchUserBooks();
+        refetchBookIds();
+      }
     },
   });
 
@@ -76,42 +99,19 @@ export function useUserBooks(): UserBooksData {
       const userOpened = logs.some(
         (log) => log.args.owner?.toLowerCase() === address?.toLowerCase()
       );
-      if (userOpened) refetchUserBooks();
+      if (userOpened) {
+        refetchUserBooks();
+        refetchBookIds();
+      }
     },
   });
 
   // Error state
   useEffect(() => {
     if (booksError) setError(booksError.message);
+    else if (bookIdsError) setError(bookIdsError.message);
     else setError(null);
-  }, [booksError]);
-
-  // Fetch metadata → series
-  useEffect(() => {
-    async function fetchAllSeries() {
-      if (!userBooksData) return;
-      setMetaLoading(true);
-
-      const entries = await Promise.all(
-        userBooksData.map(async (book) => {
-          try {
-            const res = await fetch(`/api/metadata/${book.nftId.toString()}`);
-            if (!res.ok) throw new Error("Failed to fetch metadata");
-            const meta = await res.json();
-            return [book.nftId.toString(), meta.series] as const;
-          } catch (err) {
-            console.error("Metadata fetch failed for", book.nftId, err);
-            return [book.nftId.toString(), "Unknown"] as const;
-          }
-        })
-      );
-
-      setSeriesMap(Object.fromEntries(entries));
-      setMetaLoading(false);
-    }
-
-    fetchAllSeries();
-  }, [userBooksData]);
+  }, [booksError, bookIdsError]);
 
   // Count by series
   const bookCounts = useMemo((): Omit<UserBooksData, "isLoading" | "error"> => {
@@ -140,7 +140,7 @@ export function useUserBooks(): UserBooksData {
     };
 
     userBooksData.forEach((book) => {
-      const series = seriesMap[book.nftId.toString()];
+      const series = book.series;
 
       switch (series) {
         case "Amethyst Book":
@@ -155,7 +155,7 @@ export function useUserBooks(): UserBooksData {
         case "One Eye Bible":
           counts.oneEyeCount++;
           break;
-        case "Blacksmith’s Manual":
+        case "Blacksmith's Manual":
           counts.blacksmithCount++;
           break;
         case "Lucky Tome":
@@ -170,11 +170,35 @@ export function useUserBooks(): UserBooksData {
     });
 
     return counts;
-  }, [userBooksData, address, seriesMap]);
+  }, [userBooksData, address]);
+
+  const booksMap = useMemo(() => {
+    if (!userBooksData || !userBookIds) return {};
+
+    const map: Record<string, BookDetail[]> = {};
+
+    userBooksData.forEach((book, index) => {
+      const series = book.series;
+      if (!map[series]) {
+        map[series] = [];
+      }
+      map[series].push({
+        id: userBookIds[index], // The actual book ID from getUserBooks
+        nftId: book.nftId, // Keep the original NFT ID
+        toolIds: book.toolIds,
+        goldenTicketId: book.goldenTicketId,
+        hasGoldenTicket: book.hasGoldenTicket,
+        series: book.series,
+      });
+    });
+
+    return map;
+  }, [userBooksData, userBookIds]);
 
   return {
     ...bookCounts,
-    isLoading: isLoadingBooks || metaLoading,
+    booksMap,
+    isLoading: isLoadingBooks || isLoadingBookIds,
     error,
   };
 }

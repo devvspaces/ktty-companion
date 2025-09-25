@@ -5,7 +5,8 @@ import {
   useReadKttyWorldMintingGetAllRounds,
   useReadKttyWorldMintingGetCurrentRound,
   useReadKttyWorldMintingGetPoolAndBucketStatus,
-  useWatchKttyWorldMintingBooksMintedEvent
+  useWatchKttyWorldMintingBooksMintedEvent,
+  useWatchKttyWorldMintingRoundUpdatedEvent,
 } from '@/src/generated';
 import { getContractAddress } from '@/lib/contracts';
 import { getRoundConfig, type RoundConfig } from '@/lib/roundConfig';
@@ -110,6 +111,17 @@ export function useMintRounds(): MintRoundsData {
     onLogs: (logs) => {
       console.log('Books minted:', logs);
       // Refetch all data when stats update
+      refetchCurrentRound();
+      refetchPoolStatus();
+      refetchRounds();
+    },
+  });
+
+  useWatchKttyWorldMintingRoundUpdatedEvent({
+    address: contractAddress,
+    onLogs: (logs) => {
+      console.log('Round updated:', logs);
+      // Refetch current round when it updates
       refetchCurrentRound();
       refetchPoolStatus();
       refetchRounds();
