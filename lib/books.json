@@ -1,0 +1,24 @@
+{
+  "1": {
+    "name": "Companion #74",
+    "image": "https://black-reasonable-ocelot-529.mypinata.cloud/ipfs/bafkreiabxkqphgyuyxnbxkd6ojsn6ertkqc7756ojzkswrnqdglg6cvb5y/companions/74.png",
+    "family": "Core KTTY",
+    "breed": "Test",
+    "identity": "Tier 3",
+    "expression": "Tier 3",
+    "items": [
+      {
+        "name": "Standard Anvil",
+        "image": "/images/otherrewards/stnanvil.png"
+      },
+      {
+        "name": "Advanced Hammer",
+        "image": "/images/otherrewards/advhammer.png"
+      },
+      {
+        "name": "Standard Eternal Flame",
+        "image": "/images/otherrewards/stnflame.png"
+      }
+    ]
+  }
+}
