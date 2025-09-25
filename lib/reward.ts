@@ -2,6 +2,7 @@ export type Reward = {
   id: string;
   name: string;
   image: string;
+  family: string;
   breed: string;
   identity: string;
   expression: string;

@@ -322,23 +322,77 @@ export default function SummonsPage() {
         id: book.nftId.toString(),
         name: "KTTY",
         image: `/images/rewards/kttys/ktty${(i % 10) + 1}.png`,
+        family: "Core KTTY",
         breed: "Lumen",
         identity: "Dawn",
         expression: "Happy",
         borderColor: color,
         book: color,
         items: [
+          // 🔹 Standard
           {
-            name: "Prismatic Hammer",
-            image: "/images/otherrewards/prshammer.png",
+            name: "Standard Hammer",
+            image: "/images/otherrewards/stnhammer.png",
+          },
+          {
+            name: "Standard Anvil",
+            image: "/images/otherrewards/stnanvil.png",
+          },
+          {
+            name: "Standard Bellows",
+            image: "/images/otherrewards/stnbellows.png",
+          },
+          {
+            name: "Standard Eternal Flame",
+            image: "/images/otherrewards/stnflame.png",
+          },
+          {
+            name: "Standard Tongs",
+            image: "/images/otherrewards/stntongs.png",
+          },
+
+          // 🔹 Advanced
+          {
+            name: "Advanced Hammer",
+            image: "/images/otherrewards/advhammer.png",
           },
           {
             name: "Advanced Anvil",
             image: "/images/otherrewards/advanvil.png",
           },
           {
-            name: "Standard Tongs",
-            image: "/images/otherrewards/stntongs.png",
+            name: "Advanced Bellows",
+            image: "/images/otherrewards/advbellows.png",
+          },
+          {
+            name: "Advanced Eternal Flame",
+            image: "/images/otherrewards/advflame.png",
+          },
+          {
+            name: "Advanced Tongs",
+            image: "/images/otherrewards/advtongs.png",
+          },
+
+          // 🔹 Prismatic
+          {
+            name: "Prismatic Hammer",
+            image: "/images/otherrewards/prshammer.png",
+          },
+          {
+            name: "Prismatic Anvil",
+            image: "/images/otherrewards/prsanvil.png",
+          },
+          {
+            name: "Prismatic Bellows",
+            image: "/images/otherrewards/prsbellows.png",
+          },
+          {
+            name: "Prismatic Eternal Flame",
+            image: "/images/otherrewards/prsflame.png",
+          },
+          {
+            name: "Prismatic Tongs",
+            image: "/images/otherrewards/prstongs.png",
           },
         ],
       };

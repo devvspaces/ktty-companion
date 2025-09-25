@@ -68,6 +68,9 @@ export default function RewardCard({
               {reward.name} #{reward.id}
             </h2>
             <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6">
+              Family: {reward.family}
+            </p>
+            <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6">
               Breed: {reward.breed}
             </p>
             <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6">
