@@ -8,6 +8,7 @@ import RewardGrid from "@/components/RewardGrid";
 import SummonBookModal from "@/components/SummonBookModal";
 import { Reward } from "@/lib/reward";
 import { minorRewards } from "@/lib/tools";
+import { AnimatePresence, motion } from "framer-motion";
 
 type Book = {
   id: string;
@@ -76,7 +77,7 @@ export default function SummonsPage() {
     {
       id: "Corrupted Tome",
       icon: "/images/mybag/cursebk.png",
-      amount: 0,
+      amount: 12,
       color: "corrupt",
     },
   ];
@@ -275,6 +276,7 @@ export default function SummonsPage() {
         identity: "Dawn",
         expression: "Happy",
         borderColor: book?.color || "purple",
+        book: book?.color,
         items: [
           {
             name: "Prismatic Hammer",
@@ -311,7 +313,6 @@ export default function SummonsPage() {
   };
 
   const skipSummon = () => {
-    setShowFlash(true);
     setFadeOut(true);
     setTimeout(() => {
       setStep("reward");
@@ -321,7 +322,6 @@ export default function SummonsPage() {
 
   const handleNextReward = () => {
     if (currentIndex < rewards.length - 1) {
-      setShowFlash(true);
       setTimeout(() => {
         setCurrentIndex((prev) => prev + 1);
         setShowFlash(false);
@@ -484,16 +484,17 @@ export default function SummonsPage() {
 
       {/* Reward screen */}
       {step === "reward" && (
-        <RewardCard
-          reward={rewards[currentIndex]}
-          onBack={handleBack}
-          onSummonAgain={() => openModal(summonCount)}
-          startAnimation={true}
-          mode={summonCount > 1 ? "multi" : "single"}
-          onNext={handleNextReward}
-          isLast={currentIndex === rewards.length - 1}
-          onSkipToGrid={summonCount > 1 ? handleSkipToGrid : undefined}
-        />
+        <AnimatePresence mode="wait">
+          <RewardCard
+            reward={rewards[currentIndex]}
+            onBack={handleBack}
+            onSummonAgain={() => openModal(summonCount)}
+            mode={summonCount > 1 ? "multi" : "single"}
+            onNext={handleNextReward}
+            isLast={currentIndex === rewards.length - 1}
+            onSkipToGrid={summonCount > 1 ? handleSkipToGrid : undefined}
+          />
+        </AnimatePresence>
       )}
 
       {/* Final grid */}

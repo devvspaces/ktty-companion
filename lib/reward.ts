@@ -5,5 +5,7 @@ export type Reward = {
   breed: string;
   identity: string;
   expression: string;
+  borderColor?: string; // 🔹 card glow
+  book?: string; // 🔹 source book for badge
   items: { name: string; image: string }[];
 };
