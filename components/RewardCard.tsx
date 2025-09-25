@@ -65,7 +65,7 @@ export default function RewardCard({
           {/* Reward details */}
           <div className="flex flex-col items-center text-center">
             <h2 className="text-5xl md:text-4xl lg:text-7xl font-bold mb-4 md:mb-6 lg:mb-10">
-              {reward.name} #{reward.id}
+              {reward.name}
             </h2>
             <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6">
               Family: {reward.family}
