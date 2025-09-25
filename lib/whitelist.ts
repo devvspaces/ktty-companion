@@ -4,7 +4,6 @@
  */
 
 export const ROUND_3_WHITELIST: string[] = [
-  // Add whitelisted addresses here
   '0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF', // user1 from makeAddr("user1")
   '0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e', // user2 from makeAddr("user2") 
   '0xc0A55e2205B289a967823662B841Bd67Aa362Aec', // user3 from makeAddr("user3")
@@ -16,7 +15,9 @@ export const ROUND_3_WHITELIST: string[] = [
   '0xC792F91084F131e18adcBE28045737b94ac5C922',
   '0x0DE92325AC09eC459Fe02625c144Ee07B3115dA1',
   '0x2E9eB05347148Ad9bf7bc001092a8fD353D774cf',
-  // Add more addresses as needed...
+  '0xEaece57ff9E81281919aaFC154001aD8B0Ef8963',
+  '0x36987b91dd3e3455EecF5C3306147B81CF51Ac77',
+  '0x6cCEE92AA207C7CA81fe8B63D30A2FCDb7f0089E',
 ];
 
 /**
