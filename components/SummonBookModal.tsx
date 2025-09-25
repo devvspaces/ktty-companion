@@ -7,7 +7,7 @@ type Book = {
   id: string;
   icon: string;
   amount: number;
-  color: string; // 🔹 for borders (e.g., "red", "green", "purple")
+  color: string;
 };
 
 export default function SummonBookModal({
@@ -25,7 +25,6 @@ export default function SummonBookModal({
 }) {
   const [selection, setSelection] = useState<Record<string, number>>({});
 
-  // 🔄 Reset selection whenever modal opens
   useEffect(() => {
     if (isOpen) setSelection({});
   }, [isOpen]);
@@ -42,10 +41,8 @@ export default function SummonBookModal({
       let newValue = current + delta;
 
       if (delta > 0) {
-        // Adding
         newValue = Math.min(current + delta, book.amount, current + remaining);
       } else {
-        // Subtracting
         newValue = Math.max(0, current + delta);
       }
 
@@ -69,10 +66,112 @@ export default function SummonBookModal({
     if (!book) return;
 
     const useAmount = Math.min(book.amount, countRequired);
-    setSelection({ [id]: useAmount }); // replace everything
+    setSelection({ [id]: useAmount });
   };
 
   if (!isOpen) return null;
+
+  const renderBookCard = (book: Book) => {
+    const current = selection[book.id] || 0;
+    const remaining = countRequired - totalSelected + current;
+
+    const plusDisabled =
+      current >= book.amount || totalSelected >= countRequired;
+    const minusDisabled = current <= 0;
+    const maxDisabled =
+      book.amount <= 0 || current >= Math.min(book.amount, remaining);
+    const useOnlyDisabled = book.amount <= 0;
+
+    return (
+      <div
+        key={book.id}
+        className="
+          bg-black/40 border border-white/20 rounded-lg p-3 sm:p-4 flex flex-col items-center text-center
+          w-[100px] xs:w-[120px] sm:w-[160px] md:w-[180px]
+        "
+      >
+        <div className="relative w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 mb-2">
+          <Image
+            src={book.icon}
+            alt={book.id}
+            fill
+            className="object-contain"
+          />
+        </div>
+        <p className="text-[8px] xs:text-xs sm:text-sm md:text-base mb-1 text-center break-words">
+          {book.id}
+        </p>
+        <p className="text-[9px] xs:text-[10px] sm:text-xs md:text-sm text-gray-300">
+          Owned: {book.amount}
+        </p>
+
+        {countRequired > 1 ? (
+          <>
+            {/* + / - Controls */}
+            <div className="flex items-center gap-2 mt-2">
+              <button
+                onClick={() => adjustSelection(book.id, -1)}
+                disabled={minusDisabled}
+                className={`px-2 py-1 rounded text-[10px] ${
+                  minusDisabled
+                    ? "bg-purple-700 opacity-50 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-500"
+                }`}
+              >
+                -
+              </button>
+              <span className="text-xs sm:text-sm md:text-base">{current}</span>
+              <button
+                onClick={() => adjustSelection(book.id, 1)}
+                disabled={plusDisabled}
+                className={`px-2 py-1 rounded text-[10px] ${
+                  plusDisabled
+                    ? "bg-purple-700 opacity-50 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-500"
+                }`}
+              >
+                +
+              </button>
+            </div>
+
+            {/* Max + Use Only (hidden on mobile, visible from sm: up) */}
+            <div className="hidden sm:flex gap-2 mt-2">
+              <button
+                onClick={() => handleMax(book.id)}
+                disabled={maxDisabled}
+                className={`px-2 py-1 rounded text-xs md:text-sm font-semibold shadow-md ${
+                  maxDisabled
+                    ? "bg-purple-700 opacity-50 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-500 text-white"
+                }`}
+              >
+                Max
+              </button>
+              <button
+                onClick={() => handleUseOnly(book.id)}
+                disabled={useOnlyDisabled}
+                className={`px-2 py-1 rounded text-xs md:text-sm font-semibold shadow-md ${
+                  useOnlyDisabled
+                    ? "bg-purple-700 opacity-50 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-500 text-white"
+                }`}
+              >
+                Use Only
+              </button>
+            </div>
+          </>
+        ) : (
+          <button
+            onClick={() => onConfirm({ [book.id]: 1 })}
+            className="mt-2 px-4 py-1 bg-purple-600 rounded hover:bg-purple-500 disabled:opacity-50"
+            disabled={book.amount <= 0}
+          >
+            Select
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="fixed inset-0 z-[20000] bg-black/70 flex items-center justify-center p-4">
@@ -81,104 +180,24 @@ export default function SummonBookModal({
           Choose your Summoning Book{countRequired > 1 ? "s" : ""}
         </h2>
 
-        {/* 🔹 Responsive layout */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
-          {inventory.map((book) => {
-            const current = selection[book.id] || 0;
-            const remaining = countRequired - totalSelected + current;
+        {/* Mobile: 2–3–2 */}
+        <div className="mb-10">
+          <div className="flex sm:hidden flex-col items-center gap-4">
+            <div className="flex justify-center gap-2">
+              {inventory.slice(0, 2).map((book) => renderBookCard(book))}
+            </div>
+            <div className="flex justify-center gap-2">
+              {inventory.slice(2, 5).map((book) => renderBookCard(book))}
+            </div>
+            <div className="flex justify-center gap-2">
+              {inventory.slice(5, 7).map((book) => renderBookCard(book))}
+            </div>
+          </div>
 
-            const plusDisabled =
-              current >= book.amount || totalSelected >= countRequired;
-            const minusDisabled = current <= 0;
-            const maxDisabled =
-              book.amount <= 0 || current >= Math.min(book.amount, remaining);
-            const useOnlyDisabled = book.amount <= 0;
-
-            return (
-              <div
-                key={book.id}
-                className="bg-black/40 border border-white/20 rounded-lg p-4 flex flex-col items-center text-center w-[140px] sm:w-[160px] md:w-[180px]"
-              >
-                <div className="relative w-16 h-16 md:w-20 md:h-20 mb-2">
-                  <Image
-                    src={book.icon}
-                    alt={book.id}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <p className="text-sm md:text-base mb-1">{book.id}</p>
-                <p className="text-xs md:text-sm text-gray-300">
-                  Owned: {book.amount}
-                </p>
-
-                {countRequired > 1 ? (
-                  <>
-                    {/* + / - Controls */}
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() => adjustSelection(book.id, -1)}
-                        disabled={minusDisabled}
-                        className={`px-2 py-1 rounded ${
-                          minusDisabled
-                            ? "bg-purple-700 opacity-50 cursor-not-allowed"
-                            : "bg-purple-600 hover:bg-purple-500"
-                        }`}
-                      >
-                        -
-                      </button>
-                      <span className="text-sm md:text-base">{current}</span>
-                      <button
-                        onClick={() => adjustSelection(book.id, 1)}
-                        disabled={plusDisabled}
-                        className={`px-2 py-1 rounded ${
-                          plusDisabled
-                            ? "bg-purple-700 opacity-50 cursor-not-allowed"
-                            : "bg-purple-600 hover:bg-purple-500"
-                        }`}
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    {/* QoL: Max + Use Only */}
-                    <div className="flex gap-2 mt-2">
-                      <button
-                        onClick={() => handleMax(book.id)}
-                        disabled={maxDisabled}
-                        className={`px-2 py-1 rounded text-xs md:text-sm font-semibold shadow-md ${
-                          maxDisabled
-                            ? "bg-purple-700 opacity-50 cursor-not-allowed"
-                            : "bg-purple-600 hover:bg-purple-500 text-white"
-                        }`}
-                      >
-                        Max
-                      </button>
-                      <button
-                        onClick={() => handleUseOnly(book.id)}
-                        disabled={useOnlyDisabled}
-                        className={`px-2 py-1 rounded text-xs md:text-sm font-semibold shadow-md ${
-                          useOnlyDisabled
-                            ? "bg-purple-700 opacity-50 cursor-not-allowed"
-                            : "bg-purple-600 hover:bg-purple-500 text-white"
-                        }`}
-                      >
-                        Use Only
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <button
-                    onClick={() => onConfirm({ [book.id]: 1 })}
-                    className="mt-2 px-4 py-1 bg-purple-600 rounded hover:bg-purple-500 disabled:opacity-50"
-                    disabled={book.amount <= 0}
-                  >
-                    Select
-                  </button>
-                )}
-              </div>
-            );
-          })}
+          {/* Tablet/Desktop: unchanged */}
+          <div className="hidden sm:flex flex-wrap justify-center gap-6">
+            {inventory.map((book) => renderBookCard(book))}
+          </div>
         </div>
 
         {/* Footer */}

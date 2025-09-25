@@ -7,6 +7,14 @@ import RewardCard from "@/components/RewardCard";
 import RewardGrid from "@/components/RewardGrid";
 import SummonBookModal from "@/components/SummonBookModal";
 import { Reward } from "@/lib/reward";
+import { minorRewards } from "@/lib/tools";
+
+type Book = {
+  id: string;
+  icon: string;
+  amount: number;
+  color: string;
+};
 
 // 🔹 Hook to detect screen size with 3 tiers
 function useScreenSize() {
@@ -28,24 +36,48 @@ function useScreenSize() {
 }
 
 export default function SummonsPage() {
-  const inventory = [
+  const inventory: Book[] = [
     {
-      id: "Green Book",
-      icon: "/images/mybag/bookgrn.png",
+      id: "Emerald Book",
+      icon: "/images/mybag/emeraldbk.png",
       amount: 21,
-      color: "green",
+      color: "emerald",
     },
     {
-      id: "Red Book",
-      icon: "/images/mybag/bookred.png",
+      id: "Ruby Book",
+      icon: "/images/mybag/rubybk.png",
       amount: 64,
-      color: "red",
+      color: "ruby",
     },
     {
-      id: "Purple Book",
-      icon: "/images/mybag/bookprp.png",
+      id: "Amethyst Book",
+      icon: "/images/mybag/amethystbk.png",
       amount: 14,
-      color: "purple",
+      color: "amethyst",
+    },
+    {
+      id: "Blacksmith’s Manual",
+      icon: "/images/mybag/bsmithbk.png",
+      amount: 18,
+      color: "bsmith",
+    },
+    {
+      id: "Lucky Tome",
+      icon: "/images/mybag/luckybk.png",
+      amount: 23,
+      color: "lucky",
+    },
+    {
+      id: "One Eye Bible",
+      icon: "/images/mybag/oneeyebk.png",
+      amount: 64,
+      color: "oneeye",
+    },
+    {
+      id: "Corrupted Tome",
+      icon: "/images/mybag/cursebk.png",
+      amount: 0,
+      color: "corrupt",
     },
   ];
 
@@ -66,7 +98,10 @@ export default function SummonsPage() {
   const [pendingCount, setPendingCount] = useState<number | null>(null);
 
   const [muted, setMuted] = useState(false); // summon video respects this toggle
-  const [selectedBookColor, setSelectedBookColor] = useState<string>("purple");
+  const [selectedBookColor, setSelectedBookColor] = useState<string>("ruby");
+  const [selectedRarity, setSelectedRarity] = useState<
+    "normal" | "rare" | "ultra" | undefined
+  >(undefined);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const screen = useScreenSize();
@@ -82,19 +117,108 @@ export default function SummonsPage() {
     screen === "desktop" ? "/video/summonhomew.mp4" : "/video/summonhomev.mp4";
 
   // Summon animation swaps (mobile + mid use mobile animations)
-  const summonVideos: Record<string, string> = {
-    red:
-      screen === "desktop"
-        ? "/video/animations/desktop/normal/normalred.mp4"
-        : "/video/animations/mobile/normal/normalred.mp4",
-    green:
-      screen === "desktop"
-        ? "/video/animations/desktop/normal/normalgreen.mp4"
-        : "/video/animations/mobile/normal/normalgreen.mp4",
-    purple:
-      screen === "desktop"
-        ? "/video/animations/desktop/normal/normalpurp.mp4"
-        : "/video/animations/mobile/normal/normalpurp.mp4",
+  const summonVideos: Record<
+    string,
+    Record<"normal" | "rare" | "ultra", string>
+  > = {
+    ruby: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normalruby.mp4"
+          : "/video/animations/mobile/normal/normalruby.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rareruby.mp4"
+          : "/video/animations/mobile/rare/rareruby.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultraruby.mp4"
+          : "/video/animations/mobile/ultra/ultraruby.mp4",
+    },
+    emerald: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normalemerald.mp4"
+          : "/video/animations/mobile/normal/normalemerald.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rareemerald.mp4"
+          : "/video/animations/mobile/rare/rareemerald.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultraemerald.mp4"
+          : "/video/animations/mobile/ultra/ultraemerald.mp4",
+    },
+    amethyst: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normalamethyst.mp4"
+          : "/video/animations/mobile/normal/normalamethyst.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rareamethyst.mp4"
+          : "/video/animations/mobile/rare/rareamethyst.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultraamethyst.mp4"
+          : "/video/animations/mobile/ultra/ultraamethyst.mp4",
+    },
+    bsmith: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normalbsmith.mp4"
+          : "/video/animations/mobile/normal/normalbsmith.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rarebsmith.mp4"
+          : "/video/animations/mobile/rare/rarebsmith.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultrabsmith.mp4"
+          : "/video/animations/mobile/ultra/ultrabsmith.mp4",
+    },
+    corrupt: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normalcorrupt.mp4"
+          : "/video/animations/mobile/normal/normalcorrupt.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rarecorrupt.mp4"
+          : "/video/animations/mobile/rare/rarecorrupt.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultracorrupt.mp4"
+          : "/video/animations/mobile/ultra/ultracorrupt.mp4",
+    },
+    lucky: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normallucky.mp4"
+          : "/video/animations/mobile/normal/normallucky.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rarelucky.mp4"
+          : "/video/animations/mobile/rare/rarelucky.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultralucky.mp4"
+          : "/video/animations/mobile/ultra/ultralucky.mp4",
+    },
+    oneeye: {
+      normal:
+        screen === "desktop"
+          ? "/video/animations/desktop/normal/normaloneeye.mp4"
+          : "/video/animations/mobile/normal/normaloneeye.mp4",
+      rare:
+        screen === "desktop"
+          ? "/video/animations/desktop/rare/rareoneeye.mp4"
+          : "/video/animations/mobile/rare/rareoneeye.mp4",
+      ultra:
+        screen === "desktop"
+          ? "/video/animations/desktop/ultra/ultraoneeye.mp4"
+          : "/video/animations/mobile/ultra/ultraoneeye.mp4",
+    },
   };
 
   // Typewriter effect
@@ -105,6 +229,31 @@ export default function SummonsPage() {
     }
   }, [cursor, message]);
 
+  function getBatchTheme(selection: Record<string, number>, inventory: Book[]) {
+    const hierarchy = ["corrupt", "lucky", "bsmith", "oneeye"];
+
+    // 🔹 First pass: check hierarchy
+    for (const key of hierarchy) {
+      const book = inventory.find((b) => b.color === key);
+      if (book && selection[book.id] > 0) {
+        return key;
+      }
+    }
+
+    // 🔹 If only base trio (Amethyst/Ruby/Emerald), pick random
+    const baseTrio = ["amethyst", "ruby", "emerald"];
+    const availableBase = baseTrio.filter((color) =>
+      inventory.some((b) => b.color === color && selection[b.id] > 0)
+    );
+
+    if (availableBase.length > 0) {
+      return availableBase[Math.floor(Math.random() * availableBase.length)];
+    }
+
+    // 🔹 Fallback (shouldn’t happen, but default safe)
+    return "ruby";
+  }
+
   // Summon setup
   const handleSummon = (count: number, selection: Record<string, number>) => {
     setSummonCount(count);
@@ -112,9 +261,8 @@ export default function SummonsPage() {
     setFadeOut(false);
     setCurrentIndex(0);
 
-    const firstBookId = Object.keys(selection)[0];
-    const firstBook = inventory.find((b) => b.id === firstBookId);
-    setSelectedBookColor(firstBook?.color || "purple");
+    const theme = getBatchTheme(selection, inventory);
+    setSelectedBookColor(theme);
 
     const mockRewards: Reward[] = Array.from({ length: count }).map((_, i) => {
       const bookId = Object.keys(selection)[i % Object.keys(selection).length];
@@ -128,9 +276,12 @@ export default function SummonsPage() {
         expression: "Happy",
         borderColor: book?.color || "purple",
         items: [
-          { name: "Golden Ticket", image: "/images/mybag/goldtk.png" },
-          { name: "Orb", image: "/images/mybag/bookprp.png" },
-          { name: "Mystery Shard", image: "/images/mybag/bookred.png" },
+          {
+            name: "Prismatic Hammer",
+            image: "/images/otherrewards/hammer.png",
+          },
+          { name: "Advanced Anvil", image: "/images/otherrewards/anvil.png" },
+          { name: "Standard Tongs", image: "/images/otherrewards/tongs.png" },
         ],
       };
     });
@@ -211,27 +362,12 @@ export default function SummonsPage() {
         </div>
       )}
 
-      {/* Currency bar */}
+      {/* Floating title */}
       {step === "idle" && (
-        <div className="absolute top-[70px] md:top-[70px] lg:top-[115px] left-0 right-0 z-20 flex items-center justify-center gap-4 sm:gap-6 md:gap-10 bg-black/50 backdrop-blur-sm border-b border-white/20 px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
-          {inventory.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center gap-1.5 sm:gap-2 md:gap-3"
-            >
-              <div className="relative w-5 h-5 sm:w-7 sm:h-7 md:w-9 md:h-9 flex-shrink-0">
-                <Image
-                  src={item.icon}
-                  alt={item.id}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-white font-semibold text-xs sm:text-sm md:text-lg whitespace-nowrap">
-                {item.amount.toLocaleString()}
-              </span>
-            </div>
-          ))}
+        <div className="absolute top-[115px] md:top-[110px] lg:top-[200px] w-full z-[49] flex justify-center">
+          <h1 className="text-white drop-shadow-lg text-3xl md:text-4xl lg:text-6xl font-bold animate-float">
+            KTTY Summoning Altar
+          </h1>
         </div>
       )}
 
@@ -307,7 +443,7 @@ export default function SummonsPage() {
             }}
           >
             <video
-              key={summonVideos[selectedBookColor]}
+              key={`${selectedBookColor}-${selectedRarity ?? "normal"}`} // ensure rerender when rarity changes
               ref={(el) => {
                 videoRef.current = el;
               }}
@@ -326,7 +462,11 @@ export default function SummonsPage() {
               }}
             >
               <source
-                src={summonVideos[selectedBookColor] || summonVideos.purple}
+                src={
+                  summonVideos[selectedBookColor]?.[
+                    selectedRarity ?? "normal"
+                  ] ?? summonVideos["ruby"].normal
+                }
                 type="video/mp4"
               />
             </video>

@@ -45,7 +45,7 @@ export default function RewardCard({
       key={animKey}
       className="fixed inset-0 z-[999] flex flex-col items-center justify-between text-white bg-gradient-to-b from-[#0a1d3b] to-[#091024]"
     >
-      {/* Skip button */}
+      {/* Skip button (multi-pull only) */}
       {mode === "multi" && onSkipToGrid && (
         <button
           onClick={onSkipToGrid}
@@ -56,9 +56,11 @@ export default function RewardCard({
       )}
 
       {/* Main reward */}
-      <div className="flex flex-col items-center justify-center flex-1 px-4">
+      <div className="flex flex-col items-center justify-center flex-1 px-4 md:flex-row md:gap-16 lg:gap-24">
+        {/* Reward image */}
         <div
-          className={`w-60 h-60 relative mb-4 rounded-lg border-4 animate-fadeIn delay-0`}
+          className={`relative mb-6 md:mb-0 rounded-lg border-4 animate-fadeIn delay-0
+          w-40 h-40 md:w-80 md:h-80 lg:w-[32rem] lg:h-[32rem]`}
           style={{
             borderColor: glow,
             boxShadow: `0 0 20px ${glow}, 0 0 40px ${glow}`,
@@ -72,63 +74,68 @@ export default function RewardCard({
           />
         </div>
 
-        <h2 className="text-3xl font-bold mb-2 animate-fadeIn delay-200">
-          {reward.name} #{reward.id}
-        </h2>
-        <p className="text-lg mb-1 animate-fadeIn delay-400">
-          Breed: {reward.breed}
-        </p>
-        <p className="text-lg mb-1 animate-fadeIn delay-600">
-          Identity: {reward.identity}
-        </p>
-        <p className="text-lg mb-6 animate-fadeIn delay-800">
-          Expression: {reward.expression}
-        </p>
+        {/* Reward details */}
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-5xl md:text-4xl lg:text-7xl font-bold mb-4 md:mb-6 lg:mb-10 animate-fadeIn delay-200">
+            {reward.name} #{reward.id}
+          </h2>
+          <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6 animate-fadeIn delay-400">
+            Breed: {reward.breed}
+          </p>
+          <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6 animate-fadeIn delay-600">
+            Identity: {reward.identity}
+          </p>
+          <p className="text-xl md:text-xl lg:text-4xl mb-6 md:mb-10 lg:mb-12 animate-fadeIn delay-800">
+            Expression: {reward.expression}
+          </p>
 
-        {/* Minor items */}
-        <div className="flex justify-center gap-6 mb-10">
-          {reward.items.slice(0, 3).map((item, i) => (
-            <div
-              key={i}
-              className={`flex flex-col items-center animate-fadeIn delay-${
-                1000 + i * 200
-              }`}
-            >
-              <div className="relative w-16 h-16 mb-1 rounded-lg border-2 border-yellow-400 shadow-[0_0_15px_rgba(255,215,0,0.9)]">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-contain rounded-lg"
-                />
+          {/* Minor items */}
+          <div className="flex justify-center md:justify-start gap-6 mb-10">
+            {reward.items.slice(0, 3).map((item, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center animate-fadeIn delay-${
+                  1000 + i * 200
+                }`}
+              >
+                <div className="relative w-16 h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 mb-6 rounded-lg border-2 border-yellow-400 shadow-[0_0_15px_rgba(255,215,0,0.9)]">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-contain rounded-lg"
+                  />
+                </div>
+                <span className="text-md md:text-base lg:text-lg text-center break-words max-w-[6rem]">
+                  {item.name}
+                </span>
               </div>
-              <span className="text-sm">{item.name}</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between w-full px-8 pb-8 animate-fadeIn delay-1600">
+      <div className="w-full flex justify-center pb-8 px-4 animate-fadeIn delay-1600">
         {mode === "single" ? (
-          <>
+          <div className="flex flex-row gap-4 w-full max-w-md">
             <button
               onClick={onBack}
-              className="flex-1 max-w-[120px] text-sm px-4 py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500 transition"
+              className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500 transition text-sm md:text-lg"
             >
               Back
             </button>
             <button
               onClick={onSummonAgain}
-              className="flex-1 max-w-[150px] text-sm px-4 py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500 transition"
+              className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500 transition text-sm md:text-lg"
             >
               Summon Again
             </button>
-          </>
+          </div>
         ) : (
           <button
             onClick={onNext}
-            className="flex-1 max-w-[180px] text-sm px-6 py-3 mx-auto bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500 transition"
+            className="mx-auto px-8 py-3 md:px-10 md:py-4 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500 transition text-base md:text-lg"
           >
             {isLast ? "See All" : "Next >"}
           </button>
