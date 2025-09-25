@@ -237,7 +237,7 @@ export const kttyWorldMintingAbi = [
           { name: 'toolIds', internalType: 'uint256[3]', type: 'uint256[3]' },
           { name: 'goldenTicketId', internalType: 'uint256', type: 'uint256' },
           { name: 'hasGoldenTicket', internalType: 'bool', type: 'bool' },
-          { name: 'nftType', internalType: 'string', type: 'string' },
+          { name: 'series', internalType: 'string', type: 'string' },
         ],
       },
     ],
@@ -381,7 +381,7 @@ export const kttyWorldMintingAbi = [
           { name: 'toolIds', internalType: 'uint256[3]', type: 'uint256[3]' },
           { name: 'goldenTicketId', internalType: 'uint256', type: 'uint256' },
           { name: 'hasGoldenTicket', internalType: 'bool', type: 'bool' },
-          { name: 'nftType', internalType: 'string', type: 'string' },
+          { name: 'series', internalType: 'string', type: 'string' },
         ],
       },
     ],
@@ -537,8 +537,8 @@ export const kttyWorldMintingAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: 'bookId', internalType: 'uint256', type: 'uint256' }],
-    name: 'openBook',
+    inputs: [{ name: 'bookIds', internalType: 'uint256[]', type: 'uint256[]' }],
+    name: 'openBooks',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -1343,12 +1343,12 @@ export const useWriteKttyWorldMintingMint =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"openBook"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"openBooks"`
  */
-export const useWriteKttyWorldMintingOpenBook =
+export const useWriteKttyWorldMintingOpenBooks =
   /*#__PURE__*/ createUseWriteContract({
     abi: kttyWorldMintingAbi,
-    functionName: 'openBook',
+    functionName: 'openBooks',
   })
 
 /**
@@ -1502,12 +1502,12 @@ export const useSimulateKttyWorldMintingMint =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"openBook"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"openBooks"`
  */
-export const useSimulateKttyWorldMintingOpenBook =
+export const useSimulateKttyWorldMintingOpenBooks =
   /*#__PURE__*/ createUseSimulateContract({
     abi: kttyWorldMintingAbi,
-    functionName: 'openBook',
+    functionName: 'openBooks',
   })
 
 /**
