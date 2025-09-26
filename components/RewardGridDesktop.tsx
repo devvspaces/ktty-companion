@@ -11,13 +11,13 @@ const cardVariants: Variants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { ease: "easeOut", duration: 0.4 },
+    transition: { ease: "easeOut", duration: 0.35 },
   },
 };
 
 const containerVariants: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12 } },
+  show: { transition: { staggerChildren: 0.08 } },
 };
 
 export default function RewardGridDesktop({
@@ -29,7 +29,7 @@ export default function RewardGridDesktop({
   onBack: () => void;
   onSummonAgain: () => void;
 }) {
-  const kttyRewards = rewards;
+  const isTenPull = rewards.length === 10;
 
   // 🔹 Badge mapping
   const bookBadges: Record<string, string> = {
@@ -42,7 +42,8 @@ export default function RewardGridDesktop({
     corrupt: "/images/badges/corruptedbadge.png",
   };
 
-  // 🔹 Group minor rewards
+  // 🔹 Split KTTYs & group minor rewards
+  const kttyRewards = rewards;
   const minorItems: Record<
     string,
     { name: string; image: string; count: number }
@@ -55,7 +56,7 @@ export default function RewardGridDesktop({
     })
   );
 
-  const isTenPull = rewards.length === 10;
+  // 🔹 KTTY display rows
   const rows = isTenPull ? [5, 5] : [5];
   let kttyIndex = 0;
 
@@ -63,15 +64,15 @@ export default function RewardGridDesktop({
   const rarityGlow: Record<string, { border: string; shadow: string }> = {
     Standard: {
       border: "#cd7f32",
-      shadow: "0 0 12px #cd7f32, 0 0 24px #b87333",
+      shadow: "0 0 8px #cd7f32, 0 0 16px #b87333",
     },
     Advanced: {
       border: "#C0C0C0",
-      shadow: "0 0 12px #C0C0C0, 0 0 24px #A9A9A9",
+      shadow: "0 0 8px #C0C0C0, 0 0 16px #A9A9A9",
     },
     Prismatic: {
       border: "#FFD700",
-      shadow: "0 0 12px #FFD700, 0 0 24px #FFA500",
+      shadow: "0 0 8px #FFD700, 0 0 16px #FFA500",
     },
   };
 
@@ -81,7 +82,7 @@ export default function RewardGridDesktop({
     return rarityGlow.Standard;
   }
 
-  // 🔹 Render card helper (minor rewards only)
+  // 🔹 Minor reward card
   function renderRewardCard(item: any, idx: number) {
     const { border, shadow } = getRarityStyle(item.name);
     return (
@@ -91,12 +92,12 @@ export default function RewardGridDesktop({
           style={{
             border: `2px solid ${border}`,
             boxShadow: shadow,
-            width: "100px",
-            height: "100px",
+            width: "80px",
+            height: "80px",
           }}
           variants={cardVariants}
         >
-          <div className="relative w-24 h-24">
+          <div className="relative w-16 h-16">
             <Image
               src={item.image}
               alt={item.name}
@@ -105,35 +106,31 @@ export default function RewardGridDesktop({
             />
           </div>
           {item.count > 1 && (
-            <span className="absolute top-1 right-1 text-xs font-bold bg-black/70 px-2 py-0.5 rounded-md text-yellow-300">
+            <span className="absolute top-1 right-1 text-[10px] font-bold bg-black/70 px-1.5 py-0.5 rounded-md text-yellow-300">
               x{item.count}
             </span>
           )}
         </motion.div>
-        {/* ⛔ Removed item name text here */}
       </div>
     );
   }
 
   return (
-    <div
-      className="hidden sm:flex fixed inset-0 z-[999] flex-col text-white 
-                 bg-gradient-to-b from-[#0a1d3b] to-[#091024] p-8 mb-10"
-    >
-      <h2 className="text-4xl md:text-6xl font-bold mb-10 text-center">
+    <div className="hidden sm:flex fixed inset-0 z-[999] flex-col text-white bg-gradient-to-b from-[#0a1d3b] to-[#091024] p-6">
+      <h2 className="text-3xl md:text-5xl font-bold mb-8 text-center">
         Your New KTTY Friends!
       </h2>
 
       {/* KTTY Rewards */}
       <motion.div
-        className="flex flex-col gap-10 mt-5 items-center w-full"
+        className="flex flex-col gap-8 mt-4 items-center w-full"
         variants={containerVariants}
         initial="hidden"
         animate="show"
       >
         {rows.map((count, rowIdx) => (
-          <div key={rowIdx} className="flex justify-center gap-8 w-full">
-            {Array.from({ length: count }).map((_, i) => {
+          <div key={rowIdx} className="flex justify-center gap-6 w-full">
+            {Array.from({ length: count }).map(() => {
               const reward = kttyRewards[kttyIndex++];
               if (!reward) return null;
               const glow = reward.borderColor || "#a855f7";
@@ -141,32 +138,30 @@ export default function RewardGridDesktop({
               return (
                 <motion.div
                   key={reward.id}
-                  className="relative bg-black/40 rounded-lg p-4 flex flex-col items-center"
+                  className="relative bg-black/40 rounded-lg p-3 flex flex-col items-center"
                   style={{
                     border: `2px solid ${glow}`,
-                    boxShadow: `0 0 18px ${glow}, 0 0 36px ${glow}`,
+                    boxShadow: `0 0 12px ${glow}, 0 0 24px ${glow}`,
                   }}
                   variants={cardVariants}
                 >
-                  {/* Badge (book source) */}
                   {reward.book && bookBadges[reward.book] && (
-                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-black/70 rounded-full flex items-center justify-center border border-white/40 shadow-md z-20">
+                    <div className="absolute -top-3 -left-3 w-8 h-8 bg-black/70 rounded-full flex items-center justify-center border border-white/40 shadow-md z-20">
                       <Image
                         src={bookBadges[reward.book]}
                         alt={`${reward.book} badge`}
-                        width={36}
-                        height={36}
+                        width={28}
+                        height={28}
                         className="object-contain"
                       />
                     </div>
                   )}
 
-                  {/* KTTY Image */}
                   <div
-                    className={`relative mb-4 ${
+                    className={`relative mb-3 ${
                       isTenPull
-                        ? "w-20 h-20 md:w-32 md:h-32"
-                        : "w-32 h-32 md:w-48 md:h-48"
+                        ? "w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32"
+                        : "w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36"
                     }`}
                   >
                     <Image
@@ -177,8 +172,7 @@ export default function RewardGridDesktop({
                     />
                   </div>
 
-                  {/* Text */}
-                  <p className="text-base md:text-xl font-bold text-center whitespace-nowrap">
+                  <p className="text-sm md:text-base font-bold text-center whitespace-nowrap">
                     {reward.name} #{reward.id}
                   </p>
                 </motion.div>
@@ -188,59 +182,45 @@ export default function RewardGridDesktop({
         ))}
       </motion.div>
 
-      {/* Minor rewards */}
-      <div className="w-full mt-20 flex-1 flex flex-col">
-        <h3 className="text-5xl font-semibold mb-12 text-center">
+      {/* Minor Rewards */}
+      <div
+        className={`w-full ${isTenPull ? "mt-14" : "mt-8"} flex-1 flex flex-col`}
+      >
+        <h3 className={`text-5xl font-semibold text-center mb-8`}>
           Other Rewards
         </h3>
-        <div className="overflow-y-auto h-[250px] overflow-visible ">
-          {!isTenPull && Object.values(minorItems).length > 0 ? (
-            // ✅ Unified 8-column grid, centered like top KTTY grid
-            (() => {
-              const items = Object.values(minorItems);
 
-              return (
-                <div className="flex justify-center w-full">
-                  <motion.div
-                    className="grid grid-cols-8 gap-8"
-                    style={{ maxWidth: "fit-content" }}
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="show"
-                  >
-                    {items.map((item, idx) => renderRewardCard(item, idx))}
-                  </motion.div>
-                </div>
-              );
-            })()
-          ) : (
-            // ✅ Default (10x pull or others)
-            <motion.div
-              className="grid grid-cols-8 gap-8 justify-items-center overflow-x-visible"
-              style={{ maxWidth: "fit-content" }}
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-            >
-              {Object.values(minorItems).map((item, idx) =>
-                renderRewardCard(item, idx)
-              )}
-            </motion.div>
-          )}
+        <div
+          className={`${isTenPull ? "h-[150px]" : "h-[200px]"} flex justify-center`}
+        >
+          <motion.div
+            className={`grid gap-4 justify-items-center ${isTenPull ? "grid-cols-8" : "grid-cols-6"}`}
+            style={{
+              maxWidth: isTenPull ? "calc(8 * 90px)" : "calc(6 * 90px)",
+              margin: "0 auto",
+            }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {Object.values(minorItems)
+              .slice(0, isTenPull ? 16 : 18) // adjust visible count
+              .map((item, idx) => renderRewardCard(item, idx))}
+          </motion.div>
         </div>
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between w-full max-w-lg mt-8 mx-auto">
+      <div className="flex justify-between w-full max-w-[52rem] mt-8 mx-auto px-0">
         <button
           onClick={onBack}
-          className="flex-1 max-w-[160px] px-6 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
+          className="flex-1 mx-2 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
         >
           Back
         </button>
         <button
           onClick={onSummonAgain}
-          className="flex-1 max-w-[180px] px-6 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
+          className="flex-1 mx-2 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
         >
           Summon Again
         </button>
