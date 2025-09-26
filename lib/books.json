@@ -8,7 +8,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -34,12 +34,16 @@
         "image": "/images/otherrewards/prshammer.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -84,6 +88,10 @@
       {
         "name": "Standard Hammer",
         "image": "/images/otherrewards/stnhammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -100,7 +108,7 @@
         "image": "/images/otherrewards/stnhammer.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
@@ -126,7 +134,7 @@
         "image": "/images/otherrewards/stnanvil.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -140,11 +148,11 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -166,12 +174,16 @@
         "image": "/images/otherrewards/stnhammer.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
         "name": "Standard Tongs",
         "image": "/images/otherrewards/stntongs.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -258,7 +270,7 @@
         "image": "/images/otherrewards/advtongs.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -276,7 +288,7 @@
         "image": "/images/otherrewards/stntongs.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -302,7 +314,7 @@
         "image": "/images/otherrewards/prsanvil.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       }
     ]
@@ -346,8 +358,12 @@
         "image": "/images/otherrewards/prshammer.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -382,7 +398,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -436,6 +452,10 @@
       {
         "name": "Standard Bellows",
         "image": "/images/otherrewards/stnbellows.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -452,7 +472,7 @@
         "image": "/images/otherrewards/advbellows.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -480,6 +500,10 @@
       {
         "name": "Prismatic Hammer",
         "image": "/images/otherrewards/prshammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -514,7 +538,7 @@
     "expression": "Tier 2",
     "items": [
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
@@ -544,7 +568,7 @@
         "image": "/images/otherrewards/advanvil.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       }
     ]
@@ -624,7 +648,7 @@
     "expression": "Tier 1",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -632,7 +656,7 @@
         "image": "/images/otherrewards/stnhammer.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       }
     ]
@@ -672,11 +696,11 @@
         "image": "/images/otherrewards/stnanvil.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -694,7 +718,7 @@
         "image": "/images/otherrewards/stntongs.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
@@ -766,6 +790,10 @@
       {
         "name": "Standard Hammer",
         "image": "/images/otherrewards/stnhammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -866,7 +894,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -892,7 +920,7 @@
         "image": "/images/otherrewards/stnbellows.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -914,7 +942,7 @@
         "image": "/images/otherrewards/stntongs.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -940,7 +968,7 @@
         "image": "/images/otherrewards/prsbellows.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       }
     ]
@@ -1052,6 +1080,10 @@
       {
         "name": "Advanced Tongs",
         "image": "/images/otherrewards/advtongs.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1090,12 +1122,16 @@
         "image": "/images/otherrewards/stnhammer.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
         "name": "Standard Hammer",
         "image": "/images/otherrewards/stnhammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1130,11 +1166,11 @@
     "expression": "Tier 2",
     "items": [
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
@@ -1152,7 +1188,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1182,7 +1218,7 @@
         "image": "/images/otherrewards/stnhammer.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -1204,8 +1240,12 @@
         "image": "/images/otherrewards/stnanvil.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1222,7 +1262,7 @@
         "image": "/images/otherrewards/stnhammer.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1244,12 +1284,16 @@
         "image": "/images/otherrewards/prshammer.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
         "name": "Prismatic Hammer",
         "image": "/images/otherrewards/prshammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1294,6 +1338,10 @@
       {
         "name": "Prismatic Bellows",
         "image": "/images/otherrewards/prsbellows.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1332,12 +1380,16 @@
         "image": "/images/otherrewards/prsbellows.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
         "name": "Advanced Hammer",
         "image": "/images/otherrewards/advhammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1354,12 +1406,16 @@
         "image": "/images/otherrewards/stnanvil.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
         "name": "Advanced Tongs",
         "image": "/images/otherrewards/advtongs.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1376,12 +1432,16 @@
         "image": "/images/otherrewards/stnbellows.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
         "name": "Standard Anvil",
         "image": "/images/otherrewards/stnanvil.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1404,6 +1464,10 @@
       {
         "name": "Standard Tongs",
         "image": "/images/otherrewards/stntongs.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1420,11 +1484,11 @@
         "image": "/images/otherrewards/advtongs.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -1460,7 +1524,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1514,6 +1578,10 @@
       {
         "name": "Advanced Bellows",
         "image": "/images/otherrewards/advbellows.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1556,7 +1624,7 @@
         "image": "/images/otherrewards/advhammer.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       }
     ]
@@ -1570,7 +1638,7 @@
     "expression": "Tier 2",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1578,8 +1646,12 @@
         "image": "/images/otherrewards/prstongs.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1602,6 +1674,10 @@
       {
         "name": "Prismatic Bellows",
         "image": "/images/otherrewards/prsbellows.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1624,6 +1700,10 @@
       {
         "name": "Standard Tongs",
         "image": "/images/otherrewards/stntongs.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1636,7 +1716,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -1684,7 +1764,7 @@
         "image": "/images/otherrewards/advanvil.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1702,7 +1782,7 @@
     "expression": "Tier 1",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1732,7 +1812,7 @@
         "image": "/images/otherrewards/advbellows.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       }
     ]
@@ -1750,7 +1830,7 @@
         "image": "/images/otherrewards/stntongs.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -1768,7 +1848,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1778,6 +1858,10 @@
       {
         "name": "Advanced Hammer",
         "image": "/images/otherrewards/advhammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1812,16 +1896,20 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
         "name": "Standard Tongs",
         "image": "/images/otherrewards/stntongs.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1860,7 +1948,7 @@
         "image": "/images/otherrewards/stntongs.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
       },
       {
@@ -1888,6 +1976,10 @@
       {
         "name": "Advanced Hammer",
         "image": "/images/otherrewards/advhammer.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1926,7 +2018,7 @@
         "image": "/images/otherrewards/stnbellows.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1974,8 +2066,12 @@
         "image": "/images/otherrewards/stnanvil.png"
       },
       {
-        "name": "Prismatic Eternal Flame",
+        "name": "Prismatic Flame",
         "image": "/images/otherrewards/prsflame.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -1988,7 +2084,7 @@
     "expression": "Tier 1",
     "items": [
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -1998,6 +2094,10 @@
       {
         "name": "Prismatic Bellows",
         "image": "/images/otherrewards/prsbellows.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -2062,7 +2162,7 @@
         "image": "/images/otherrewards/stnbellows.png"
       },
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       }
     ]
@@ -2084,7 +2184,7 @@
         "image": "/images/otherrewards/advanvil.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -2098,7 +2198,7 @@
     "expression": "Tier 3",
     "items": [
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -2120,7 +2220,7 @@
     "expression": "Tier 1",
     "items": [
       {
-        "name": "Advanced Eternal Flame",
+        "name": "Advanced Flame",
         "image": "/images/otherrewards/advflame.png"
       },
       {
@@ -2128,7 +2228,7 @@
         "image": "/images/otherrewards/stnbellows.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       }
     ]
@@ -2146,7 +2246,7 @@
         "image": "/images/otherrewards/advanvil.png"
       },
       {
-        "name": "Standard Eternal Flame",
+        "name": "Standard Flame",
         "image": "/images/otherrewards/stnflame.png"
       },
       {
@@ -2174,6 +2274,10 @@
       {
         "name": "Standard Anvil",
         "image": "/images/otherrewards/stnanvil.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   },
@@ -2196,6 +2300,10 @@
       {
         "name": "Standard Bellows",
         "image": "/images/otherrewards/stnbellows.png"
+      },
+      {
+        "name": "Golden Ticket",
+        "image": "/images/otherrewards/gtix.png"
       }
     ]
   }
