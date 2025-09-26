@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import LeaderboardModal from "../LeaderboardModal";
 import MyBagModal from "../MyBagModal";
@@ -13,26 +13,26 @@ export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBag, setShowBag] = useState(false);
-  const navRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null); // ✅ correct type
 
-  // Get real leaderboard data from smart contract
+  // Load leaderboard data
   const {
     topMinters: leaderboard,
     userMints,
     userRank,
     totalUniqueMinters,
     isLoading: isLeaderboardLoading,
-    error: leaderboardError
+    error: leaderboardError,
   } = useLeaderboard();
 
-  // Close mobile nav on outside click (desktop only)
+  // Close dropdown on outside click (desktop only)
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setMobileOpen(false);
       }
     };
-    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+    if (window.innerWidth >= 1024) {
       document.addEventListener("mousedown", handleClickOutside);
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
@@ -46,20 +46,17 @@ export default function NavBar() {
         className="relative w-full max-w-[1920px] mx-auto flex items-center justify-between px-6 lg:px-12 py-4"
       >
         {/* Logo */}
-        <div className="flex-shrink-0">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/kttywrldlogo.png"
-              alt="KTTY World"
-              width={40}
-              height={40}
-              className="lg:w-[100px] lg:h-[80px] w-[60px] h-[40px]"
-            />
-          </Link>
-        </div>
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/kttywrldlogo.png"
+            alt="KTTY World"
+            width={64}
+            height={64}
+          />
+        </Link>
 
-        {/* Center nav links */}
-        <ul className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-8 items-center text-lg font-semibold text-white">
+        {/* Center links */}
+        <ul className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-6 items-center text-base font-semibold text-white">
           <li>
             <Link
               href="/#mint"
@@ -73,7 +70,7 @@ export default function NavBar() {
               href="/summon"
               className="hover:text-purple-300 transition-all"
             >
-              Summon KTTYs
+              Summon
             </Link>
           </li>
           <li>
@@ -94,25 +91,23 @@ export default function NavBar() {
           </li>
         </ul>
 
-        {/* Wallet and Social icons */}
-        <div className="hidden lg:flex items-center gap-4 ml-auto">
+        {/* Social & wallet */}
+        <div className="hidden lg:flex items-center gap-3 ml-auto">
           <WalletButton />
-          <div className="flex items-center gap-4">
-            <Link href="https://x.com/Kttyworld" target="_blank">
-              <Image src="/x-icon.png" alt="X" width={32} height={32} />
-            </Link>
-            <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
-              <Image
-                src="/discord-icon.png"
-                alt="Discord"
-                width={32}
-                height={32}
-              />
-            </Link>
-          </div>
+          <Link href="https://x.com/Kttyworld" target="_blank">
+            <Image src="/x-icon.png" alt="X" width={28} height={28} />
+          </Link>
+          <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
+            <Image
+              src="/discord-icon.png"
+              alt="Discord"
+              width={28}
+              height={28}
+            />
+          </Link>
         </div>
 
-        {/* Hamburger button */}
+        {/* Hamburger */}
         <button
           className="lg:hidden flex items-center"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -123,14 +118,14 @@ export default function NavBar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden relative z-50 pb-6 bg-black/90 backdrop-blur text-white w-full">
+        <div className="lg:hidden bg-black/90 backdrop-blur text-white w-full pb-6">
           <div className="flex flex-col items-center text-center max-w-sm mx-auto pt-6 gap-4">
             <ul className="flex flex-col gap-6 text-lg font-medium w-full px-4">
               <li>
                 <Link
                   href="/#mint"
-                  className="text-xl font-bold hover:text-purple-300 transition-all"
                   onClick={() => setMobileOpen(false)}
+                  className="hover:text-purple-300 transition-all"
                 >
                   Mint
                 </Link>
@@ -138,9 +133,10 @@ export default function NavBar() {
               <li>
                 <Link
                   href="/summon"
+                  onClick={() => setMobileOpen(false)}
                   className="hover:text-purple-300 transition-all"
                 >
-                  Summon KTTYs
+                  Summon
                 </Link>
               </li>
               <li>
@@ -149,7 +145,7 @@ export default function NavBar() {
                     setShowLeaderboard(true);
                     setMobileOpen(false);
                   }}
-                  className="text-xl font-bold hover:text-purple-300 transition-all"
+                  className="hover:text-purple-300 transition-all"
                 >
                   Leaderboard
                 </button>
@@ -160,7 +156,7 @@ export default function NavBar() {
                     setShowBag(true);
                     setMobileOpen(false);
                   }}
-                  className="text-xl font-bold hover:text-purple-300 transition-all"
+                  className="hover:text-purple-300 transition-all"
                 >
                   My Bag
                 </button>
@@ -191,7 +187,7 @@ export default function NavBar() {
         </div>
       )}
 
-      {/* Leaderboard Modal */}
+      {/* Modals */}
       <LeaderboardModal
         show={showLeaderboard}
         onClose={() => setShowLeaderboard(false)}
@@ -203,7 +199,6 @@ export default function NavBar() {
         error={leaderboardError || null}
       />
 
-      {/* My Bag Modal */}
       <MyBagModal isOpen={showBag} onClose={() => setShowBag(false)} />
     </header>
   );
