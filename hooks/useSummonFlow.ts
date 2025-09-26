@@ -6,7 +6,7 @@ import { BookDetail } from "@/hooks/useUserBooks";
 import books from "@/lib/books.json";
 import { extractBookIds } from "@/lib/bookSelection";
 
-// Map series name → border color
+// Map series → color
 const seriesToColor: Record<string, string> = {
   "Emerald Book": "emerald",
   "Ruby Book": "ruby",
@@ -20,14 +20,15 @@ const seriesToColor: Record<string, string> = {
 export function useSummonFlow({
   inventory,
   openBooks,
+  isOpeningBooks,
+  isWaitingForOpen,
+  openTxHash,
 }: {
-  inventory: {
-    id: string;
-    icon: string;
-    amount: number;
-    color: string;
-  }[];
-  openBooks: (ids: bigint[]) => Promise<void>; 
+  inventory: { id: string; icon: string; amount: number; color: string }[];
+  openBooks: (ids: bigint[]) => Promise<void>;
+  isOpeningBooks: boolean;
+  isWaitingForOpen: boolean;
+  openTxHash: string | null;
 }) {
   // ---------------- STATE ----------------
   const [step, setStep] = useState<"idle" | "animation" | "reward" | "grid">(
@@ -39,7 +40,7 @@ export function useSummonFlow({
   const [showFlash, setShowFlash] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
-  // Book selection & opening
+  // selected books
   const [selectedBooksForSummon, setSelectedBooksForSummon] = useState<
     BookDetail[]
   >([]);
@@ -47,24 +48,29 @@ export function useSummonFlow({
     Record<string, number>
   >({});
 
-  // Summon animation
+  // keep latest pending selection in a ref to avoid re-creating deps
+  const pendingRef = useRef<Record<string, number>>({});
+  useEffect(() => {
+    pendingRef.current = pendingSelection;
+  }, [pendingSelection]);
+
+  // style
   const [selectedBookColor, setSelectedBookColor] = useState("ruby");
   const [selectedRarity, setSelectedRarity] = useState<
     "normal" | "rare" | "ultra" | undefined
-  >(undefined);
-
-  // 🔊 Audio control
+  >();
   const [muted, setMuted] = useState(false);
 
-  // Idle screen typewriter
+  // typewriter
   const [cursor, setCursor] = useState(0);
   const [message] = useState(
     "These books contain a magic spell that will help you summon KTTYs! Open them to see what's inside."
   );
 
+  // video ref
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // ---------------- MODAL ----------------
+  // modal
   const [bookSelectOpen, setBookSelectOpen] = useState(false);
   const [countRequired, setCountRequired] = useState<number>(1);
 
@@ -89,15 +95,13 @@ export function useSummonFlow({
       inventory.some((b) => b.color === c && selection[b.id] > 0)
     );
 
-    if (availableBase.length) {
-      return availableBase[Math.floor(Math.random() * availableBase.length)];
-    }
-
-    return "ruby";
+    return availableBase.length
+      ? availableBase[Math.floor(Math.random() * availableBase.length)]
+      : "ruby";
   }
 
-  // ---------------- HANDLERS ----------------
-  function handleSummon(
+  // ---------------- ANIMATION STARTER ----------------
+  function startSummonAnimation(
     selectedBooks: BookDetail[],
     selection: Record<string, number>
   ) {
@@ -107,14 +111,12 @@ export function useSummonFlow({
     setFadeOut(false);
     setCurrentIndex(0);
 
-    const theme = getBatchTheme(selection);
-    setSelectedBookColor(theme);
+    setSelectedBookColor(getBatchTheme(selection));
 
-    // Build mock rewards for now
+    // mock rewards for now
     const mock: Reward[] = selectedBooks.map((book) => {
       const color = seriesToColor[book.series] || "purple";
       const bookContent = books[book.id.toString() as keyof typeof books];
-
       return {
         id: book.nftId.toString(),
         name: bookContent.name,
@@ -131,10 +133,12 @@ export function useSummonFlow({
 
     setRewards(mock);
 
+    // enter animation
     setTimeout(() => setStep("animation"), 500);
     setTimeout(() => setShowFlash(false), 2000);
   }
 
+  // ---------------- HANDLERS ----------------
   function handleBack() {
     setStep("idle");
     setFadeOut(false);
@@ -164,7 +168,7 @@ export function useSummonFlow({
     setStep("grid");
   }
 
-  // ---------------- MODAL HANDLERS ----------------
+  // ---------------- MODAL ----------------
   function openBookSelect(count: number) {
     setCountRequired(count);
     setBookSelectOpen(true);
@@ -183,12 +187,47 @@ export function useSummonFlow({
     setPendingSelection(selection);
 
     const ids = extractBookIds(selectedBooks);
-    await openBooks(ids);
+
+    try {
+      // only trigger wallet signing & tx
+      await openBooks(ids);
+      // animation will start in watcher after tx success
+    } catch (err) {
+      console.error("openBooks failed:", err);
+      setStep("idle");
+    }
   }
+
+  // ---------------- WATCHER: wait until tx done ----------------
+  useEffect(() => {
+    console.log("Watcher check:", {
+      hasBooks: selectedBooksForSummon.length,
+      openTxHash,
+      isOpeningBooks,
+      isWaitingForOpen,
+      step,
+    });
+
+    if (
+      selectedBooksForSummon.length > 0 &&
+      openTxHash &&
+      !isOpeningBooks &&
+      !isWaitingForOpen
+    ) {
+      console.log("▶️  Starting animation after tx");
+      startSummonAnimation(selectedBooksForSummon, pendingRef.current);
+      setSelectedBooksForSummon([]);
+      setPendingSelection({});
+    }
+  }, [
+    openTxHash,
+    isOpeningBooks,
+    isWaitingForOpen,
+    selectedBooksForSummon.length,
+  ]);
 
   // ---------------- RETURN ----------------
   return {
-    // summon state
     step,
     setStep,
     summonCount,
@@ -197,40 +236,29 @@ export function useSummonFlow({
     showFlash,
     fadeOut,
 
-    // typewriter
     cursor,
     setCursor,
     message,
 
     selectedBookColor,
     selectedRarity,
+    setSelectedRarity,
     setFadeOut,
     setShowFlash,
-    setSelectedRarity,
 
-    // audio
     muted,
     setMuted,
 
-    // handlers
-    handleSummon,
     handleBack,
     skipSummon,
     handleNextReward,
     handleSkipToGrid,
 
-    // modal
     bookSelectOpen,
     openBookSelect,
     closeBookSelect,
     confirmBookSelect,
     countRequired,
-
-    // pending selection
-    selectedBooksForSummon,
-    setSelectedBooksForSummon,
-    pendingSelection,
-    setPendingSelection,
 
     videoRef,
   };

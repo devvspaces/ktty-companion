@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 import IdleView from "@/components/SummonsPage/components/IdleView";
@@ -22,15 +22,14 @@ type Book = {
   color: string;
 };
 
-// 🔹 Hook to detect screen size with 3 tiers
+// 🔹 Screen size hook
 function useScreenSize() {
   const [screen, setScreen] = useState<"mobile" | "mid" | "desktop">("desktop");
 
   useEffect(() => {
     const check = () => {
       if (window.innerWidth < 768) setScreen("mobile");
-      else if (window.innerWidth < 1280)
-        setScreen("mid"); // tablets & smaller laptops
+      else if (window.innerWidth < 1280) setScreen("mid");
       else setScreen("desktop");
     };
     check();
@@ -43,6 +42,7 @@ function useScreenSize() {
 
 export default function SummonsPage() {
   const { address } = useAccount();
+
   const {
     amethystCount,
     emeraldCount,
@@ -52,9 +52,6 @@ export default function SummonsPage() {
     oneEyeCount,
     corruptCount,
     booksMap,
-    totalBooks,
-    isLoading,
-    error,
   } = useUserBooks();
 
   const {
@@ -64,6 +61,7 @@ export default function SummonsPage() {
     isWaitingForOpen,
   } = useOpenBooks();
 
+  // 🔹 Build inventory for the modal
   const inventory: Book[] = [
     {
       id: "Emerald Book",
@@ -109,7 +107,7 @@ export default function SummonsPage() {
     },
   ];
 
-  // 🔹 Pull summon flow state and actions from the custom hook
+  // 🔹 Hook
   const {
     step,
     setStep,
@@ -118,7 +116,7 @@ export default function SummonsPage() {
     cursor,
     setCursor,
 
-    // idle & animation
+    // Animation state
     selectedBookColor,
     selectedRarity,
     muted,
@@ -126,35 +124,38 @@ export default function SummonsPage() {
     fadeOut,
     setFadeOut,
 
-    // reward flow
+    // Reward flow
     rewards,
     currentIndex,
     summonCount,
     handleBack,
     handleNextReward,
     handleSkipToGrid,
-    skipSummon, // <-- add this
+    skipSummon,
 
-    // modal
-    bookSelectOpen, // <-- add this
-    closeBookSelect, // <-- add this
-    confirmBookSelect, // <-- add this
-    countRequired, // <-- add this
+    // Modal
+    bookSelectOpen,
+    closeBookSelect,
+    confirmBookSelect,
+    countRequired,
     openBookSelect,
   } = useSummonFlow({
     inventory,
-    openBooks, // pass in to hook
+    openBooks,
+    isOpeningBooks, // ✅ pass these
+    isWaitingForOpen, // ✅ pass these
+    openTxHash: openTxHash ?? null, 
   });
 
+  // 🔹 Video assets
   const screen = useScreenSize();
   const summonVideos = getSummonVideos(screen);
-
-  // Idle background swap (mobile + mid both use mobile version)
   const idleVideo =
     screen === "desktop" ? "/video/summonhomew.mp4" : "/video/summonhomev.mp4";
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
+      {/* Idle view */}
       {step === "idle" && (
         <IdleView
           idleVideo={idleVideo}
@@ -169,6 +170,7 @@ export default function SummonsPage() {
         <div className="fixed inset-0 bg-white z-[10020] animate-flashFade pointer-events-none" />
       )}
 
+      {/* Animation view */}
       {step === "animation" && (
         <AnimationView
           summonVideos={summonVideos}
@@ -183,6 +185,7 @@ export default function SummonsPage() {
         />
       )}
 
+      {/* Reward screen */}
       {step === "reward" && (
         <RewardScreenView
           rewards={rewards}
@@ -195,6 +198,7 @@ export default function SummonsPage() {
         />
       )}
 
+      {/* Final grid */}
       {step === "grid" && (
         <FinalGridView
           rewards={rewards}
@@ -204,6 +208,7 @@ export default function SummonsPage() {
         />
       )}
 
+      {/* Book select modal */}
       <BookSelectView
         isOpen={bookSelectOpen}
         onClose={closeBookSelect}
