@@ -71,13 +71,13 @@ export default function MintSection() {
       </div>
 
       {/* Bottom buttons */}
-      <div className="grid grid-cols-3 gap-4 mt-10">
+      <div className="grid grid-cols-3 gap-4 mt-4 md:mt-10">
         <button
           onClick={() => setShowLeaderboard(true)}
           disabled={isLeaderboardLoading}
           className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition disabled:opacity-50"
         >
-          {isLeaderboardLoading ? 'Loading...' : 'Leaderboard'}
+          {isLeaderboardLoading ? "Loading..." : "Leaderboard"}
         </button>
         <button
           onClick={() => setShowBag(true)}
@@ -86,12 +86,11 @@ export default function MintSection() {
           My Bag
         </button>
         <Link href="/summon">
-          <button
-            className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition"
-          >
+          <button className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition">
             <span className="block md:hidden">Summon</span>
             <span className="hidden md:block">Summon KTTYs</span>
-          </button></Link>
+          </button>
+        </Link>
       </div>
 
       {/* Leaderboard Modal */}

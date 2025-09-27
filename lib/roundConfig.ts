@@ -14,30 +14,30 @@ export interface RoundConfig {
 export const ROUND_CONFIG: Record<number, RoundConfig> = {
   1: {
     id: 1,
-    title: "Round 1",
+    title: "9 Lives Round",
     description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
     eligibility: ["Whitelisted Addresses"],
     includes: ["1 NULL KTTY NFT", "3 × Forge Tools"],
   },
   2: {
     id: 2,
-    title: "Round 2", 
+    title: "Fallen Personality Round", 
     description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
-    eligibility: ["Whitelisted Addresses"],
+    eligibility: ["9 Lives Role"],
     includes: ["1 NULL KTTY NFT", "3 × Forge Tools"],
   },
   3: {
     id: 3,
-    title: "Round 3",
-    description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
-    eligibility: ["Whitelisted Addresses"],
+    title: "Guaranteed Whitelist Round",
+    description: "This round is available to holders of Tamer NFTs with Fallen Personality Traits",
+    eligibility: ["WL Holder"],
     includes: ["1 Random KTTY NFT", "3 × Forge Tools", "Possible Golden Ticket"],
   },
   4: {
     id: 4,
-    title: "Round 4",
+    title: "Public Round",
     description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
-    eligibility: ["Open to Everyone"],
+    eligibility: ["Open to All"],
     includes: ["1 Random KTTY NFT", "3 × Forge Tools", "Possible Golden Ticket"],
   },
 };

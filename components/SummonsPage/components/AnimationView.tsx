@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/solid";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 
 export default function AnimationView({
   summonVideos,
@@ -12,7 +13,7 @@ export default function AnimationView({
   fadeOut,
   setFadeOut,
   skipSummon,
-  onFinish, // callback to trigger next step
+  onFinish,
 }: {
   summonVideos: Record<string, Record<"normal" | "rare" | "ultra", string>>;
   selectedBookColor: string;
@@ -25,6 +26,7 @@ export default function AnimationView({
   onFinish: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoReady, setVideoReady] = useState(false);
 
   return (
     <>
@@ -40,6 +42,7 @@ export default function AnimationView({
         )}
       </button>
 
+      {/* Overlay including spinner until first frame */}
       <div
         className={`fixed inset-0 z-[10000] pointer-events-none transition-opacity duration-1500 ${
           fadeOut ? "opacity-0" : "opacity-100"
@@ -48,6 +51,18 @@ export default function AnimationView({
           if (fadeOut) onFinish();
         }}
       >
+        {/* Loading Spinner while waiting for first frame */}
+        {!videoReady && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black">
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full"
+            />
+          </div>
+        )}
+
         <video
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
@@ -55,14 +70,10 @@ export default function AnimationView({
           muted={muted}
           playsInline
           preload="auto"
-          className="w-full h-full object-cover fade-video"
-          onLoadedMetadata={(e) => {
-            const v = e.currentTarget;
-            if (v.paused) v.play().catch(() => {});
-          }}
+          className={`w-full h-full object-cover fade-video ${videoReady ? "opacity-100" : "opacity-0"}`}
+          onCanPlay={() => setVideoReady(true)}
           onTimeUpdate={(e) => {
-            const current = e.currentTarget.currentTime;
-            if (current >= 12 && !fadeOut) setFadeOut(true);
+            if (e.currentTarget.currentTime >= 12 && !fadeOut) setFadeOut(true);
           }}
         >
           <source

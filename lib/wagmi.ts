@@ -1,5 +1,5 @@
-import { createConfig, http } from 'wagmi';
-import { roninWallet } from '@sky-mavis/tanto-wagmi';
+import { createConfig, http } from "wagmi";
+import { roninWallet } from "@sky-mavis/tanto-wagmi";
 import { ronin, saigon } from "viem/chains";
 
 export const config = createConfig({

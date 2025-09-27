@@ -3,12 +3,18 @@
 import { useState, useEffect } from "react";
 import { useMintRounds } from "@/hooks/useMintRounds";
 import { useMinting, PaymentType } from "@/hooks/useMinting";
-import { useWhitelistValidation, WhitelistValidation } from "@/hooks/useWhitelistValidation";
+import { useAccount } from "wagmi";
+import WalletButton from "@/components/WalletButton";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  useWhitelistValidation,
+  WhitelistValidation,
+} from "@/hooks/useWhitelistValidation";
 import { useKttyApproval } from "@/hooks/useKttyApproval";
 import { formatEther } from "viem";
-import { 
-  showMintNotification, 
-  showApprovalNotification, 
+import {
+  showMintNotification,
+  showApprovalNotification,
   showErrorNotification,
   dismissNotification,
 } from "@/lib/notifications";
@@ -58,84 +64,110 @@ function getCountdownData(now: number, startTime: number, endTime: number) {
 
 export default function MintRounds() {
   const mounted = useMounted();
-  const [openRound, setOpenRound] = useState<number | null>(1);
+  const [openRound, setOpenRound] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [now, setNow] = useState(Date.now());
-  
+  const { isConnected } = useAccount(); // check wallet state
+  const [showConnectOverlay, setShowConnectOverlay] = useState(false); // toggle overlay
+
   // Timer for countdown updates
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
-  
+
   // Load round data from smart contract
   const { rounds, currentRound, isLoading, error } = useMintRounds();
-  
+
+  // Auto-open active or first upcoming round
+  useEffect(() => {
+    if (!rounds || rounds.length === 0) return;
+
+    if (currentRound) {
+      // There’s an active round → open it
+      setOpenRound(currentRound);
+    } else {
+      // Before sale starts → open the first round
+      setOpenRound(rounds[0].id);
+    }
+  }, [currentRound, rounds]);
+
   // Minting functionality
   const minting = useMinting();
   const whitelistValidation = useWhitelistValidation();
   const kttyApproval = useKttyApproval();
 
   // Notification tracking
-  const [currentNotificationId, setCurrentNotificationId] = useState<string | null | undefined>(null);
+  const [currentNotificationId, setCurrentNotificationId] = useState<
+    string | null | undefined
+  >(null);
 
   // Handle approval state changes
   useEffect(() => {
     if (kttyApproval.isApproving) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      const id = showApprovalNotification('requesting');
+      const id = showApprovalNotification("requesting");
       setCurrentNotificationId(id);
     } else if (kttyApproval.isWaitingForApproval) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      const id = showApprovalNotification('pending');
+      const id = showApprovalNotification("pending");
       setCurrentNotificationId(id);
-    } else if (kttyApproval.approvalTxHash && !kttyApproval.isWaitingForApproval && !kttyApproval.error) {
+    } else if (
+      kttyApproval.approvalTxHash &&
+      !kttyApproval.isWaitingForApproval &&
+      !kttyApproval.error
+    ) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      showApprovalNotification('success', kttyApproval.approvalTxHash);
+      showApprovalNotification("success", kttyApproval.approvalTxHash);
       setCurrentNotificationId(null);
     } else if (kttyApproval.error) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      showApprovalNotification('error');
+      showApprovalNotification("error");
       setCurrentNotificationId(null);
     }
   }, [
-    kttyApproval.isApproving, 
-    kttyApproval.isWaitingForApproval, 
-    kttyApproval.approvalTxHash, 
-    kttyApproval.error
+    kttyApproval.isApproving,
+    kttyApproval.isWaitingForApproval,
+    kttyApproval.approvalTxHash,
+    kttyApproval.error,
   ]);
 
   // Handle minting state changes
   useEffect(() => {
     if (minting.isSimulating) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      const id = showMintNotification('simulating');
+      const id = showMintNotification("simulating");
       setCurrentNotificationId(id);
     } else if (minting.isMinting || minting.isWaitingForMint) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      const id = showMintNotification('pending', { quantity });
+      const id = showMintNotification("pending", { quantity });
       setCurrentNotificationId(id);
-    } else if (minting.mintTxHash && !minting.isWaitingForMint && !minting.error) {
+    } else if (
+      minting.mintTxHash &&
+      !minting.isWaitingForMint &&
+      !minting.error
+    ) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      showMintNotification('success', { quantity, txHash: minting.mintTxHash });
+      showMintNotification("success", { quantity, txHash: minting.mintTxHash });
       setCurrentNotificationId(null);
     } else if (minting.error) {
       if (currentNotificationId) dismissNotification(currentNotificationId);
-      showMintNotification('error', { error: minting.error });
+      showMintNotification("error", { error: minting.error });
       setCurrentNotificationId(null);
     }
   }, [
     minting.isSimulating,
-    minting.isMinting, 
-    minting.isWaitingForMint, 
-    minting.mintTxHash, 
+    minting.isMinting,
+    minting.isWaitingForMint,
+    minting.mintTxHash,
     minting.error,
-    quantity
+    quantity,
   ]);
 
   const handleMint = async (roundId: number, method: string) => {
-    const paymentType = method === "RON" ? PaymentType.NATIVE_ONLY : PaymentType.HYBRID;
-    
+    const paymentType =
+      method === "RON" ? PaymentType.NATIVE_ONLY : PaymentType.HYBRID;
+
     try {
       // Clear any existing notifications
       if (currentNotificationId) {
@@ -145,17 +177,19 @@ export default function MintRounds() {
       // Check if user can mint
       const validation = minting.canMint(roundId, quantity, paymentType);
       if (!validation.canMint) {
-        showErrorNotification(validation.reason || 'Cannot mint');
+        showErrorNotification(validation.reason || "Cannot mint");
         return;
       }
 
       // Start minting process
-      const notificationId = showMintNotification('simulating');
+      const notificationId = showMintNotification("simulating");
       setCurrentNotificationId(notificationId);
-      
+
       await minting.mint(roundId, quantity, paymentType);
     } catch (error) {
-      showErrorNotification(error instanceof Error ? error.message : 'Minting failed');
+      showErrorNotification(
+        error instanceof Error ? error.message : "Minting failed"
+      );
     }
   };
 
@@ -164,29 +198,35 @@ export default function MintRounds() {
       if (currentNotificationId) {
         dismissNotification(currentNotificationId);
       }
-      
-      const notificationId = showApprovalNotification('requesting');
+
+      const notificationId = showApprovalNotification("requesting");
       setCurrentNotificationId(notificationId);
       kttyApproval.approve();
     } catch (error) {
-      showErrorNotification(error instanceof Error ? error.message : 'Approval failed');
+      showErrorNotification(
+        error instanceof Error ? error.message : "Approval failed"
+      );
     }
   };
 
   // Check if KTTY approval is needed for hybrid payment
   const needsKttyApproval = (roundId: number): boolean => {
-    const roundData = rounds.find(r => r.id === roundId);
+    const roundData = rounds.find((r) => r.id === roundId);
     if (!roundData) return false;
-    
+
     const erc20Amount = roundData.hybridPayment.erc20Amount * BigInt(quantity);
     return kttyApproval.needsApproval(erc20Amount);
   };
 
   // Format price display
-  const formatPrice = (nativePrice: bigint, hybridNative: bigint, hybridKtty: bigint): string => {
+  const formatPrice = (
+    nativePrice: bigint,
+    hybridNative: bigint,
+    hybridKtty: bigint
+  ): string => {
     const nativeOnly = `${formatEther(nativePrice)} RON`;
     const hybrid = `${formatEther(hybridNative)} RON + ${formatEther(hybridKtty)} KTTY`;
-    
+
     if (nativePrice > BigInt(0) && hybridNative > BigInt(0)) {
       return `${nativeOnly} or ${hybrid}`;
     } else if (nativePrice > BigInt(0)) {
@@ -222,16 +262,21 @@ export default function MintRounds() {
   return (
     <div className="h-full flex flex-col space-y-4">
       {rounds.map((round) => {
-        const { label, days, hours, minutes, seconds, ended } = getCountdownData(
-          now,
-          round.startTime,
-          round.endTime
-        );
+        const { label, days, hours, minutes, seconds, ended } =
+          getCountdownData(now, round.startTime, round.endTime);
 
         const isOpen = openRound === round.id;
         const isCurrentRound = currentRound === round.id;
-        const roundValidation = whitelistValidation[`round${round.id}` as keyof typeof whitelistValidation];
-        const isEligible = (roundValidation as WhitelistValidation)?.isEligible || round.id === 4; // Round 4 is public
+        const canExpand =
+          isCurrentRound || (!currentRound && round.id === rounds[0].id);
+
+        const roundValidation =
+          whitelistValidation[
+            `round${round.id}` as keyof typeof whitelistValidation
+          ];
+        const isEligible =
+          (roundValidation as WhitelistValidation)?.isEligible ||
+          round.id === 4; // Round 4 is public
         const canMint = isCurrentRound && !ended && isEligible;
         const isProcessing = minting.isLoading || kttyApproval.isLoading;
 
@@ -249,11 +294,21 @@ export default function MintRounds() {
                 </span>
               </div>
             )}
+            {isOpen && !ended && !isConnected && (
+              <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-20">
+                <span className="text-lg md:text-2xl font-bold text-white text-center">
+                  Please connect your wallet to proceed
+                </span>
+                <WalletButton />
+              </div>
+            )}
             {/* Header */}
             <button
-              className="w-full px-4 py-3 text-left"
-              onClick={() => setOpenRound(isOpen ? null : round.id)}
-              disabled={ended}
+              className={`w-full px-4 py-3 text-left ${!canExpand ? "opacity-50 cursor-not-allowed" : ""}`}
+              onClick={() =>
+                canExpand && setOpenRound(isOpen ? null : round.id)
+              }
+              disabled={!canExpand || ended}
             >
               <div className="flex items-center justify-between">
                 {/* Title + Arrow (always same line) */}
@@ -359,46 +414,71 @@ export default function MintRounds() {
                     {!isEligible && (
                       <div className="p-3 bg-yellow-900/30 border border-yellow-500/50 rounded-md">
                         <p className="text-yellow-300 text-sm">
-                          {round.id === 1 || round.id === 2 
+                          {round.id === 1 || round.id === 2
                             ? "You're not whitelisted for this round"
-                            : round.id === 3 
-                            ? "You're not whitelisted for round 3"
-                            : "Eligibility unknown"
-                          }
+                            : round.id === 3
+                              ? "You're not whitelisted for round 3"
+                              : "Eligibility unknown"}
                         </p>
-                        {(round.id === 1 || round.id === 2) && roundValidation && (
-                          <p className="text-yellow-400 text-xs mt-1">
-                            Allowance: {(roundValidation as WhitelistValidation).allowance || 0} | Minted: {(roundValidation as WhitelistValidation).minted || 0}
-                          </p>
-                        )}
+                        {(round.id === 1 || round.id === 2) &&
+                          roundValidation && (
+                            <p className="text-yellow-400 text-xs mt-1">
+                              Allowance:{" "}
+                              {(roundValidation as WhitelistValidation)
+                                .allowance || 0}{" "}
+                              | Minted:{" "}
+                              {(roundValidation as WhitelistValidation)
+                                .minted || 0}
+                            </p>
+                          )}
                       </div>
                     )}
 
                     <div className="flex items-center justify-between w-full bg-gray-800/50 border border-white/20 rounded-md p-2">
-                      <button
+                      <motion.button
+                        whileTap={{ scale: 0.85 }}
+                        whileHover={{ scale: 1.05 }}
                         className="px-3 md:px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         disabled={!canMint || isProcessing}
                       >
                         -
-                      </button>
-                      <span className="text-lg md:text-xl font-bold">
-                        {quantity}
-                      </span>
-                      <button
+                      </motion.button>
+                      <AnimatePresence mode="popLayout">
+                        <motion.span
+                          key={quantity} // re-mounts on change
+                          initial={{ scale: 0.6, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0.6, opacity: 0 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 250,
+                            damping: 18,
+                          }}
+                          className="text-lg md:text-xl font-bold w-full"
+                        >
+                          {quantity}
+                        </motion.span>
+                      </AnimatePresence>
+
+                      <motion.button
+                        whileTap={{ scale: 0.85 }}
+                        whileHover={{ scale: 1.05 }}
                         className="px-3 md:px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={() => setQuantity(quantity + 1)}
                         disabled={!canMint || isProcessing}
                       >
                         +
-                      </button>
-                      <button
+                      </motion.button>
+                      <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        whileHover={{ scale: 1.05 }}
                         className="px-3 md:px-4 py-2 bg-gray-600 rounded text-xs md:text-sm hover:bg-gray-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={() => setQuantity(10)}
                         disabled={!canMint || isProcessing}
                       >
                         Max
-                      </button>
+                      </motion.button>
                     </div>
 
                     <div className="flex gap-3 md:gap-4">
@@ -407,14 +487,13 @@ export default function MintRounds() {
                         onClick={() => handleMint(round.id, "RON")}
                         disabled={!canMint || isProcessing}
                       >
-                        {isProcessing 
-                          ? "Processing..." 
-                          : !isCurrentRound && !ended 
-                          ? "Not Current Round" 
-                          : !isEligible
-                          ? "Not Eligible"
-                          : "Mint with RON"
-                        }
+                        {isProcessing
+                          ? "Processing..."
+                          : !isCurrentRound && !ended
+                            ? "Not Current Round"
+                            : !isEligible
+                              ? "Not Eligible"
+                              : "Mint with RON"}
                       </button>
                       <button
                         className="flex-1 py-2 md:py-3 bg-purple-600 rounded font-semibold hover:bg-purple-500 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-purple-600"
@@ -428,16 +507,15 @@ export default function MintRounds() {
                         }}
                         disabled={!canMint || isProcessing}
                       >
-                        {isProcessing 
-                          ? "Processing..." 
-                          : !isCurrentRound && !ended 
-                          ? "Not Current Round" 
-                          : !isEligible
-                          ? "Not Eligible"
-                          : needsKttyApproval(round.id)
-                          ? "Approve KTTY"
-                          : "Mint with RON + KTTY"
-                        }
+                        {isProcessing
+                          ? "Processing..."
+                          : !isCurrentRound && !ended
+                            ? "Not Current Round"
+                            : !isEligible
+                              ? "Not Eligible"
+                              : needsKttyApproval(round.id)
+                                ? "Approve KTTY"
+                                : "Mint with RON + KTTY"}
                       </button>
                     </div>
                   </div>

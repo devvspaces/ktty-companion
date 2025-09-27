@@ -1,23 +1,25 @@
-'use client'
+"use client";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider } from 'wagmi'
-import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit'
-import { config } from '@/lib/wagmi'
-import { ReactNode } from 'react'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { config } from "@/lib/wagmi";
+import { ReactNode } from "react";
 
-import '@rainbow-me/rainbowkit/styles.css'
+import "@rainbow-me/rainbowkit/styles.css";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
-export const WalletConnectionProvider = ({ children }: { children: ReactNode }) => {
+export const WalletConnectionProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
-          {children}
-        </RainbowKitProvider>
+        <RainbowKitProvider>{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  )
-}
+  );
+};

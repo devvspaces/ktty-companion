@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { BookDetail } from '@/hooks/useUserBooks';
-import { selectBooksFromMap, validateBookSelection } from '@/lib/bookSelection';
-import { showErrorNotification } from '@/lib/notifications';
+import { BookDetail } from "@/hooks/useUserBooks";
+import { selectBooksFromMap, validateBookSelection } from "@/lib/bookSelection";
+import { showErrorNotification } from "@/lib/notifications";
 
 type Book = {
   id: string;
@@ -23,7 +23,10 @@ export default function SummonBookModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (selectedBooks: BookDetail[], selection: Record<string, number>) => void;
+  onConfirm: (
+    selectedBooks: BookDetail[],
+    selection: Record<string, number>
+  ) => void;
   countRequired: number;
   inventory: Book[];
   booksMap: Record<string, BookDetail[]>;
@@ -36,6 +39,7 @@ export default function SummonBookModal({
 
   const totalSelected = Object.values(selection).reduce((sum, v) => sum + v, 0);
 
+  // ---------------- HANDLERS ----------------
   const adjustSelection = (id: string, delta: number) => {
     setSelection((prev) => {
       const current = prev[id] || 0;
@@ -76,40 +80,41 @@ export default function SummonBookModal({
 
   const handleSingleBookSelect = (book: Book) => {
     try {
-      // Validate that we have books available in the map
       const validation = validateBookSelection({ [book.id]: 1 }, booksMap);
       if (!validation.isValid) {
-        showErrorNotification(validation.error || 'Book selection invalid');
+        showErrorNotification(validation.error || "Book selection invalid");
         return;
       }
 
-      // Select random book from the map
       const selectedBooks = selectBooksFromMap({ [book.id]: 1 }, booksMap);
       onConfirm(selectedBooks, { [book.id]: 1 });
     } catch (error) {
-      showErrorNotification(error instanceof Error ? error.message : 'Failed to select book');
+      showErrorNotification(
+        error instanceof Error ? error.message : "Failed to select book"
+      );
     }
   };
 
   const handleMultipleBookConfirm = () => {
     try {
-      // Validate selection
       const validation = validateBookSelection(selection, booksMap);
       if (!validation.isValid) {
-        showErrorNotification(validation.error || 'Book selection invalid');
+        showErrorNotification(validation.error || "Book selection invalid");
         return;
       }
 
-      // Select random books from the map
       const selectedBooks = selectBooksFromMap(selection, booksMap);
       onConfirm(selectedBooks, selection);
     } catch (error) {
-      showErrorNotification(error instanceof Error ? error.message : 'Failed to select books');
+      showErrorNotification(
+        error instanceof Error ? error.message : "Failed to select books"
+      );
     }
   };
 
   if (!isOpen) return null;
 
+  // ---------------- RENDER ----------------
   const renderBookCard = (book: Book) => {
     const current = selection[book.id] || 0;
     const remaining = countRequired - totalSelected + current;
@@ -119,7 +124,10 @@ export default function SummonBookModal({
     const minusDisabled = current <= 0;
     const maxDisabled =
       book.amount <= 0 || current >= Math.min(book.amount, remaining);
-    const useOnlyDisabled = book.amount <= 0;
+
+    const showUseOnlyButton =
+      (countRequired === 5 || countRequired === 10) &&
+      book.amount >= countRequired;
 
     return (
       <div
@@ -146,7 +154,7 @@ export default function SummonBookModal({
 
         {countRequired > 1 ? (
           <>
-            {/* + / - Controls */}
+            {/* +/- controls */}
             <div className="flex items-center gap-2 mt-2">
               <button
                 onClick={() => adjustSelection(book.id, -1)}
@@ -173,7 +181,7 @@ export default function SummonBookModal({
               </button>
             </div>
 
-            {/* Max + Use Only (hidden on mobile, visible from sm: up) */}
+            {/* Max + Use Only */}
             <div className="hidden sm:flex gap-2 mt-2">
               <button
                 onClick={() => handleMax(book.id)}
@@ -186,17 +194,15 @@ export default function SummonBookModal({
               >
                 Max
               </button>
-              <button
-                onClick={() => handleUseOnly(book.id)}
-                disabled={useOnlyDisabled}
-                className={`px-2 py-1 rounded text-xs md:text-sm font-semibold shadow-md ${
-                  useOnlyDisabled
-                    ? "bg-purple-700 opacity-50 cursor-not-allowed"
-                    : "bg-purple-600 hover:bg-purple-500 text-white"
-                }`}
-              >
-                Use Only
-              </button>
+
+              {showUseOnlyButton && (
+                <button
+                  onClick={() => handleUseOnly(book.id)}
+                  className="px-2 py-1 rounded text-xs md:text-sm font-semibold shadow-md bg-purple-600 hover:bg-purple-500 text-white"
+                >
+                  Use Only
+                </button>
+              )}
             </div>
           </>
         ) : (
@@ -219,7 +225,7 @@ export default function SummonBookModal({
           Choose your Summoning Book{countRequired > 1 ? "s" : ""}
         </h2>
 
-        {/* Mobile: 2–3–2 */}
+        {/* Mobile layout */}
         <div className="mb-10">
           <div className="flex sm:hidden flex-col items-center gap-4">
             <div className="flex justify-center gap-2">
@@ -233,7 +239,7 @@ export default function SummonBookModal({
             </div>
           </div>
 
-          {/* Tablet/Desktop: unchanged */}
+          {/* Tablet/Desktop layout */}
           <div className="hidden sm:flex flex-wrap justify-center gap-6">
             {inventory.map((book) => renderBookCard(book))}
           </div>

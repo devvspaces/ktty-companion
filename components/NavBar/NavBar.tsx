@@ -13,7 +13,7 @@ export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBag, setShowBag] = useState(false);
-  const navRef = useRef<HTMLElement>(null); // ✅ correct type
+  const navRef = useRef<HTMLElement>(null);
 
   // Load leaderboard data
   const {
@@ -43,20 +43,31 @@ export default function NavBar() {
     <header className="fixed top-0 left-0 w-full z-50 bg-black border-b border-white/10">
       <nav
         ref={navRef}
-        className="relative w-full max-w-[1920px] mx-auto flex items-center justify-between px-6 lg:px-12 py-4"
+        className="relative w-full max-w-[1920px] mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-12 py-3 sm:py-4"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/kttywrldlogo.png"
-            alt="KTTY World"
-            width={64}
-            height={64}
-          />
+        <Link href="/" className="flex items-center">
+          <div className="relative w-[40px] sm:w-[50px] md:w-[70px] h-auto">
+            <Image
+              src="/kttywrldlogo.png"
+              alt="KTTY World"
+              width={807}
+              height={546}
+              className="w-full h-auto object-contain"
+              priority
+            />
+          </div>
         </Link>
 
         {/* Center links */}
-        <ul className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-6 items-center text-base font-semibold text-white">
+        <ul
+          className="
+            hidden lg:flex absolute left-1/2 -translate-x-1/2 
+            gap-4 xl:gap-6 items-center 
+            text-sm sm:text-base md:text-lg xl:text-base
+            font-semibold text-white
+          "
+        >
           <li>
             <Link
               href="/#mint"
@@ -95,14 +106,21 @@ export default function NavBar() {
         <div className="hidden lg:flex items-center gap-3 ml-auto">
           <WalletButton />
           <Link href="https://x.com/Kttyworld" target="_blank">
-            <Image src="/x-icon.png" alt="X" width={28} height={28} />
+            <Image
+              src="/x-icon.png"
+              alt="X"
+              width={24}
+              height={24}
+              className="w-6 h-6 lg:w-7 lg:h-7"
+            />
           </Link>
           <Link href="https://discord.com/invite/sC3Hv46BKC" target="_blank">
             <Image
               src="/discord-icon.png"
               alt="Discord"
-              width={28}
-              height={28}
+              width={24}
+              height={24}
+              className="w-6 h-6 lg:w-7 lg:h-7"
             />
           </Link>
         </div>
@@ -120,7 +138,7 @@ export default function NavBar() {
       {mobileOpen && (
         <div className="lg:hidden bg-black/90 backdrop-blur text-white w-full pb-6">
           <div className="flex flex-col items-center text-center max-w-sm mx-auto pt-6 gap-4">
-            <ul className="flex flex-col gap-6 text-lg font-medium w-full px-4">
+            <ul className="flex flex-col gap-4 sm:gap-6 text-base sm:text-lg font-medium w-full px-4">
               <li>
                 <Link
                   href="/#mint"
@@ -169,7 +187,13 @@ export default function NavBar() {
 
             <div className="flex items-center justify-center gap-4 mt-6">
               <Link href="https://x.com/Kttyworld" target="_blank">
-                <Image src="/x-icon.png" alt="X" width={36} height={36} />
+                <Image
+                  src="/x-icon.png"
+                  alt="X"
+                  width={28}
+                  height={28}
+                  className="w-7 h-7 sm:w-9 sm:h-9"
+                />
               </Link>
               <Link
                 href="https://discord.com/invite/sC3Hv46BKC"
@@ -178,8 +202,9 @@ export default function NavBar() {
                 <Image
                   src="/discord-icon.png"
                   alt="Discord"
-                  width={36}
-                  height={36}
+                  width={28}
+                  height={28}
+                  className="w-7 h-7 sm:w-9 sm:h-9"
                 />
               </Link>
             </div>

@@ -42,13 +42,6 @@ export default function IdleView({
         </video>
       </div>
 
-      {/* Floating title */}
-      <div className="absolute top-[80px] md:top-[90px] lg:top-[140px] w-full z-[49] flex justify-center">
-        <h1 className="text-white drop-shadow-lg text-2xl md:text-3xl lg:text-5xl font-bold animate-float">
-          KTTY Summoning Altar
-        </h1>
-      </div>
-
       {/* Idle screen content */}
       <div className="relative z-10 flex flex-col h-full pointer-events-auto">
         <div className="flex-1 flex flex-col justify-end pb-4">

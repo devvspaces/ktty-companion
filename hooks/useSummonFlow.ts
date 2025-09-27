@@ -6,7 +6,6 @@ import { BookDetail } from "@/hooks/useUserBooks";
 import books from "@/lib/books.json";
 import { extractBookIds } from "@/lib/bookSelection";
 
-// Map series → color
 const seriesToColor: Record<string, string> = {
   "Emerald Book": "emerald",
   "Ruby Book": "ruby",
@@ -30,7 +29,6 @@ export function useSummonFlow({
   isWaitingForOpen: boolean;
   openTxHash: string | null;
 }) {
-  // ---------------- STATE ----------------
   const [step, setStep] = useState<"idle" | "animation" | "reward" | "grid">(
     "idle"
   );
@@ -40,67 +38,58 @@ export function useSummonFlow({
   const [showFlash, setShowFlash] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
-  // selected books
   const [selectedBooksForSummon, setSelectedBooksForSummon] = useState<
     BookDetail[]
   >([]);
   const [pendingSelection, setPendingSelection] = useState<
     Record<string, number>
   >({});
-
-  // keep latest pending selection in a ref to avoid re-creating deps
   const pendingRef = useRef<Record<string, number>>({});
   useEffect(() => {
     pendingRef.current = pendingSelection;
   }, [pendingSelection]);
 
-  // style
   const [selectedBookColor, setSelectedBookColor] = useState("ruby");
   const [selectedRarity, setSelectedRarity] = useState<
     "normal" | "rare" | "ultra" | undefined
   >();
   const [muted, setMuted] = useState(false);
 
-  // typewriter
   const [cursor, setCursor] = useState(0);
   const [message] = useState(
     "These books contain a magic spell that will help you summon KTTYs! Open them to see what's inside."
   );
 
-  // video ref
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // modal
   const [bookSelectOpen, setBookSelectOpen] = useState(false);
   const [countRequired, setCountRequired] = useState<number>(1);
 
-  // ---------------- TYPEWRITER ----------------
+  // TYPEWRITER
   useEffect(() => {
     if (cursor < message.length) {
-      const t = setTimeout(() => setCursor(cursor + 1), 35);
+      const t = setTimeout(() => setCursor((c) => c + 1), 35);
       return () => clearTimeout(t);
     }
   }, [cursor, message]);
 
-  // ---------------- HELPERS ----------------
+  // Pick the video theme
   function getBatchTheme(selection: Record<string, number>) {
     const hierarchy = ["corrupt", "lucky", "bsmith", "oneeye"];
     for (const key of hierarchy) {
       const book = inventory.find((b) => b.color === key);
       if (book && selection[book.id] > 0) return key;
     }
-
     const base = ["amethyst", "ruby", "emerald"];
     const availableBase = base.filter((c) =>
       inventory.some((b) => b.color === c && selection[b.id] > 0)
     );
-
     return availableBase.length
       ? availableBase[Math.floor(Math.random() * availableBase.length)]
       : "ruby";
   }
 
-  // ---------------- ANIMATION STARTER ----------------
+  // Start the animation after tx success
   function startSummonAnimation(
     selectedBooks: BookDetail[],
     selection: Record<string, number>
@@ -111,9 +100,10 @@ export function useSummonFlow({
     setFadeOut(false);
     setCurrentIndex(0);
 
-    setSelectedBookColor(getBatchTheme(selection));
+    const theme = getBatchTheme(selection);
+    setSelectedBookColor(theme);
 
-    // mock rewards for now
+    // Prepare rewards
     const mock: Reward[] = selectedBooks.map((book) => {
       const color = seriesToColor[book.series] || "purple";
       const bookContent = books[book.id.toString() as keyof typeof books];
@@ -130,15 +120,14 @@ export function useSummonFlow({
         items: bookContent.items,
       };
     });
-
     setRewards(mock);
 
-    // enter animation
+    // Switch to animation step after short flash
     setTimeout(() => setStep("animation"), 500);
-    setTimeout(() => setShowFlash(false), 2000);
+    // NOTE: we will hide flash in AnimationView onCanPlay, not here
   }
 
-  // ---------------- HANDLERS ----------------
+  // NAVIGATION HANDLERS
   function handleBack() {
     setStep("idle");
     setFadeOut(false);
@@ -159,21 +148,18 @@ export function useSummonFlow({
         setCurrentIndex((i) => i + 1);
         setShowFlash(false);
       }, 500);
-    } else {
-      setStep("grid");
-    }
+    } else setStep("grid");
   }
 
   function handleSkipToGrid() {
     setStep("grid");
   }
 
-  // ---------------- MODAL ----------------
+  // MODAL
   function openBookSelect(count: number) {
     setCountRequired(count);
     setBookSelectOpen(true);
   }
-
   function closeBookSelect() {
     setBookSelectOpen(false);
   }
@@ -187,18 +173,15 @@ export function useSummonFlow({
     setPendingSelection(selection);
 
     const ids = extractBookIds(selectedBooks);
-
     try {
-      // only trigger wallet signing & tx
-      await openBooks(ids);
-      // animation will start in watcher after tx success
+      await openBooks(ids); // triggers wallet + tx
     } catch (err) {
       console.error("openBooks failed:", err);
       setStep("idle");
     }
   }
 
-  // ---------------- WATCHER: wait until tx done ----------------
+  // WATCHER
   useEffect(() => {
     console.log("Watcher check:", {
       hasBooks: selectedBooksForSummon.length,
@@ -226,7 +209,6 @@ export function useSummonFlow({
     selectedBooksForSummon.length,
   ]);
 
-  // ---------------- RETURN ----------------
   return {
     step,
     setStep,
@@ -234,7 +216,9 @@ export function useSummonFlow({
     rewards,
     currentIndex,
     showFlash,
+    setShowFlash,
     fadeOut,
+    setFadeOut,
 
     cursor,
     setCursor,
@@ -243,9 +227,6 @@ export function useSummonFlow({
     selectedBookColor,
     selectedRarity,
     setSelectedRarity,
-    setFadeOut,
-    setShowFlash,
-
     muted,
     setMuted,
 
