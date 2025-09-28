@@ -30,22 +30,20 @@ export default function AnimationView({
   const [videoError, setVideoError] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
 
-  // ✅ Helper to timestamp logs
+  // --------------- Logging Helper -----------------
   const log = (msg: string) => {
     const t = new Date().toLocaleTimeString();
-    setLogs((prev) => [`[${t}] ${msg}`, ...prev]);
-    console.log(`[${t}] ${msg}`);
+    const line = `[${t}] ${msg}`;
+    setLogs((prev) => [line, ...prev]);
+    console.log(line);
   };
 
-  // ✅ Test URL
-  const testURL = "https://www.w3schools.com/html/mov_bbb.mp4";
-
-  // ✅ Decide which video URL to use
+  // --------------- Pick Video URL -----------------
   const videoURL =
-   // testURL  // ← uncomment this line to force-test W3Schools video
     summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
-     summonVideos["ruby"].normal;
+    summonVideos["ruby"].normal;
 
+  // --------------- Mount Effect -----------------
   useEffect(() => {
     log("Mounted AnimationView");
 
@@ -53,8 +51,22 @@ export default function AnimationView({
       setMuted(true);
       log("Forced muted for autoplay");
     }
+
+    // 🔑 Attempt manual playback after a short delay
+    const timer = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current
+          .play()
+          .then(() => log("Manual play() resolved"))
+          .catch((err) => log(`Manual play() failed → ${err.message}`));
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // -------------------------------------------------
   return (
     <>
       {/* 🔊 Sound Toggle */}
@@ -84,7 +96,7 @@ export default function AnimationView({
           }
         }}
       >
-        {/* Loading spinner until first frame */}
+        {/* Spinner while waiting for first frame */}
         {!videoReady && (
           <div className="absolute inset-0 flex items-center justify-center bg-black">
             <motion.div
@@ -96,13 +108,14 @@ export default function AnimationView({
           </div>
         )}
 
-        {/* 🎥 Video */}
+        {/* 🎥 Video Element */}
         <video
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
           autoPlay
-          muted={muted} // ✅ needed for iOS autoplay
-          playsInline // ✅ critical for iOS WebView
+          muted={muted} // required for iOS autoplay
+          playsInline // standard inline playback
+          webkit-playsinline="true" // vendor attr for WKWebView
           preload="auto"
           poster="/images/fallbackPoster.jpg"
           className={`absolute inset-0 w-full h-full object-cover z-[10005] ${
@@ -131,9 +144,9 @@ export default function AnimationView({
           <source src={videoURL} type="video/mp4" />
         </video>
 
-        {/* ❗ Debug overlay */}
+        {/* 🟩 Debug Overlay */}
         <div className="absolute bottom-0 left-0 w-full bg-black/70 text-green-400 text-xs font-mono max-h-[40%] overflow-y-auto p-2 z-[10050]">
-          {logs.slice(0, 12).map((l, i) => (
+          {logs.slice(0, 15).map((l, i) => (
             <div key={i}>{l}</div>
           ))}
           {videoError && (
