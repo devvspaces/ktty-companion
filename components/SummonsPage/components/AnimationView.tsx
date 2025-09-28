@@ -28,18 +28,30 @@ export default function AnimationView({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoReady, setVideoReady] = useState(false);
 
-  // ✅ On iOS, autoplay with sound off only works if muted at load
+  // 🔹 On-screen debug log
+  const [debug, setDebug] = useState<string[]>([]);
+  const log = (msg: string) => {
+    setDebug((prev) => [
+      ...prev.slice(-8),
+      `[${new Date().toLocaleTimeString()}] ${msg}`,
+    ]);
+    console.log(msg);
+  };
+
   useEffect(() => {
-    if (!muted) {
-      setMuted(true);
-    }
-  }, []); // run once on mount
+    // iOS autoplay only works muted
+    if (!muted) setMuted(true);
+    log("Mounted AnimationView");
+  }, []);
 
   return (
     <>
       {/* 🔊 Sound Toggle */}
       <button
-        onClick={() => setMuted((m) => !m)}
+        onClick={() => {
+          setMuted((m) => !m);
+          log(`Toggled sound → ${!muted ? "Muted" : "Unmuted"}`);
+        }}
         className="fixed top-4 left-4 z-[10015] p-2 rounded-full bg-black/40 hover:bg-black/60 transition"
       >
         {muted ? (
@@ -49,16 +61,19 @@ export default function AnimationView({
         )}
       </button>
 
-      {/* 🌑 Overlay + Spinner */}
+      {/* 🌑 Overlay */}
       <div
         className={`fixed inset-0 z-[10000] pointer-events-none transition-opacity duration-1500 ${
           fadeOut ? "opacity-0" : "opacity-100"
         }`}
         onTransitionEnd={() => {
-          if (fadeOut) onFinish();
+          if (fadeOut) {
+            log("FadeOut finished → calling onFinish()");
+            onFinish();
+          }
         }}
       >
-        {/* Loading spinner until first frame */}
+        {/* Spinner until first frame */}
         {!videoReady && (
           <div className="absolute inset-0 flex items-center justify-center bg-black">
             <motion.div
@@ -75,19 +90,27 @@ export default function AnimationView({
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
           autoPlay
-          muted={muted} // ✅ keep muted to allow autoplay
-          playsInline // ✅ needed on iOS
+          muted={muted}
+          playsInline
           preload="auto"
-          poster="/images/fallbackPoster.jpg" // ✅ optional debug/fallback
           className={`absolute inset-0 w-full h-full object-cover z-[10005] ${
             videoReady ? "opacity-100" : "opacity-0"
           } transition-opacity duration-500`}
-          onCanPlay={() => setVideoReady(true)}
+          onLoadStart={() => log("Video: loadstart")}
+          onLoadedMetadata={() => log("Video: loadedmetadata")}
+          onCanPlay={() => {
+            log("Video: canplay → showing first frame");
+            setVideoReady(true);
+          }}
+          onPlay={() => log("Video: playing")}
+          onPause={() => log("Video: paused")}
           onTimeUpdate={(e) => {
             if (e.currentTarget.currentTime >= 12 && !fadeOut) {
+              log("Reached 12s → triggering fadeOut");
               setFadeOut(true);
             }
           }}
+          onError={(e) => log(`Video error: ${JSON.stringify(e)}`)}
         >
           <source
             src={
@@ -99,13 +122,23 @@ export default function AnimationView({
         </video>
       </div>
 
-      {/* ⏭ Skip Button */}
+      {/* ⏭ Skip */}
       <button
-        onClick={skipSummon}
+        onClick={() => {
+          skipSummon();
+          log("Skip button clicked → skipSummon()");
+        }}
         className="fixed top-4 right-4 z-[10015] text-white font-semibold hover:opacity-70 transition animate-fadeIn delay-1000 cursor-pointer"
       >
         Skip &gt;
       </button>
+
+      {/* 🟩 Debug Overlay */}
+      <div className="fixed bottom-4 left-4 w-72 max-h-48 overflow-y-auto bg-black/70 text-green-400 text-xs p-2 rounded z-[20000]">
+        {debug.map((line, i) => (
+          <div key={i}>{line}</div>
+        ))}
+      </div>
     </>
   );
 }
