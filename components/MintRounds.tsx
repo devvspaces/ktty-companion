@@ -295,13 +295,14 @@ export default function MintRounds() {
               </div>
             )}
             {isOpen && !ended && !isConnected && (
-              <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-20">
+              <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-4 z-20 px-4">
                 <span className="text-lg md:text-2xl font-bold text-white text-center">
                   Please connect your wallet to proceed
                 </span>
                 <WalletButton />
               </div>
             )}
+
             {/* Header */}
             <button
               className={`w-full px-4 py-3 text-left ${!canExpand ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -392,20 +393,40 @@ export default function MintRounds() {
                     </span>
                   </p>
 
-                  <div>
-                    <p className="mb-2 md:mb-3 text-base md:text-xl">
-                      {round.progress}% minted
-                    </p>
-                    <div className="w-full h-2 bg-gray-700 rounded">
-                      <div
-                        className="h-2 bg-blue-500 rounded"
-                        style={{ width: `${round.progress}%` }}
-                      />
+                  {round.id !== 4 && (
+                    <div>
+                      {(() => {
+                        // ----- Round 3 custom cap -----
+                        const cap = 3000;
+                        const minted =
+                          round.id === 3
+                            ? Math.min(round.minted, cap)
+                            : round.minted;
+                        const maxSupply = round.id === 3 ? cap : round.supply;
+                        const progress = Math.min(
+                          100,
+                          Math.round((minted / maxSupply) * 100)
+                        );
+
+                        return (
+                          <>
+                            <p className="mb-2 md:mb-3 text-base md:text-xl">
+                              {progress}% minted
+                            </p>
+                            <div className="w-full h-2 bg-gray-700 rounded">
+                              <div
+                                className="h-2 bg-blue-500 rounded"
+                                style={{ width: `${progress}%` }}
+                              />
+                            </div>
+                            <p className="text-base md:text-xl mt-2 md:mt-3">
+                              {minted}/{maxSupply}
+                            </p>
+                          </>
+                        );
+                      })()}
                     </div>
-                    <p className="text-base md:text-xl mt-2 md:mt-3">
-                      {round.minted}/{round.supply}
-                    </p>
-                  </div>
+                  )}
                 </div>
 
                 {!ended && (
@@ -434,7 +455,9 @@ export default function MintRounds() {
                       </div>
                     )}
 
+                    {/* Quantity selector */}
                     <div className="flex items-center justify-between w-full bg-gray-800/50 border border-white/20 rounded-md p-2">
+                      {/* Decrease */}
                       <motion.button
                         whileTap={{ scale: 0.85 }}
                         whileHover={{ scale: 1.05 }}
@@ -444,9 +467,11 @@ export default function MintRounds() {
                       >
                         -
                       </motion.button>
+
+                      {/* Quantity display */}
                       <AnimatePresence mode="popLayout">
                         <motion.span
-                          key={quantity} // re-mounts on change
+                          key={quantity}
                           initial={{ scale: 0.6, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           exit={{ scale: 0.6, opacity: 0 }}
@@ -455,26 +480,33 @@ export default function MintRounds() {
                             stiffness: 250,
                             damping: 18,
                           }}
-                          className="text-lg md:text-xl font-bold w-full"
+                          className="text-2xl font-bold px-8 text-center w-[80%]"
                         >
                           {quantity}
                         </motion.span>
                       </AnimatePresence>
 
+                      {/* Increase */}
                       <motion.button
                         whileTap={{ scale: 0.85 }}
                         whileHover={{ scale: 1.05 }}
                         className="px-3 md:px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => setQuantity(quantity + 1)}
+                        onClick={() =>
+                          setQuantity(
+                            Math.min(quantity + 1, round.id === 1 ? 3 : 10) // <-- cap at 3 for round 1
+                          )
+                        }
                         disabled={!canMint || isProcessing}
                       >
                         +
                       </motion.button>
+
+                      {/* Max */}
                       <motion.button
                         whileTap={{ scale: 0.9 }}
                         whileHover={{ scale: 1.05 }}
                         className="px-3 md:px-4 py-2 bg-gray-600 rounded text-xs md:text-sm hover:bg-gray-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => setQuantity(10)}
+                        onClick={() => setQuantity(round.id === 1 ? 3 : 10)} // <-- cap at 3 for round 1
                         disabled={!canMint || isProcessing}
                       >
                         Max

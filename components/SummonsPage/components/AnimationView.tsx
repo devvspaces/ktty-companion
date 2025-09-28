@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 
@@ -28,9 +28,16 @@ export default function AnimationView({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoReady, setVideoReady] = useState(false);
 
+  // ✅ On iOS, autoplay with sound off only works if muted at load
+  useEffect(() => {
+    if (!muted) {
+      setMuted(true);
+    }
+  }, []); // run once on mount
+
   return (
     <>
-      {/* Sound Toggle */}
+      {/* 🔊 Sound Toggle */}
       <button
         onClick={() => setMuted((m) => !m)}
         className="fixed top-4 left-4 z-[10015] p-2 rounded-full bg-black/40 hover:bg-black/60 transition"
@@ -42,7 +49,7 @@ export default function AnimationView({
         )}
       </button>
 
-      {/* Overlay including spinner until first frame */}
+      {/* 🌑 Overlay + Spinner */}
       <div
         className={`fixed inset-0 z-[10000] pointer-events-none transition-opacity duration-1500 ${
           fadeOut ? "opacity-0" : "opacity-100"
@@ -51,7 +58,7 @@ export default function AnimationView({
           if (fadeOut) onFinish();
         }}
       >
-        {/* Loading Spinner while waiting for first frame */}
+        {/* Loading spinner until first frame */}
         {!videoReady && (
           <div className="absolute inset-0 flex items-center justify-center bg-black">
             <motion.div
@@ -63,17 +70,23 @@ export default function AnimationView({
           </div>
         )}
 
+        {/* 🎥 Video */}
         <video
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
           autoPlay
-          muted={muted}
-          playsInline
+          muted={muted} // ✅ keep muted to allow autoplay
+          playsInline // ✅ needed on iOS
           preload="auto"
-          className={`w-full h-full object-cover fade-video ${videoReady ? "opacity-100" : "opacity-0"}`}
+          poster="/images/fallbackPoster.jpg" // ✅ optional debug/fallback
+          className={`absolute inset-0 w-full h-full object-cover z-[10005] ${
+            videoReady ? "opacity-100" : "opacity-0"
+          } transition-opacity duration-500`}
           onCanPlay={() => setVideoReady(true)}
           onTimeUpdate={(e) => {
-            if (e.currentTarget.currentTime >= 12 && !fadeOut) setFadeOut(true);
+            if (e.currentTarget.currentTime >= 12 && !fadeOut) {
+              setFadeOut(true);
+            }
           }}
         >
           <source
@@ -86,7 +99,7 @@ export default function AnimationView({
         </video>
       </div>
 
-      {/* Skip button */}
+      {/* ⏭ Skip Button */}
       <button
         onClick={skipSummon}
         className="fixed top-4 right-4 z-[10015] text-white font-semibold hover:opacity-70 transition animate-fadeIn delay-1000 cursor-pointer"
