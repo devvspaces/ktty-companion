@@ -30,43 +30,26 @@ export default function AnimationView({
   const [videoError, setVideoError] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
 
-  // --------------- Logging Helper -----------------
+  // ✅ Timestamped logger (also prints to console for desktop dev)
   const log = (msg: string) => {
     const t = new Date().toLocaleTimeString();
-    const line = `[${t}] ${msg}`;
-    setLogs((prev) => [line, ...prev]);
-    console.log(line);
+    setLogs((prev) => [`[${t}] ${msg}`, ...prev]);
+    console.log(`[${t}] ${msg}`);
   };
 
-  // --------------- Pick Video URL -----------------
+  // ✅ Pick video URL
   const videoURL =
     summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
     summonVideos["ruby"].normal;
 
-  // --------------- Mount Effect -----------------
   useEffect(() => {
     log("Mounted AnimationView");
-
     if (!muted) {
       setMuted(true);
       log("Forced muted for autoplay");
     }
-
-    // 🔑 Attempt manual playback after a short delay
-    const timer = setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current
-          .play()
-          .then(() => log("Manual play() resolved"))
-          .catch((err) => log(`Manual play() failed → ${err.message}`));
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // -------------------------------------------------
   return (
     <>
       {/* 🔊 Sound Toggle */}
@@ -96,7 +79,7 @@ export default function AnimationView({
           }
         }}
       >
-        {/* Spinner while waiting for first frame */}
+        {/* Spinner until first frame */}
         {!videoReady && (
           <div className="absolute inset-0 flex items-center justify-center bg-black">
             <motion.div
@@ -108,23 +91,25 @@ export default function AnimationView({
           </div>
         )}
 
-        {/* 🎥 Video Element */}
+        {/* 🎥 Video */}
         <video
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
           autoPlay
-          muted={muted} // required for iOS autoplay
-          playsInline // standard inline playback
-          webkit-playsinline="true" // vendor attr for WKWebView
+          muted={muted} // ✅ required for autoplay
+          playsInline // ✅ required for iOS WebView
           preload="auto"
           poster="/images/fallbackPoster.jpg"
           className={`absolute inset-0 w-full h-full object-cover z-[10005] ${
             videoReady ? "opacity-100" : "opacity-0"
           } transition-opacity duration-500`}
           onLoadStart={() => log(`Video loading → ${videoURL}`)}
-          onCanPlay={() => {
+          onCanPlay={(e) => {
             setVideoReady(true);
             log("onCanPlay → first frame ready");
+            e.currentTarget
+              .play()
+              .catch((err) => log(`Manual play() failed → ${err.message}`));
           }}
           onPlay={() => log("onPlay → video started")}
           onWaiting={() => log("onWaiting → buffering…")}
@@ -144,9 +129,9 @@ export default function AnimationView({
           <source src={videoURL} type="video/mp4" />
         </video>
 
-        {/* 🟩 Debug Overlay */}
+        {/* 🐛 Debug overlay */}
         <div className="absolute bottom-0 left-0 w-full bg-black/70 text-green-400 text-xs font-mono max-h-[40%] overflow-y-auto p-2 z-[10050]">
-          {logs.slice(0, 15).map((l, i) => (
+          {logs.slice(0, 12).map((l, i) => (
             <div key={i}>{l}</div>
           ))}
           {videoError && (
