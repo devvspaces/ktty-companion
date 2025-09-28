@@ -42,9 +42,9 @@ export default function AnimationView({
 
   // ✅ Decide which video URL to use
   const videoURL =
-    testURL  // ← uncomment this line to force-test W3Schools video
-   // summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
-    // summonVideos["ruby"].normal;
+   // testURL  // ← uncomment this line to force-test W3Schools video
+    summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
+     summonVideos["ruby"].normal;
 
   useEffect(() => {
     log("Mounted AnimationView");
