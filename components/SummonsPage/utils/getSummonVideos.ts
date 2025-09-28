@@ -1,8 +1,8 @@
 export function getSummonVideos(screen: "desktop" | "mid" | "mobile") {
   const path = (tier: "normal" | "rare" | "ultra", book: string) =>
     screen === "desktop"
-      ? `https://d1dqnt0gd112rm.cloudfront.net/video/animations/desktop/${tier}/${tier}${book}.mp4`
-      : `https://d1dqnt0gd112rm.cloudfront.net/video/animations/mobile/${tier}/${tier}${book}.mp4`;
+      ? `/video/animations/desktop/${tier}/${tier}${book}.mp4`
+      : `/video/animations/mobile/${tier}/${tier}${book}.mp4`;
 
   return {
     ruby: {
