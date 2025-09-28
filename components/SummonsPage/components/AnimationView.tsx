@@ -27,21 +27,24 @@ export default function AnimationView({
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoReady, setVideoReady] = useState(false);
-
-  // 🔹 On-screen debug log
   const [debug, setDebug] = useState<string[]>([]);
+
+  // helper to append debug logs
   const log = (msg: string) => {
+    console.log(msg);
     setDebug((prev) => [
-      ...prev.slice(-8),
+      ...prev,
       `[${new Date().toLocaleTimeString()}] ${msg}`,
     ]);
-    console.log(msg);
   };
 
+  // on mount
   useEffect(() => {
-    // iOS autoplay only works muted
-    if (!muted) setMuted(true);
     log("Mounted AnimationView");
+    if (!muted) {
+      setMuted(true);
+      log("Forced muted for autoplay");
+    }
   }, []);
 
   return (
@@ -50,7 +53,7 @@ export default function AnimationView({
       <button
         onClick={() => {
           setMuted((m) => !m);
-          log(`Toggled sound → ${!muted ? "Muted" : "Unmuted"}`);
+          log(`Toggled mute → ${!muted}`);
         }}
         className="fixed top-4 left-4 z-[10015] p-2 rounded-full bg-black/40 hover:bg-black/60 transition"
       >
@@ -61,19 +64,19 @@ export default function AnimationView({
         )}
       </button>
 
-      {/* 🌑 Overlay */}
+      {/* 🌑 Video container */}
       <div
         className={`fixed inset-0 z-[10000] pointer-events-none transition-opacity duration-1500 ${
           fadeOut ? "opacity-0" : "opacity-100"
         }`}
         onTransitionEnd={() => {
           if (fadeOut) {
-            log("FadeOut finished → calling onFinish()");
+            log("Fade-out finished → calling onFinish()");
             onFinish();
           }
         }}
       >
-        {/* Spinner until first frame */}
+        {/* Spinner until video paints */}
         {!videoReady && (
           <div className="absolute inset-0 flex items-center justify-center bg-black">
             <motion.div
@@ -85,7 +88,6 @@ export default function AnimationView({
           </div>
         )}
 
-        {/* 🎥 Video */}
         <video
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
@@ -93,24 +95,26 @@ export default function AnimationView({
           muted={muted}
           playsInline
           preload="auto"
-          className={`absolute inset-0 w-full h-full object-cover z-[10005] ${
+          className={`absolute inset-0 w-full h-full object-cover ${
             videoReady ? "opacity-100" : "opacity-0"
           } transition-opacity duration-500`}
-          onLoadStart={() => log("Video: loadstart")}
-          onLoadedMetadata={() => log("Video: loadedmetadata")}
+          poster="/images/fallbackPoster.jpg"
+          onLoadStart={() => log("onLoadStart fired")}
+          onLoadedMetadata={() => log("onLoadedMetadata fired")}
           onCanPlay={() => {
-            log("Video: canplay → showing first frame");
+            log("onCanPlay fired → showing video");
             setVideoReady(true);
           }}
-          onPlay={() => log("Video: playing")}
-          onPause={() => log("Video: paused")}
+          onPlay={() => log("onPlay fired")}
           onTimeUpdate={(e) => {
             if (e.currentTarget.currentTime >= 12 && !fadeOut) {
               log("Reached 12s → triggering fadeOut");
               setFadeOut(true);
             }
           }}
-          onError={(e) => log(`Video error: ${JSON.stringify(e)}`)}
+          onError={(e) => {
+            log(`onError: ${JSON.stringify(e.currentTarget.error)}`);
+          }}
         >
           <source
             src={
@@ -122,11 +126,11 @@ export default function AnimationView({
         </video>
       </div>
 
-      {/* ⏭ Skip */}
+      {/* ⏭ Skip Button */}
       <button
         onClick={() => {
+          log("Skip clicked");
           skipSummon();
-          log("Skip button clicked → skipSummon()");
         }}
         className="fixed top-4 right-4 z-[10015] text-white font-semibold hover:opacity-70 transition animate-fadeIn delay-1000 cursor-pointer"
       >
@@ -134,9 +138,9 @@ export default function AnimationView({
       </button>
 
       {/* 🟩 Debug Overlay */}
-      <div className="fixed bottom-4 left-4 w-72 max-h-48 overflow-y-auto bg-black/70 text-green-400 text-xs p-2 rounded z-[20000]">
-        {debug.map((line, i) => (
-          <div key={i}>{line}</div>
+      <div className="fixed bottom-2 left-2 z-[20000] max-w-[80%] bg-black/70 text-green-400 text-xs p-2 rounded-md overflow-y-auto max-h-[40vh] font-mono">
+        {debug.slice(-10).map((line, idx) => (
+          <div key={idx}>{line}</div>
         ))}
       </div>
     </>
