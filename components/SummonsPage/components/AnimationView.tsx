@@ -38,7 +38,7 @@ export default function AnimationView({
   };
 
   // ✅ Pick video URL
-  const videoURL =
+  const videoURL = "/video/summonhomew.mp4"
     summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
     summonVideos["ruby"].normal;
 
