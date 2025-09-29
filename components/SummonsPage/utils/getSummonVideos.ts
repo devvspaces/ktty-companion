@@ -2,15 +2,8 @@ export function getSummonVideos(screen: "desktop" | "mid" | "mobile") {
   // Treat 'mid' as 'desktop'
   const effectiveScreen = screen === "mid" ? "desktop" : screen;
 
-  // Map the logical tier to the actual folder name in S3
-  const folderMap = {
-    normal: "normal",
-    rare: "rare",
-    ultra: "ultrarare", 
-  } as const;
-
   const path = (tier: "normal" | "rare" | "ultra", book: string) =>
-    `https://d1dqnt0gd112rm.cloudfront.net/video/animations/${effectiveScreen}/${folderMap[tier]}/${tier}${book}.mp4`;
+    `/video/animations/${effectiveScreen}/${tier}/${tier}${book}.mp4`;
 
   return {
     ruby: {
