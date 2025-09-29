@@ -173,7 +173,7 @@ export default function SummonsPage() {
           idleVideo={idleVideo}
           message={message}
           cursor={cursor}
-          onSummon={() => openBookSelect(1)}
+          onSummon={openBookSelect}
         />
       )}
 
