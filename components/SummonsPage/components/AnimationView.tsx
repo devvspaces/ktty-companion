@@ -30,6 +30,11 @@ export default function AnimationView({
   const [videoError, setVideoError] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
 
+  // ✅ Pick video URL
+  const videoURL =
+    summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
+    summonVideos["ruby"].normal;
+
   // ✅ Timestamped logger (also prints to console for desktop dev)
   const log = (msg: string) => {
     const t = new Date().toLocaleTimeString();
@@ -37,13 +42,9 @@ export default function AnimationView({
     console.log(`[${t}] ${msg}`);
   };
 
-  // ✅ Pick video URL
-  const videoURL =
-    summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
-    summonVideos["ruby"].normal;
-
   useEffect(() => {
     log("Mounted AnimationView");
+    log(`Video link → ${videoURL}`);
     if (!muted) {
       setMuted(true);
       log("Forced muted for autoplay");
@@ -96,8 +97,8 @@ export default function AnimationView({
           key={`${selectedBookColor}-${selectedRarity ?? "normal"}`}
           ref={videoRef}
           autoPlay
-          muted={muted}     // ✅ required for autoplay
-          playsInline       // ✅ required for iOS WebView
+          muted={muted} // ✅ required for autoplay
+          playsInline // ✅ required for iOS WebView
           preload="auto"
           poster="/images/fallbackPoster.jpg"
           className={`absolute inset-0 w-full h-full object-cover z-[10005] ${
@@ -107,9 +108,9 @@ export default function AnimationView({
           onCanPlay={(e) => {
             setVideoReady(true);
             log("onCanPlay → first frame ready");
-            e.currentTarget.play().catch((err) =>
-              log(`Manual play() failed → ${err.message}`)
-            );
+            e.currentTarget
+              .play()
+              .catch((err) => log(`Manual play() failed → ${err.message}`));
           }}
           onPlay={() => log("onPlay → video started")}
           onWaiting={() => log("onWaiting → buffering…")}
@@ -131,10 +132,15 @@ export default function AnimationView({
 
         {/* 🐛 Debug overlay */}
         <div className="absolute bottom-0 left-0 w-full bg-black/70 text-green-400 text-xs font-mono max-h-[40%] overflow-y-auto p-2 z-[10050]">
+          <div className="text-blue-300 break-all mb-1">
+            Video URL: {videoURL}
+          </div>
           {logs.slice(0, 12).map((l, i) => (
             <div key={i}>{l}</div>
           ))}
-          {videoError && <div className="text-red-400">Error: {videoError}</div>}
+          {videoError && (
+            <div className="text-red-400">Error: {videoError}</div>
+          )}
         </div>
       </div>
 
