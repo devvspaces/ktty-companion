@@ -151,7 +151,9 @@ export default function SummonsPage() {
   const screen = useScreenSize();
   const summonVideos = getSummonVideos(screen);
   const idleVideo =
-    screen === "desktop" ? "/video/summonhomew.mp4" : "/video/summonhomev.mp4";
+    screen === "desktop"
+      ? "https://d1dqnt0gd112rm.cloudfront.net/video/summonhomew.mp4"
+      : "https://d1dqnt0gd112rm.cloudfront.net/video/summonhomev.mp4";
 
   return (
     <div className="relative w-full h-screen overflow-hidden">

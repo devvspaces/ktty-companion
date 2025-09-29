@@ -103,6 +103,17 @@ export function useSummonFlow({
     const theme = getBatchTheme(selection);
     setSelectedBookColor(theme);
 
+    // 🎲 RANDOMLY CHOOSE CINEMATIC TIER (weighted 60 / 30 / 10)
+    const rand = Math.random();
+    let randomTier: "normal" | "rare" | "ultra";
+    if (rand < 0.6)
+      randomTier = "normal"; // 60%
+    else if (rand < 0.9)
+      randomTier = "rare"; // next 30%
+    else randomTier = "ultra"; // final 10%
+
+    setSelectedRarity(randomTier);
+
     // Prepare rewards
     const mock: Reward[] = selectedBooks.map((book) => {
       const color = seriesToColor[book.series] || "purple";
