@@ -5,22 +5,23 @@ import { Reward } from "@/lib/reward";
 
 interface FinalGridViewProps {
   rewards: Reward[];
-  summonCount: number;
+  availableBooks: number; // ✅ now required
   onBack: () => void;
-  onSummonAgain: (count: number) => void;
+  onSummonAgain: (count: number) => void; // ✅ callback used by modal
 }
 
 export default function FinalGridView({
   rewards,
-  summonCount,
+  availableBooks,
   onBack,
   onSummonAgain,
 }: FinalGridViewProps) {
   return (
     <RewardGrid
       rewards={rewards}
+      availableBooks={availableBooks} // ✅ pass available books
       onBack={onBack}
-      onSummonAgain={() => onSummonAgain(summonCount)}
+      onSummonWithAmount={(count) => onSummonAgain(count)} // ✅ new prop
     />
   );
 }

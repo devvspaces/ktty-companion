@@ -6,12 +6,14 @@ import type { Reward } from "@/lib/reward";
 
 export default function RewardGrid({
   rewards,
+  availableBooks,
   onBack,
-  onSummonAgain,
+  onSummonWithAmount,
 }: {
   rewards: Reward[];
+  availableBooks: number;
   onBack: () => void;
-  onSummonAgain: () => void;
+  onSummonWithAmount: (count: number) => void;
 }) {
   return (
     <>
@@ -19,8 +21,9 @@ export default function RewardGrid({
       <div className="sm:hidden">
         <RewardGridMobile
           rewards={rewards}
+          availableBooks={availableBooks}
           onBack={onBack}
-          onSummonAgain={onSummonAgain}
+          onSummonWithAmount={onSummonWithAmount}
         />
       </div>
 
@@ -28,8 +31,9 @@ export default function RewardGrid({
       <div className="hidden sm:block">
         <RewardGridDesktop
           rewards={rewards}
+          availableBooks={availableBooks}
           onBack={onBack}
-          onSummonAgain={onSummonAgain}
+          onSummonWithAmount={onSummonWithAmount}
         />
       </div>
     </>

@@ -107,7 +107,7 @@ export default function SummonsPage() {
     },
   ];
 
-  // 🔹 Hook
+  // 🔹 Hook for main flow
   const {
     step,
     setStep,
@@ -142,9 +142,9 @@ export default function SummonsPage() {
   } = useSummonFlow({
     inventory,
     openBooks,
-    isOpeningBooks, // ✅ pass these
-    isWaitingForOpen, // ✅ pass these
-    openTxHash: openTxHash ?? null, 
+    isOpeningBooks,
+    isWaitingForOpen,
+    openTxHash: openTxHash ?? null,
   });
 
   // 🔹 Video assets
@@ -155,6 +155,16 @@ export default function SummonsPage() {
       ? "https://d1dqnt0gd112rm.cloudfront.net/video/summonhomew.mp4"
       : "https://d1dqnt0gd112rm.cloudfront.net/video/summonhomev.mp4";
 
+  // 🔹 Total books available for “Summon Again”
+  const availableBooks =
+    emeraldCount +
+    rubyCount +
+    amethystCount +
+    blacksmithCount +
+    luckyCount +
+    oneEyeCount +
+    corruptCount;
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Idle view */}
@@ -163,7 +173,7 @@ export default function SummonsPage() {
           idleVideo={idleVideo}
           message={message}
           cursor={cursor}
-          onSummon={openBookSelect}
+          onSummon={() => openBookSelect(1)}
         />
       )}
 
@@ -194,7 +204,7 @@ export default function SummonsPage() {
           currentIndex={currentIndex}
           summonCount={summonCount}
           onBack={handleBack}
-          onSummonAgain={openBookSelect}
+          onSummonAgain={(count) => openBookSelect(count)}
           onNext={handleNextReward}
           onSkipToGrid={handleSkipToGrid}
         />
@@ -204,9 +214,9 @@ export default function SummonsPage() {
       {step === "grid" && (
         <FinalGridView
           rewards={rewards}
-          summonCount={summonCount}
+          availableBooks={availableBooks}
           onBack={handleBack}
-          onSummonAgain={openBookSelect}
+          onSummonAgain={(count) => openBookSelect(count)}
         />
       )}
 

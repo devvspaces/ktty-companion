@@ -20,7 +20,7 @@ const containerVariants: Variants = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-export default function RewardGrid({
+export default function RewardGridMobile({
   rewards,
   availableBooks,
   onBack,

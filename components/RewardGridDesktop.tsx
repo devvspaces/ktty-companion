@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
+import { useState } from "react";
 import type { Reward } from "@/lib/reward";
+import SummonOptionsModal from "./SummonOptionsModal";
 
 // 🔹 Animation variants
 const cardVariants: Variants = {
@@ -22,13 +24,17 @@ const containerVariants: Variants = {
 
 export default function RewardGridDesktop({
   rewards,
+  availableBooks,
   onBack,
-  onSummonAgain,
+  onSummonWithAmount,
 }: {
   rewards: Reward[];
+  availableBooks: number;
   onBack: () => void;
-  onSummonAgain: () => void;
+  onSummonWithAmount: (count: number) => void;
 }) {
+  const [showOptions, setShowOptions] = useState(false);
+
   const isTenPull = rewards.length === 10;
 
   // 🔹 Badge mapping
@@ -218,13 +224,34 @@ export default function RewardGridDesktop({
         >
           Back
         </button>
-        <button
-          onClick={onSummonAgain}
-          className="flex-1 mx-2 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
-        >
-          Summon Again
-        </button>
+
+        {availableBooks === 0 ? (
+          <button
+            onClick={() => (window.location.href = "/home#mint")}
+            className="flex-1 mx-2 py-3 bg-emerald-600 text-white rounded-md font-semibold hover:bg-emerald-500"
+          >
+            Mint Books
+          </button>
+        ) : (
+          <button
+            onClick={() => setShowOptions(true)}
+            className="flex-1 mx-2 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-500"
+          >
+            Summon Again
+          </button>
+        )}
       </div>
+
+      {/* Summon Options Modal */}
+      <SummonOptionsModal
+        isOpen={showOptions}
+        onClose={() => setShowOptions(false)}
+        availableBooks={availableBooks}
+        onSelect={(amt) => {
+          setShowOptions(false);
+          onSummonWithAmount(amt);
+        }}
+      />
     </div>
   );
 }
