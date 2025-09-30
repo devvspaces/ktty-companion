@@ -67,7 +67,7 @@ export default function IdleView({
               onClick={() => onSummon(1)}
               className="flex-1 px-3 py-2 md:px-4 md:py-2.5 bg-purple-600 rounded-md font-semibold text-white hover:bg-purple-500 transition text-sm md:text-base"
             >
-              Summon x1
+              Summon x12
             </button>
             <button
               onClick={() => onSummon(5)}

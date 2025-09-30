@@ -455,8 +455,7 @@ export default function MintRounds() {
                       </div>
                     )}
 
-                    {/* Quantity selector */}
-                    <div className="flex items-center justify-between w-full bg-gray-800/50 border border-white/20 rounded-md p-2">
+                    <div className="flex items-center w-full bg-gray-800/50 border border-white/20 rounded-md p-2 gap-2">
                       {/* Decrease */}
                       <motion.button
                         whileTap={{ scale: 0.85 }}
@@ -480,37 +479,38 @@ export default function MintRounds() {
                             stiffness: 250,
                             damping: 18,
                           }}
-                          className="text-2xl font-bold px-8 text-center w-[80%]"
+                          className="flex-1 text-2xl font-bold text-center"
                         >
                           {quantity}
                         </motion.span>
                       </AnimatePresence>
 
-                      {/* Increase */}
-                      <motion.button
-                        whileTap={{ scale: 0.85 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-3 md:px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() =>
-                          setQuantity(
-                            Math.min(quantity + 1, round.id === 1 ? 3 : 10) // <-- cap at 3 for round 1
-                          )
-                        }
-                        disabled={!canMint || isProcessing}
-                      >
-                        +
-                      </motion.button>
+                      {/* Right-side group (+ and Max) */}
+                      <div className="flex items-center gap-2">
+                        <motion.button
+                          whileTap={{ scale: 0.85 }}
+                          whileHover={{ scale: 1.05 }}
+                          className="px-3 md:px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          onClick={() =>
+                            setQuantity(
+                              Math.min(quantity + 1, round.id === 1 ? 3 : 10)
+                            )
+                          }
+                          disabled={!canMint || isProcessing}
+                        >
+                          +
+                        </motion.button>
 
-                      {/* Max */}
-                      <motion.button
-                        whileTap={{ scale: 0.9 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-3 md:px-4 py-2 bg-gray-600 rounded text-xs md:text-sm hover:bg-gray-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => setQuantity(round.id === 1 ? 3 : 10)} // <-- cap at 3 for round 1
-                        disabled={!canMint || isProcessing}
-                      >
-                        Max
-                      </motion.button>
+                        <motion.button
+                          whileTap={{ scale: 0.9 }}
+                          whileHover={{ scale: 1.05 }}
+                          className="px-3 md:px-4 py-2 bg-gray-600 rounded text-xs md:text-sm hover:bg-gray-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          onClick={() => setQuantity(round.id === 1 ? 3 : 10)}
+                          disabled={!canMint || isProcessing}
+                        >
+                          Max
+                        </motion.button>
+                      </div>
                     </div>
 
                     <div className="flex gap-3 md:gap-4">
