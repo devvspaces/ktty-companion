@@ -37,7 +37,7 @@ export function useUserBooks(): UserBooksData {
   const { address } = useAccount();
   const [error, setError] = useState<string | null>(null);
 
-  // Handle contract address loading
+  // Handle contract address
   let contractAddress: `0x${string}` | undefined;
   try {
     contractAddress = getContractAddress("KttyWorldMinting");
@@ -57,7 +57,7 @@ export function useUserBooks(): UserBooksData {
     };
   }
 
-  // Read user book details
+  // Read user book details (only when address is present)
   const {
     data: userBooksData,
     isLoading: isLoadingBooks,
@@ -66,9 +66,10 @@ export function useUserBooks(): UserBooksData {
   } = useReadKttyWorldMintingGetUserBooksDetails({
     address: contractAddress,
     args: address ? [address] : undefined,
+    query: { enabled: Boolean(address) }, // prevent call when address is null
   });
 
-  // Read user book IDs (in same order as book details)
+  // Read user book IDs
   const {
     data: userBookIds,
     isLoading: isLoadingBookIds,
@@ -77,6 +78,7 @@ export function useUserBooks(): UserBooksData {
   } = useReadKttyWorldMintingGetUserBooks({
     address: contractAddress,
     args: address ? [address] : undefined,
+    query: { enabled: Boolean(address) },
   });
 
   console.error(bookIdsError)
@@ -130,7 +132,7 @@ export function useUserBooks(): UserBooksData {
       };
     }
 
-    let counts = {
+    const counts = {
       amethystCount: 0,
       emeraldCount: 0,
       rubyCount: 0,
@@ -142,9 +144,7 @@ export function useUserBooks(): UserBooksData {
     };
 
     userBooksData.forEach((book) => {
-      const series = book.series;
-
-      switch (series) {
+      switch (book.series) {
         case "Amethyst Book":
           counts.amethystCount++;
           break;
@@ -174,19 +174,16 @@ export function useUserBooks(): UserBooksData {
     return counts;
   }, [userBooksData, address]);
 
+  // Build map of series → books
   const booksMap = useMemo(() => {
     if (!userBooksData || !userBookIds) return {};
 
     const map: Record<string, BookDetail[]> = {};
-
-    userBooksData.forEach((book, index) => {
-      const series = book.series;
-      if (!map[series]) {
-        map[series] = [];
-      }
-      map[series].push({
-        id: userBookIds[index], // The actual book ID from getUserBooks
-        nftId: book.nftId, // Keep the original NFT ID
+    userBooksData.forEach((book, idx) => {
+      if (!map[book.series]) map[book.series] = [];
+      map[book.series].push({
+        id: userBookIds[idx],
+        nftId: book.nftId,
         toolIds: book.toolIds,
         goldenTicketId: book.goldenTicketId,
         hasGoldenTicket: book.hasGoldenTicket,

@@ -38,26 +38,24 @@ export default function MyBagModal({
   const items: Item[] = [
     {
       id: "amethystbk",
-      name: "Amethyst Summoning Book",
+      name: "Amethyst Book",
       image: "/images/mybag/amethystbk.png",
       count: amethystCount,
-      description:
-        "A book glowing with celestial energy. Summons mystical KTTYs.",
+      description: "A KTTY Summoning Book gleaming with violet aura.",
     },
     {
       id: "emeraldbk",
-      name: "Emerald Summoning Book",
+      name: "Emerald Book",
       image: "/images/mybag/emeraldbk.png",
       count: emeraldCount,
-      description:
-        "Holds the power of the forest. Summons nature-blessed KTTYs.",
+      description: "A KTTY Summoning Book glowing with verdant light.",
     },
     {
       id: "rubybk",
-      name: "Ruby Summoning Book",
+      name: "Ruby Book",
       image: "/images/mybag/rubybk.png",
       count: rubyCount,
-      description: "Burning with fire. Summons fierce and fiery KTTYs.",
+      description: "A KTTY Summoning Book burning with crimson energy.",
     },
     {
       id: "bsmithbk",
@@ -65,29 +63,30 @@ export default function MyBagModal({
       image: "/images/mybag/bsmithbk.png",
       count: blacksmithCount,
       description:
-        "An ancient manual of forging. Used to summon crafted KTTYs.",
+        "A KTTY Summoning Book bound in steel and tempered by flame.",
     },
     {
       id: "luckybk",
       name: "Lucky Tome",
       image: "/images/mybag/luckybk.png",
       count: luckyCount,
-      description: "Said to bring good fortune. Sometimes grants rare summons.",
+      description:
+        "A KTTY Summoning Book radiating with celestial light. It feels Lucky.",
     },
     {
       id: "oneeyebk",
       name: "One Eye Bible",
       image: "/images/mybag/oneeyebk.png",
       count: oneEyeCount,
-      description:
-        "Carved with ominous sigils. Summons cursed or powerful KTTYs.",
+      description: "A KTTY Summoning Book etched with the gaze of the One Eye.",
     },
     {
       id: "cursebk",
       name: "Corrupted Tome",
       image: "/images/mybag/cursebk.png",
       count: corruptCount,
-      description: "Seething with unstable magic. Summons corrupted KTTYs.",
+      description:
+        "A KTTY Summoning Book seething with unstable magic. Who knows what could be inside.",
     },
   ];
 
