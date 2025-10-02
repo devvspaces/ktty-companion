@@ -137,9 +137,9 @@ export default function MyBagModal({
         {/* Error after connect */}
         {address && !isLoading && error && (
           <div className="flex flex-col items-center justify-center py-12 gap-4 text-center">
-            <p className="text-lg text-red-400">Failed to load your books</p>
+            <p className="text-lg text-red-400">Unable to load your books</p>
             <p className="text-sm mt-2 text-gray-400">
-              {error || "Something went wrong. Please try again."}
+              {/* {error || "Something went wrong. Please try again."} */}
             </p>
           </div>
         )}
