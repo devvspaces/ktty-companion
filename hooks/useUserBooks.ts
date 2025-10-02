@@ -35,9 +35,99 @@ export interface BookDetail {
   series: string;
 }
 
+const getUserNFTs = async (walletAddress: string): Promise<number[]> => {
+  // Mainnet: Use SkyMavis marketplace GraphQL API
+  const tokenAddress = "0x9c17b842b39f9443f1108a147c4100a374ff0e55"
+  const allNFTs: number[] = []
+  let from = 0
+  const size = 50 // Maximum allowed per request
+  
+  try {
+    while (true) {
+      const query = `
+        query GetERC721TokensList($tokenAddress: String, $slug: String, $owner: String, $auctionType: AuctionType, $criteria: [SearchCriteria!], $from: Int!, $size: Int!, $sort: SortBy, $name: String, $priceRange: InputRange, $rangeCriteria: [RangeSearchCriteria!], $excludeAddress: String) {
+          erc721Tokens(
+            tokenAddress: $tokenAddress
+            slug: $slug
+            owner: $owner
+            auctionType: $auctionType
+            criteria: $criteria
+            from: $from
+            size: $size
+            sort: $sort
+            name: $name
+            priceRange: $priceRange
+            rangeCriteria: $rangeCriteria
+            excludeAddress: $excludeAddress
+          ) {
+            total
+            results {
+              tokenId
+            }
+          }
+        }
+      `
+      
+      const variables = {
+        from,
+        auctionType: "All",
+        owner: walletAddress,
+        size,
+        sort: "PriceAsc",
+        rangeCriteria: [],
+        tokenAddress
+      }
+      
+      const response = await fetch('https://marketplace-graphql.skymavis.com/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          variables
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      
+      if (data.errors) {
+        throw new Error(`GraphQL error: ${data.errors[0].message}`)
+      }
+      
+      const results = data.data?.erc721Tokens?.results || []
+      const tokenIds = results.map((result: { tokenId: string }) => parseInt(result.tokenId))
+      
+      allNFTs.push(...tokenIds)
+      
+      // If we got less than the requested size, we've reached the end
+      if (results.length < size) {
+        break
+      }
+      
+      if (from != 0) {
+        from += size
+      } else {
+        from += size - 1
+      }
+    }
+    
+    return allNFTs
+  } catch (error) {
+    console.error('Error fetching NFTs from SkyMavis API:', error)
+    throw error
+  }
+}
+
 export function useUserBooks(): UserBooksData {
   const { address } = useAccount();
   const [error, setError] = useState<string | null>(null);
+  const [userBookIds, setUserBookIds] = useState<number[]>([]);
+  const [isLoadingBookIds, setIsLoadingBookIds] = useState(false);
 
   // Handle contract address
   let contractAddress: `0x${string}` | undefined;
@@ -72,22 +162,63 @@ export function useUserBooks(): UserBooksData {
   });
 
   // Read user book IDs
-  const {
-    data: userBookIds,
-    isLoading: isLoadingBookIds,
-    error: bookIdsError,
-    refetch: refetchBookIds,
-  } = useReadKttyWorldBooksGetUserBooks({
-    address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
-    args: address ? [address] : undefined,
-    query: {
-      enabled: Boolean(address),
-      retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-      staleTime: 5000,
-      refetchOnWindowFocus: false,
-    },
-  });
+  // const {
+  //   data: userBookIds,
+  //   isLoading: isLoadingBookIds,
+  //   error: bookIdsError,
+  //   refetch: refetchBookIds,
+  // } = useReadKttyWorldBooksGetUserBooks({
+  //   address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
+  //   args: address ? [address] : undefined,
+  //   query: {
+  //     enabled: Boolean(address),
+  //     retry: 3,
+  //     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  //     staleTime: 5000,
+  //     refetchOnWindowFocus: false,
+  //   },
+  // });
+
+  // Use getUserNFTs async method instead
+  useEffect(() => {
+    const fetchUserBookIds = async () => {
+      if (!address) {
+        setUserBookIds([]);
+        return;
+      }
+
+      setIsLoadingBookIds(true);
+      try {
+        const nftIds = await getUserNFTs(address);
+        setUserBookIds(nftIds);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching user book IDs:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch user book IDs');
+        setUserBookIds([]);
+      } finally {
+        setIsLoadingBookIds(false);
+      }
+    };
+
+    fetchUserBookIds();
+  }, [address]);
+
+  const refetchBookIds = async () => {
+    if (!address) return;
+    
+    setIsLoadingBookIds(true);
+    try {
+      const nftIds = await getUserNFTs(address);
+      setUserBookIds(nftIds);
+      setError(null);
+    } catch (err) {
+      console.error('Error refetching user book IDs:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch user book IDs');
+    } finally {
+      setIsLoadingBookIds(false);
+    }
+  };
 
   // Watch mint/open events
   useWatchKttyWorldMintingBooksMintedEvent({
@@ -135,9 +266,7 @@ export function useUserBooks(): UserBooksData {
   // Error state
   useEffect(() => {
     if (booksError) setError(booksError.message);
-    else if (bookIdsError) setError(bookIdsError.message);
-    else setError(null);
-  }, [booksError, bookIdsError]);
+  }, [booksError]);
 
   // Count by series
   const bookCounts = useMemo((): Omit<UserBooksData, "isLoading" | "error"> => {
@@ -198,13 +327,13 @@ export function useUserBooks(): UserBooksData {
 
   // Build map of series → books
   const booksMap = useMemo(() => {
-    if (!userBooksData || !userBookIds) return {};
+    if (!userBooksData || !userBookIds || userBookIds.length === 0) return {};
 
     const map: Record<string, BookDetail[]> = {};
     userBooksData.forEach((book, idx) => {
       if (!map[book.series]) map[book.series] = [];
       map[book.series].push({
-        id: userBookIds[idx],
+        id: BigInt(userBookIds[idx] || 0),
         nftId: book.nftId,
         toolIds: book.toolIds,
         goldenTicketId: book.goldenTicketId,
