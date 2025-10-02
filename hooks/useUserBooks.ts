@@ -7,6 +7,7 @@ import {
   useReadKttyWorldMintingGetUserBooks,
   useWatchKttyWorldMintingBooksMintedEvent,
   useWatchKttyWorldMintingBookOpenedEvent,
+  useReadKttyWorldBooksGetUserBooks,
 } from "@/src/generated";
 import { getContractAddress } from "@/lib/contracts";
 
@@ -75,12 +76,20 @@ export function useUserBooks(): UserBooksData {
     isLoading: isLoadingBookIds,
     error: bookIdsError,
     refetch: refetchBookIds,
-  } = useReadKttyWorldMintingGetUserBooks({
-    address: contractAddress,
+  } = useReadKttyWorldBooksGetUserBooks({
+    address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
     args: address ? [address] : undefined,
-    query: { enabled: Boolean(address) },
+    query: {
+      enabled: Boolean(address),
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5000,
+      refetchOnWindowFocus: false,
+    },
   });
 
+  console.log(userBooksData)
+  console.log(userBookIds)
   console.error(bookIdsError)
 
   // Watch mint/open events

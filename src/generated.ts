@@ -128,6 +128,685 @@ export const erc20Abi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// KttyWorldBooks
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const kttyWorldBooksAbi = [
+  { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'UPGRADE_INTERFACE_VERSION',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'baseTokenUri',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'nftIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'toolIds', internalType: 'uint256[3][]', type: 'uint256[3][]' },
+      { name: 'goldenTicketIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'series', internalType: 'string[]', type: 'string[]' },
+    ],
+    name: 'batchMintBooks',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'tokenIds', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'batchRevealTokens',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'burnBook',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'exists',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getApproved',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getBook',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct KttyWorldBooks.Book',
+        type: 'tuple',
+        components: [
+          { name: 'nftId', internalType: 'uint256', type: 'uint256' },
+          { name: 'toolIds', internalType: 'uint256[3]', type: 'uint256[3]' },
+          { name: 'goldenTicketId', internalType: 'uint256', type: 'uint256' },
+          { name: 'hasGoldenTicket', internalType: 'bool', type: 'bool' },
+          { name: 'series', internalType: 'string', type: 'string' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    name: 'getUserBooks',
+    outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    name: 'getUserBooksDetails',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct KttyWorldBooks.Book[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'nftId', internalType: 'uint256', type: 'uint256' },
+          { name: 'toolIds', internalType: 'uint256[3]', type: 'uint256[3]' },
+          { name: 'goldenTicketId', internalType: 'uint256', type: 'uint256' },
+          { name: 'hasGoldenTicket', internalType: 'bool', type: 'bool' },
+          { name: 'series', internalType: 'string', type: 'string' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'hiddenMetadataUri',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_owner', internalType: 'address', type: 'address' },
+      { name: '_name', internalType: 'string', type: 'string' },
+      { name: '_symbol', internalType: 'string', type: 'string' },
+      { name: '_maxSupply', internalType: 'uint256', type: 'uint256' },
+      { name: '_hiddenMetadataUri', internalType: 'string', type: 'string' },
+      { name: '_mintingContract', internalType: 'address', type: 'address' },
+    ],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'operator', internalType: 'address', type: 'address' },
+    ],
+    name: 'isApprovedForAll',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'isRevealed',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'isTokenRevealed',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'maxSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'ownerOf',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'revealToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'approved', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_baseTokenUri', internalType: 'string', type: 'string' }],
+    name: 'setBaseTokenURI',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_hiddenMetadataUri', internalType: 'string', type: 'string' },
+    ],
+    name: 'setHiddenMetadataURI',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_mintingContract', internalType: 'address', type: 'address' },
+    ],
+    name: 'setMintingContract',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_revealed', internalType: 'bool', type: 'bool' }],
+    name: 'setRevealed',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'tokenURI',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_name', internalType: 'string', type: 'string' }],
+    name: 'updateName',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'approved',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'ApprovalForAll',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'baseTokenUri',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'BaseTokenUriUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'nftId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'toolIds',
+        internalType: 'uint256[3]',
+        type: 'uint256[3]',
+        indexed: false,
+      },
+      {
+        name: 'goldenTicketId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'BookAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'burner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'BookBurned',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'hiddenMetadataUri',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'HiddenMetadataUriUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'version',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: false,
+      },
+    ],
+    name: 'Initialized',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'MetadataUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newMintingContract',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'MintingContractUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'revealed', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'Revealed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'TokenRevealed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tokenIds',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
+        indexed: false,
+      },
+    ],
+    name: 'TokensRevealed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'Transfer',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'Upgraded',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'target', internalType: 'address', type: 'address' }],
+    name: 'AddressEmptyCode',
+  },
+  { type: 'error', inputs: [], name: 'BatchSizeZero' },
+  { type: 'error', inputs: [], name: 'BookNotExists' },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'implementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'ERC1967InvalidImplementation',
+  },
+  { type: 'error', inputs: [], name: 'ERC1967NonPayable' },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
+    ],
+    name: 'ERC721IncorrectOwner',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC721InsufficientApproval',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidOperator',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidOwner',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidReceiver',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'ERC721NonexistentToken',
+  },
+  { type: 'error', inputs: [], name: 'ExceedsMaxSupply' },
+  { type: 'error', inputs: [], name: 'FailedCall' },
+  { type: 'error', inputs: [], name: 'InvalidArrayLength' },
+  { type: 'error', inputs: [], name: 'InvalidInitialization' },
+  { type: 'error', inputs: [], name: 'InvalidTokenId' },
+  { type: 'error', inputs: [], name: 'MaxSupplyReached' },
+  { type: 'error', inputs: [], name: 'NotInitializing' },
+  { type: 'error', inputs: [], name: 'OnlyMintingContract' },
+  {
+    type: 'error',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'OwnableInvalidOwner',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'OwnableUnauthorizedAccount',
+  },
+  { type: 'error', inputs: [], name: 'UUPSUnauthorizedCallContext' },
+  {
+    type: 'error',
+    inputs: [{ name: 'slot', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'UUPSUnsupportedProxiableUUID',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // KttyWorldMinting
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1075,6 +1754,654 @@ export const useWatchErc20TransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: erc20Abi,
     eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__
+ */
+export const useReadKttyWorldBooks = /*#__PURE__*/ createUseReadContract({
+  abi: kttyWorldBooksAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"UPGRADE_INTERFACE_VERSION"`
+ */
+export const useReadKttyWorldBooksUpgradeInterfaceVersion =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'UPGRADE_INTERFACE_VERSION',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadKttyWorldBooksBalanceOf =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'balanceOf',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"baseTokenUri"`
+ */
+export const useReadKttyWorldBooksBaseTokenUri =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'baseTokenUri',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"exists"`
+ */
+export const useReadKttyWorldBooksExists = /*#__PURE__*/ createUseReadContract({
+  abi: kttyWorldBooksAbi,
+  functionName: 'exists',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"getApproved"`
+ */
+export const useReadKttyWorldBooksGetApproved =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'getApproved',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"getBook"`
+ */
+export const useReadKttyWorldBooksGetBook = /*#__PURE__*/ createUseReadContract(
+  { abi: kttyWorldBooksAbi, functionName: 'getBook' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"getUserBooks"`
+ */
+export const useReadKttyWorldBooksGetUserBooks =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'getUserBooks',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"getUserBooksDetails"`
+ */
+export const useReadKttyWorldBooksGetUserBooksDetails =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'getUserBooksDetails',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"hiddenMetadataUri"`
+ */
+export const useReadKttyWorldBooksHiddenMetadataUri =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'hiddenMetadataUri',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"isApprovedForAll"`
+ */
+export const useReadKttyWorldBooksIsApprovedForAll =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'isApprovedForAll',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"isRevealed"`
+ */
+export const useReadKttyWorldBooksIsRevealed =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'isRevealed',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"isTokenRevealed"`
+ */
+export const useReadKttyWorldBooksIsTokenRevealed =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'isTokenRevealed',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"maxSupply"`
+ */
+export const useReadKttyWorldBooksMaxSupply =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'maxSupply',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"name"`
+ */
+export const useReadKttyWorldBooksName = /*#__PURE__*/ createUseReadContract({
+  abi: kttyWorldBooksAbi,
+  functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"owner"`
+ */
+export const useReadKttyWorldBooksOwner = /*#__PURE__*/ createUseReadContract({
+  abi: kttyWorldBooksAbi,
+  functionName: 'owner',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"ownerOf"`
+ */
+export const useReadKttyWorldBooksOwnerOf = /*#__PURE__*/ createUseReadContract(
+  { abi: kttyWorldBooksAbi, functionName: 'ownerOf' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"proxiableUUID"`
+ */
+export const useReadKttyWorldBooksProxiableUuid =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'proxiableUUID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"supportsInterface"`
+ */
+export const useReadKttyWorldBooksSupportsInterface =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'supportsInterface',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadKttyWorldBooksSymbol = /*#__PURE__*/ createUseReadContract({
+  abi: kttyWorldBooksAbi,
+  functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"tokenURI"`
+ */
+export const useReadKttyWorldBooksTokenUri =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'tokenURI',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadKttyWorldBooksTotalSupply =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'totalSupply',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__
+ */
+export const useWriteKttyWorldBooks = /*#__PURE__*/ createUseWriteContract({
+  abi: kttyWorldBooksAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteKttyWorldBooksApprove =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'approve',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"batchMintBooks"`
+ */
+export const useWriteKttyWorldBooksBatchMintBooks =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'batchMintBooks',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"batchRevealTokens"`
+ */
+export const useWriteKttyWorldBooksBatchRevealTokens =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'batchRevealTokens',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"burnBook"`
+ */
+export const useWriteKttyWorldBooksBurnBook =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'burnBook',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"initialize"`
+ */
+export const useWriteKttyWorldBooksInitialize =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'initialize',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteKttyWorldBooksRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"revealToken"`
+ */
+export const useWriteKttyWorldBooksRevealToken =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'revealToken',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"safeTransferFrom"`
+ */
+export const useWriteKttyWorldBooksSafeTransferFrom =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'safeTransferFrom',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setApprovalForAll"`
+ */
+export const useWriteKttyWorldBooksSetApprovalForAll =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setApprovalForAll',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setBaseTokenURI"`
+ */
+export const useWriteKttyWorldBooksSetBaseTokenUri =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setBaseTokenURI',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setHiddenMetadataURI"`
+ */
+export const useWriteKttyWorldBooksSetHiddenMetadataUri =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setHiddenMetadataURI',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setMintingContract"`
+ */
+export const useWriteKttyWorldBooksSetMintingContract =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setMintingContract',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setRevealed"`
+ */
+export const useWriteKttyWorldBooksSetRevealed =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setRevealed',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteKttyWorldBooksTransferFrom =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteKttyWorldBooksTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"updateName"`
+ */
+export const useWriteKttyWorldBooksUpdateName =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'updateName',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"upgradeToAndCall"`
+ */
+export const useWriteKttyWorldBooksUpgradeToAndCall =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'upgradeToAndCall',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__
+ */
+export const useSimulateKttyWorldBooks =
+  /*#__PURE__*/ createUseSimulateContract({ abi: kttyWorldBooksAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateKttyWorldBooksApprove =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'approve',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"batchMintBooks"`
+ */
+export const useSimulateKttyWorldBooksBatchMintBooks =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'batchMintBooks',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"batchRevealTokens"`
+ */
+export const useSimulateKttyWorldBooksBatchRevealTokens =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'batchRevealTokens',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"burnBook"`
+ */
+export const useSimulateKttyWorldBooksBurnBook =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'burnBook',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"initialize"`
+ */
+export const useSimulateKttyWorldBooksInitialize =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'initialize',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateKttyWorldBooksRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"revealToken"`
+ */
+export const useSimulateKttyWorldBooksRevealToken =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'revealToken',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"safeTransferFrom"`
+ */
+export const useSimulateKttyWorldBooksSafeTransferFrom =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'safeTransferFrom',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setApprovalForAll"`
+ */
+export const useSimulateKttyWorldBooksSetApprovalForAll =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setApprovalForAll',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setBaseTokenURI"`
+ */
+export const useSimulateKttyWorldBooksSetBaseTokenUri =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setBaseTokenURI',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setHiddenMetadataURI"`
+ */
+export const useSimulateKttyWorldBooksSetHiddenMetadataUri =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setHiddenMetadataURI',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setMintingContract"`
+ */
+export const useSimulateKttyWorldBooksSetMintingContract =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setMintingContract',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"setRevealed"`
+ */
+export const useSimulateKttyWorldBooksSetRevealed =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'setRevealed',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateKttyWorldBooksTransferFrom =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useSimulateKttyWorldBooksTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"updateName"`
+ */
+export const useSimulateKttyWorldBooksUpdateName =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'updateName',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `functionName` set to `"upgradeToAndCall"`
+ */
+export const useSimulateKttyWorldBooksUpgradeToAndCall =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldBooksAbi,
+    functionName: 'upgradeToAndCall',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__
+ */
+export const useWatchKttyWorldBooksEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: kttyWorldBooksAbi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchKttyWorldBooksApprovalEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'Approval',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"ApprovalForAll"`
+ */
+export const useWatchKttyWorldBooksApprovalForAllEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'ApprovalForAll',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"BaseTokenUriUpdated"`
+ */
+export const useWatchKttyWorldBooksBaseTokenUriUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'BaseTokenUriUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"BookAdded"`
+ */
+export const useWatchKttyWorldBooksBookAddedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'BookAdded',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"BookBurned"`
+ */
+export const useWatchKttyWorldBooksBookBurnedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'BookBurned',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"HiddenMetadataUriUpdated"`
+ */
+export const useWatchKttyWorldBooksHiddenMetadataUriUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'HiddenMetadataUriUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"Initialized"`
+ */
+export const useWatchKttyWorldBooksInitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'Initialized',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"MetadataUpdated"`
+ */
+export const useWatchKttyWorldBooksMetadataUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'MetadataUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"MintingContractUpdated"`
+ */
+export const useWatchKttyWorldBooksMintingContractUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'MintingContractUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchKttyWorldBooksOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"Revealed"`
+ */
+export const useWatchKttyWorldBooksRevealedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'Revealed',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"TokenRevealed"`
+ */
+export const useWatchKttyWorldBooksTokenRevealedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'TokenRevealed',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"TokensRevealed"`
+ */
+export const useWatchKttyWorldBooksTokensRevealedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'TokensRevealed',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchKttyWorldBooksTransferEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link kttyWorldBooksAbi}__ and `eventName` set to `"Upgraded"`
+ */
+export const useWatchKttyWorldBooksUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: kttyWorldBooksAbi,
+    eventName: 'Upgraded',
   })
 
 /**

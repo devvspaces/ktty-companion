@@ -2,10 +2,12 @@ import { defineConfig } from '@wagmi/cli'
 import { react } from '@wagmi/cli/plugins'
 import Erc20AbiRaw from '@/lib/abis/Erc20.json'
 import { abi as KttyWorldMinting } from '@/lib/abis/KttyWorldMinting.json'
+import { abi as KttyWorldBooks } from '@/lib/abis/KttyWorldBooks.json'
 import { Abi } from 'viem'
 
 const Erc20Abi = Erc20AbiRaw as Abi
 const KttyWorldMintingAbi = KttyWorldMinting as Abi
+const KttyWorldBooksAbi = KttyWorldBooks as Abi
 
 export default defineConfig({
   out: 'src/generated.ts',
@@ -17,6 +19,10 @@ export default defineConfig({
     {
       name: 'KttyWorldMinting',
       abi: KttyWorldMintingAbi,
+    },
+    {
+      name: 'KttyWorldBooks',
+      abi: KttyWorldBooksAbi,
     },
   ],
   plugins: [
