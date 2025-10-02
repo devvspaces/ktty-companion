@@ -62,6 +62,8 @@ export function useUserBooks(): UserBooksData {
   const [userBookIds, setUserBookIds] = useState<number[]>([]);
   const [isLoadingBookIds, setIsLoadingBookIds] = useState(false);
 
+  console.log(userBookIds)
+
   // Handle contract address
   let contractAddress: `0x${string}` | undefined;
   try {
@@ -93,6 +95,8 @@ export function useUserBooks(): UserBooksData {
     args: address ? [address] : undefined,
     query: { enabled: Boolean(address) }, // prevent call when address is null
   });
+
+  console.log("userBooksData:", userBooksData);
 
   // Read user book IDs
   // const {
@@ -241,7 +245,7 @@ export function useUserBooks(): UserBooksData {
         case "One Eye Bible":
           counts.oneEyeCount++;
           break;
-        case "Blacksmith's Manual":
+        case "Blacksmith’s Manual":
           counts.blacksmithCount++;
           break;
         case "Lucky Tome":
