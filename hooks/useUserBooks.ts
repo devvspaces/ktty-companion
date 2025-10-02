@@ -88,10 +88,6 @@ export function useUserBooks(): UserBooksData {
     },
   });
 
-  console.log(userBooksData)
-  console.log(userBookIds)
-  console.error(bookIdsError)
-
   // Watch mint/open events
   useWatchKttyWorldMintingBooksMintedEvent({
     address: contractAddress,
