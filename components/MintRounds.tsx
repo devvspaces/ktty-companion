@@ -25,8 +25,12 @@ function useMounted() {
   return mounted;
 }
 
-function getCountdownData(now: number, startTime: number, endTime: number) {
-  // Convert from seconds to milliseconds
+function getCountdownData(
+  now: number,
+  startTime: number,
+  endTime: number,
+  roundId: number
+) {
   const startMs = startTime * 1000;
   const endMs = endTime * 1000;
 
@@ -35,15 +39,22 @@ function getCountdownData(now: number, startTime: number, endTime: number) {
   let ended = false;
 
   if (now < startMs) {
+    // Before start
     label = "Starts in:";
     diff = startMs - now;
-  } else if (now >= startMs && now < endMs) {
+  } else if (roundId !== 4 && now < endMs) {
+    // Active but has an end
     label = "Ends in:";
     diff = endMs - now;
-  } else {
+  } else if (roundId !== 4 && now >= endMs) {
+    // Ended for non-public rounds
     label = "Ended";
-    diff = 0;
     ended = true;
+    diff = 0;
+  } else {
+    // Round 4: public & indefinite → no countdown
+    label = "";
+    diff = 0;
   }
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -58,7 +69,7 @@ function getCountdownData(now: number, startTime: number, endTime: number) {
     minutes,
     seconds,
     ended,
-    active: now >= startMs && now < endMs,
+    active: now >= startMs && (roundId === 4 || now < endMs),
   };
 }
 
@@ -69,6 +80,7 @@ export default function MintRounds() {
   const [now, setNow] = useState(Date.now());
   const { isConnected } = useAccount(); // check wallet state
   const [showConnectOverlay, setShowConnectOverlay] = useState(false); // toggle overlay
+  
 
   // Timer for countdown updates
   useEffect(() => {
@@ -263,7 +275,7 @@ export default function MintRounds() {
     <div className="h-full flex flex-col space-y-4">
       {rounds.map((round) => {
         const { label, days, hours, minutes, seconds, ended } =
-          getCountdownData(now, round.startTime, round.endTime);
+          getCountdownData(now, round.startTime, round.endTime, round.id);
 
         const isOpen = openRound === round.id;
         const isCurrentRound = currentRound === round.id;

@@ -23,8 +23,8 @@ export default function MintSection() {
     error: leaderboardError,
   } = useLeaderboard();
 
-  // Mint round data
-  const { rounds } = useMintRounds();
+  // ✅ Use new global stats directly from useMintRounds
+  const { rounds, overallMinted, overallSupply } = useMintRounds();
 
   // User books for badge logic
   const { totalBooks } = useUserBooks();
@@ -32,36 +32,26 @@ export default function MintSection() {
   // Track last seen count (persisted in localStorage)
   const [lastSeenCount, setLastSeenCount] = useState<number>(0);
 
-  // Load saved lastSeenCount on first mount
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("lastSeenBooks");
-      if (saved) {
-        setLastSeenCount(parseInt(saved, 10));
-      }
+      if (saved) setLastSeenCount(parseInt(saved, 10));
     }
   }, []);
 
-  // Show badge if there are more books than last time user opened the bag
   const hasNewBooks = totalBooks > lastSeenCount;
 
-  // When opening the bag, mark current total as seen
   const handleOpenBag = () => {
     setShowBag(true);
     setLastSeenCount(totalBooks);
     localStorage.setItem("lastSeenBooks", totalBooks.toString());
   };
 
-  // Mint progress
-  const minted = rounds
-    .filter((round) => round.id !== 4)
-    .reduce((sum, round) => sum + round.minted, 0);
-
-  const totalSupply = rounds
-    .filter((round) => round.id !== 4)
-    .reduce((sum, round) => sum + round.supply, 0);
-
-  const percent = Math.round((minted / totalSupply) * 100);
+  // ===== Global Mint Progress =====
+  const percent = Math.min(
+    100,
+    Math.round((overallMinted / overallSupply) * 100)
+  );
 
   return (
     <section
@@ -73,17 +63,17 @@ export default function MintSection() {
         Mint KTTYs
       </h2>
 
-      {/* Global Progress bar */}
+      {/* === Global Progress bar === */}
       <div className="w-full mb-10">
         <div className="flex justify-between text-base md:text-xl mb-3 px-1">
           <span className="text-gray-300">{percent}% minted</span>
           <span className="font-semibold">
-            {minted}/{totalSupply}
+            {overallMinted.toLocaleString()}/{overallSupply.toLocaleString()}
           </span>
         </div>
         <div className="w-full h-3 bg-black/60 border border-white/20 rounded-md overflow-hidden">
           <div
-            className="h-3 bg-blue-500 rounded"
+            className="h-3 bg-blue-500 rounded transition-all duration-500"
             style={{ width: `${percent}%` }}
           />
         </div>
@@ -115,7 +105,7 @@ export default function MintSection() {
           {isLeaderboardLoading ? "Loading..." : "Leaderboard"}
         </button>
 
-        {/* My Bag button with notification badge */}
+        {/* My Bag button with badge */}
         <div className="relative w-full">
           <button
             onClick={handleOpenBag}
