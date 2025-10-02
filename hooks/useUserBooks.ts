@@ -8,6 +8,7 @@ import {
   useWatchKttyWorldMintingBooksMintedEvent,
   useWatchKttyWorldMintingBookOpenedEvent,
   useReadKttyWorldBooksGetUserBooks,
+  useWatchKttyWorldBooksTransferEvent,
 } from "@/src/generated";
 import { getContractAddress } from "@/lib/contracts";
 
@@ -96,6 +97,21 @@ export function useUserBooks(): UserBooksData {
         (log) => log.args.buyer?.toLowerCase() === address?.toLowerCase()
       );
       if (userMinted) {
+        refetchUserBooks();
+        refetchBookIds();
+      }
+    },
+  });
+
+  useWatchKttyWorldBooksTransferEvent({
+    address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
+    onLogs: (logs) => {
+      const userTransferred = logs.some(
+        (log) =>
+          log.args.to?.toLowerCase() === address?.toLowerCase() ||
+          log.args.from?.toLowerCase() === address?.toLowerCase()
+      );
+      if (userTransferred) {
         refetchUserBooks();
         refetchBookIds();
       }
