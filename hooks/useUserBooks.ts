@@ -79,6 +79,8 @@ export function useUserBooks(): UserBooksData {
     args: address ? [address] : undefined,
   });
 
+  console.error(bookIdsError)
+
   // Watch mint/open events
   useWatchKttyWorldMintingBooksMintedEvent({
     address: contractAddress,

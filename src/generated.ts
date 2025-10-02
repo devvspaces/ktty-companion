@@ -143,6 +143,16 @@ export const kttyWorldMintingAbi = [
   {
     type: 'function',
     inputs: [
+      { name: 'bookIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'recipient', internalType: 'address', type: 'address' },
+    ],
+    name: 'airdropBooks',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
       { name: 'roundNumber', internalType: 'uint256', type: 'uint256' },
       {
         name: 'paymentType',
@@ -230,7 +240,7 @@ export const kttyWorldMintingAbi = [
     outputs: [
       {
         name: '',
-        internalType: 'struct DummyBooks.Book',
+        internalType: 'struct KttyWorldBooks.Book',
         type: 'tuple',
         components: [
           { name: 'nftId', internalType: 'uint256', type: 'uint256' },
@@ -362,6 +372,13 @@ export const kttyWorldMintingAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'getTreasuryWallet',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
     name: 'getUserBooks',
     outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
@@ -374,7 +391,7 @@ export const kttyWorldMintingAbi = [
     outputs: [
       {
         name: '',
-        internalType: 'struct DummyBooks.Book[]',
+        internalType: 'struct KttyWorldBooks.Book[]',
         type: 'tuple[]',
         components: [
           { name: 'nftId', internalType: 'uint256', type: 'uint256' },
@@ -1149,6 +1166,15 @@ export const useReadKttyWorldMintingGetTotalUniqueMinters =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"getTreasuryWallet"`
+ */
+export const useReadKttyWorldMintingGetTreasuryWallet =
+  /*#__PURE__*/ createUseReadContract({
+    abi: kttyWorldMintingAbi,
+    functionName: 'getTreasuryWallet',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"getUserBooks"`
  */
 export const useReadKttyWorldMintingGetUserBooks =
@@ -1260,6 +1286,15 @@ export const useReadKttyWorldMintingSupportsInterface =
 export const useWriteKttyWorldMinting = /*#__PURE__*/ createUseWriteContract({
   abi: kttyWorldMintingAbi,
 })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"airdropBooks"`
+ */
+export const useWriteKttyWorldMintingAirdropBooks =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: kttyWorldMintingAbi,
+    functionName: 'airdropBooks',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"configurePayment"`
@@ -1419,6 +1454,15 @@ export const useWriteKttyWorldMintingUpgradeToAndCall =
  */
 export const useSimulateKttyWorldMinting =
   /*#__PURE__*/ createUseSimulateContract({ abi: kttyWorldMintingAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"airdropBooks"`
+ */
+export const useSimulateKttyWorldMintingAirdropBooks =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: kttyWorldMintingAbi,
+    functionName: 'airdropBooks',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link kttyWorldMintingAbi}__ and `functionName` set to `"configurePayment"`
