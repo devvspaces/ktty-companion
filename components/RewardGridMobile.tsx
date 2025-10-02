@@ -193,7 +193,7 @@ export default function RewardGridMobile({
         </button>
         {availableBooks === 0 ? (
           <button
-            onClick={() => (window.location.href = "/home#mint")}
+            onClick={() => (window.location.href = "/#mint")}
             className="flex-1 mx-2 py-2 bg-emerald-600 text-white rounded-md font-semibold hover:bg-emerald-500"
           >
             Mint Books

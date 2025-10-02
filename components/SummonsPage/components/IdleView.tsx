@@ -17,14 +17,14 @@ export default function IdleView({
 }: IdleViewProps) {
   return (
     <>
-      {/* Idle background */}
+      {/* Idle background video */}
       <div className="absolute inset-0">
         <video
           key={idleVideo}
           ref={(el) => {
             if (el) {
-              el.muted = true;
-              el.play().catch(() => {});
+              el.muted = true; // ensure muted for autoplay
+              el.play().catch(() => {}); // try to autoplay (works on desktop)
             }
           }}
           autoPlay
@@ -42,10 +42,10 @@ export default function IdleView({
         </video>
       </div>
 
-      {/* Idle screen content */}
+      {/* UI Overlay */}
       <div className="relative z-10 flex flex-col h-full pointer-events-auto">
         <div className="flex-1 flex flex-col justify-end pb-4">
-          {/* RPG-style textbox */}
+          {/* Textbox */}
           <div className="mx-4 mb-3 bg-black/70 border-2 border-purple-500 rounded-md p-2 flex items-stretch gap-2 min-h-[80px] md:min-h-[120px] lg:min-h-[150px]">
             <div className="relative aspect-square h-full flex-shrink-0 bg-white/10 rounded">
               <Image
@@ -67,7 +67,7 @@ export default function IdleView({
               onClick={() => onSummon(1)}
               className="flex-1 px-3 py-2 md:px-4 md:py-2.5 bg-purple-600 rounded-md font-semibold text-white hover:bg-purple-500 transition text-sm md:text-base"
             >
-              Summon x12
+              Summon x1
             </button>
             <button
               onClick={() => onSummon(5)}

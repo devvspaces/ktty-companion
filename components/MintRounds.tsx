@@ -385,11 +385,15 @@ export default function MintRounds() {
                   <p className="text-base md:text-xl">
                     Mint Price:{" "}
                     <span className="font-semibold">
-                      {formatPrice(
-                        round.nativeOnlyPayment.nativeAmount,
-                        round.hybridPayment.nativeAmount,
-                        round.hybridPayment.erc20Amount
-                      )}
+                      {round.id === 1 || round.id === 2
+                        ? `${formatEther(round.hybridPayment.nativeAmount)} RON + ${formatEther(
+                            round.hybridPayment.erc20Amount
+                          )} KTTY`
+                        : formatPrice(
+                            round.nativeOnlyPayment.nativeAmount,
+                            round.hybridPayment.nativeAmount,
+                            round.hybridPayment.erc20Amount
+                          )}
                     </span>
                   </p>
 
@@ -431,27 +435,49 @@ export default function MintRounds() {
 
                 {!ended && (
                   <div className="mt-6 md:mt-8 flex flex-col gap-4 md:gap-6">
-                    {/* Whitelist status display */}
-                    {!isEligible && (
-                      <div className="p-3 bg-yellow-900/30 border border-yellow-500/50 rounded-md">
-                        <p className="text-yellow-300 text-sm">
-                          {round.id === 1 || round.id === 2
-                            ? "You're not whitelisted for this round"
-                            : round.id === 3
-                              ? "You're not whitelisted for round 3"
-                              : "Eligibility unknown"}
-                        </p>
-                        {(round.id === 1 || round.id === 2) &&
-                          roundValidation && (
-                            <p className="text-yellow-400 text-xs mt-1">
-                              Allowance:{" "}
-                              {(roundValidation as WhitelistValidation)
-                                .allowance || 0}{" "}
-                              | Minted:{" "}
-                              {(roundValidation as WhitelistValidation)
-                                .minted || 0}
-                            </p>
-                          )}
+                    {/* Whitelist display */}
+                    {(round.id === 1 || round.id === 2 || round.id === 3) && (
+                      <div
+                        className={`p-3 rounded-md ${
+                          isEligible
+                            ? "bg-green-900/30 border border-green-500/50"
+                            : "bg-yellow-900/30 border border-yellow-500/50"
+                        }`}
+                      >
+                        {!isEligible ? (
+                          <p className="text-yellow-300 text-sm">
+                            You're not whitelisted for this round
+                          </p>
+                        ) : (
+                          <>
+                            {/* Message for rounds 1 & 2 */}
+                            {(round.id === 1 || round.id === 2) &&
+                            typeof roundValidation === "object" &&
+                            roundValidation !== null &&
+                            (roundValidation.minted ?? 0) >=
+                              (roundValidation.allowance ?? 0) ? (
+                              <p className="text-red-300 text-sm">
+                                You have used up your allowance
+                              </p>
+                            ) : (
+                              <p className="text-green-300 text-sm">
+                                You are whitelisted for this round
+                              </p>
+                            )}
+
+                            {/* Allowance display for rounds 1 & 2 */}
+                            {(round.id === 1 || round.id === 2) &&
+                              typeof roundValidation === "object" &&
+                              roundValidation !== null && (
+                                <p className="text-xs mt-1 text-gray-200">
+                                  Your Allowance:{" "}
+                                  {(roundValidation.allowance ?? 0) -
+                                    (roundValidation.minted ?? 0)}
+                                  /{roundValidation.allowance ?? 0} remaining
+                                </p>
+                              )}
+                          </>
+                        )}
                       </div>
                     )}
 
@@ -514,19 +540,22 @@ export default function MintRounds() {
                     </div>
 
                     <div className="flex gap-3 md:gap-4">
-                      <button
-                        className="flex-1 py-2 md:py-3 bg-white text-black rounded font-semibold hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
-                        onClick={() => handleMint(round.id, "RON")}
-                        disabled={!canMint || isProcessing}
-                      >
-                        {isProcessing
-                          ? "Processing..."
-                          : !isCurrentRound && !ended
-                            ? "Not Current Round"
-                            : !isEligible
-                              ? "Not Eligible"
-                              : "Mint with RON"}
-                      </button>
+                      {/* Show RON-only button except in rounds 1 & 2 */}
+                      {round.id > 2 && (
+                        <button
+                          className="flex-1 py-2 md:py-3 bg-white text-black rounded font-semibold hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+                          onClick={() => handleMint(round.id, "RON")}
+                          disabled={!canMint || isProcessing}
+                        >
+                          {isProcessing
+                            ? "Processing..."
+                            : !isCurrentRound && !ended
+                              ? "Not Current Round"
+                              : !isEligible
+                                ? "Not Eligible"
+                                : "Mint with RON"}
+                        </button>
+                      )}
                       <button
                         className="flex-1 py-2 md:py-3 bg-purple-600 rounded font-semibold hover:bg-purple-500 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-purple-600"
                         onClick={() => {

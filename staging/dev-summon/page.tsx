@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import AnimationView from "@/components/SummonsPage/components/AnimationView";
 import { getSummonVideos } from "@/components/SummonsPage/utils/getSummonVideos";
 
@@ -12,6 +12,9 @@ export default function DevSummonPage() {
   >("normal");
   const [muted, setMuted] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
+
+  // ✅ new external video ref
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const summonVideos = getSummonVideos("mobile");
 
@@ -32,6 +35,8 @@ export default function DevSummonPage() {
         setFadeOut={setFadeOut}
         skipSummon={() => setStep("setup")}
         onFinish={() => setStep("setup")}
+        videoRef={videoRef} // ✅ required prop
+        isVisible={step === "animation"} // ✅ required prop
       />
     );
   }

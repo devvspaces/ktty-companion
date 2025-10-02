@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAccount } from "wagmi";
 
 import IdleView from "@/components/SummonsPage/components/IdleView";
@@ -42,6 +42,9 @@ function useScreenSize() {
 
 export default function SummonsPage() {
   const { address } = useAccount();
+
+  // ✅ Shared ref for AnimationView
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const {
     amethystCount,
@@ -114,9 +117,7 @@ export default function SummonsPage() {
     showFlash,
     message,
     cursor,
-    setCursor,
 
-    // Animation state
     selectedBookColor,
     selectedRarity,
     muted,
@@ -124,7 +125,6 @@ export default function SummonsPage() {
     fadeOut,
     setFadeOut,
 
-    // Reward flow
     rewards,
     currentIndex,
     summonCount,
@@ -133,7 +133,6 @@ export default function SummonsPage() {
     handleSkipToGrid,
     skipSummon,
 
-    // Modal
     bookSelectOpen,
     closeBookSelect,
     confirmBookSelect,
@@ -155,7 +154,7 @@ export default function SummonsPage() {
       ? "https://d1dqnt0gd112rm.cloudfront.net/video/summonhomew.mp4"
       : "https://d1dqnt0gd112rm.cloudfront.net/video/summonhomev.mp4";
 
-  // 🔹 Total books available for “Summon Again”
+  // 🔹 Total books available
   const availableBooks =
     emeraldCount +
     rubyCount +
@@ -165,6 +164,27 @@ export default function SummonsPage() {
     oneEyeCount +
     corruptCount;
 
+  // ✅ Priming helper – called on FIRST user gesture
+  const primeVideo = async () => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    try {
+      vid.muted = true; // keep muted for autoplay
+      await vid.play(); // play due to gesture
+      vid.pause(); // immediately pause
+      vid.currentTime = 0; // rewind to first frame
+      console.log("🎥 Video primed successfully");
+    } catch (err) {
+      console.warn("⚠️ Video priming failed:", err);
+    }
+  };
+
+  // ✅ Wrap summon click → prime first
+  const handleOpenBookSelect = (count: number) => {
+    primeVideo(); // 👈 ensures iOS allows later autoplay
+    openBookSelect(count);
+  };
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Idle view */}
@@ -173,7 +193,7 @@ export default function SummonsPage() {
           idleVideo={idleVideo}
           message={message}
           cursor={cursor}
-          onSummon={openBookSelect}
+          onSummon={handleOpenBookSelect} // 👈 patched
         />
       )}
 
@@ -194,6 +214,8 @@ export default function SummonsPage() {
           setFadeOut={setFadeOut}
           skipSummon={skipSummon}
           onFinish={() => setStep("reward")}
+          videoRef={videoRef} // 👈 shared ref
+          isVisible={step === "animation"} // 👈 control playback
         />
       )}
 
@@ -204,7 +226,7 @@ export default function SummonsPage() {
           currentIndex={currentIndex}
           summonCount={summonCount}
           onBack={handleBack}
-          onSummonAgain={(count) => openBookSelect(count)}
+          onSummonAgain={(count) => handleOpenBookSelect(count)}
           onNext={handleNextReward}
           onSkipToGrid={handleSkipToGrid}
         />
@@ -216,7 +238,7 @@ export default function SummonsPage() {
           rewards={rewards}
           availableBooks={availableBooks}
           onBack={handleBack}
-          onSummonAgain={(count) => openBookSelect(count)}
+          onSummonAgain={(count) => handleOpenBookSelect(count)}
         />
       )}
 
@@ -253,6 +275,7 @@ export default function SummonsPage() {
         .delay-1000 {
           animation-delay: 1s;
         }
+
         @keyframes fadeIn {
           to {
             opacity: 1;

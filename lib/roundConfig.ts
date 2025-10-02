@@ -16,14 +16,14 @@ export const ROUND_CONFIG: Record<number, RoundConfig> = {
     id: 1,
     title: "9 Lives Round",
     description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
-    eligibility: ["Whitelisted Addresses"],
+    eligibility: ["9 Lives Role"],
     includes: ["1 NULL KTTY NFT", "3 × Forge Tools"],
   },
   2: {
     id: 2,
     title: "Fallen Personality Round", 
     description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
-    eligibility: ["9 Lives Role"],
+    eligibility: ["Fallen Personalities"],
     includes: ["1 NULL KTTY NFT", "3 × Forge Tools"],
   },
   3: {

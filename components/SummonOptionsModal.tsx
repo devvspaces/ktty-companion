@@ -58,10 +58,10 @@ export default function SummonOptionsModal({
         {/* Mint Books (only if none left) */}
         {availableBooks === 0 && (
           <button
-            onClick={() => (window.location.href = "/home#mint")}
+            onClick={() => (window.location.href = "/#mint")}
             className="w-full py-3 rounded-md font-semibold bg-emerald-600 hover:bg-emerald-500 text-white mb-4"
           >
-            Mint Books
+            Mint more Books
           </button>
         )}
 

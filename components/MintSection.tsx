@@ -1,34 +1,66 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MintRounds from "./MintRounds";
 import ImageWall from "./ImageWall";
 import LeaderboardModal from "./LeaderboardModal";
 import MyBagModal from "./MyBagModal";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { useMintRounds } from "@/hooks/useMintRounds";
-import Link from "next/link";
+import { useUserBooks } from "@/hooks/useUserBooks";
 
 export default function MintSection() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBag, setShowBag] = useState(false);
 
-  // Get real leaderboard data from smart contract
+  // Leaderboard data
   const {
     topMinters: leaderboard,
     userMints,
     userRank,
     totalUniqueMinters,
     isLoading: isLeaderboardLoading,
-    error: leaderboardError
+    error: leaderboardError,
   } = useLeaderboard();
 
+  // Mint round data
+  const { rounds } = useMintRounds();
 
-  // Load round data from smart contract
-  const { rounds, currentRound, isLoading, error } = useMintRounds();
+  // User books for badge logic
+  const { totalBooks } = useUserBooks();
 
-  const minted = rounds.filter(round => round.id != 4).reduce((sum, round) => sum + round.minted, 0);
-  const totalSupply = rounds.filter(round => round.id != 4).reduce((sum, round) => sum + round.supply, 0);
+  // Track last seen count (persisted in localStorage)
+  const [lastSeenCount, setLastSeenCount] = useState<number>(0);
+
+  // Load saved lastSeenCount on first mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("lastSeenBooks");
+      if (saved) {
+        setLastSeenCount(parseInt(saved, 10));
+      }
+    }
+  }, []);
+
+  // Show badge if there are more books than last time user opened the bag
+  const hasNewBooks = totalBooks > lastSeenCount;
+
+  // When opening the bag, mark current total as seen
+  const handleOpenBag = () => {
+    setShowBag(true);
+    setLastSeenCount(totalBooks);
+    localStorage.setItem("lastSeenBooks", totalBooks.toString());
+  };
+
+  // Mint progress
+  const minted = rounds
+    .filter((round) => round.id !== 4)
+    .reduce((sum, round) => sum + round.minted, 0);
+
+  const totalSupply = rounds
+    .filter((round) => round.id !== 4)
+    .reduce((sum, round) => sum + round.supply, 0);
+
   const percent = Math.round((minted / totalSupply) * 100);
 
   return (
@@ -72,25 +104,51 @@ export default function MintSection() {
 
       {/* Bottom buttons */}
       <div className="grid grid-cols-3 gap-4 mt-4 md:mt-10">
+        {/* Leaderboard button */}
         <button
           onClick={() => setShowLeaderboard(true)}
           disabled={isLeaderboardLoading}
-          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition disabled:opacity-50"
+          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base 
+                     bg-black/60 border border-white/20 rounded-md font-semibold 
+                     hover:bg-black/80 transition disabled:opacity-50"
         >
           {isLeaderboardLoading ? "Loading..." : "Leaderboard"}
         </button>
-        <button
-          onClick={() => setShowBag(true)}
-          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition"
-        >
-          My Bag
-        </button>
-        <Link href="/summon">
-          <button className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base bg-black/60 border border-white/20 rounded-md font-semibold hover:bg-black/80 transition">
-            <span className="block md:hidden">Summon</span>
-            <span className="hidden md:block">Summon KTTYs</span>
+
+        {/* My Bag button with notification badge */}
+        <div className="relative w-full">
+          <button
+            onClick={handleOpenBag}
+            className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base 
+                       bg-black/60 border border-white/20 rounded-md font-semibold 
+                       hover:bg-black/80 transition"
+          >
+            My Bag
           </button>
-        </Link>
+
+          {hasNewBooks && (
+            <span
+              className="absolute -top-1 -right-1
+                         min-w-[1.1rem] h-5 px-1
+                         flex items-center justify-center
+                         bg-red-500 text-white text-[0.7rem] font-bold
+                         rounded-full border border-black shadow-md"
+            >
+              !
+            </span>
+          )}
+        </div>
+
+        {/* Inactive Summon button */}
+        <button
+          onClick={(e) => e.preventDefault()}
+          className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base 
+                     bg-black/40 border border-white/20 rounded-md font-semibold 
+                     text-gray-400 hover:text-gray-400 hover:bg-black/40 transition"
+        >
+          <span className="block md:hidden">Summon</span>
+          <span className="hidden md:block">Summon KTTYs</span>
+        </button>
       </div>
 
       {/* Leaderboard Modal */}

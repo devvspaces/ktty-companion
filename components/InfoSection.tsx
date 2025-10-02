@@ -67,7 +67,7 @@ export default function InfoSection() {
               // 💡 Grid for desktop (art left / text right), stacked on mobile
               className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center"
             >
-              {/* Artwork with Video */}
+              {/* Tamer Forge */}
               <div className="flex justify-center">
                 <div className="relative w-full max-w-md aspect-square bg-white/10 border border-white/20 rounded-md overflow-hidden">
                   <video
@@ -100,6 +100,27 @@ export default function InfoSection() {
                     here
                   </Link>
                 </p>
+              </div>
+              {/* Text */}
+              <div className="text-center md:text-left max-w-xl mx-auto md:mx-0">
+                <h3 className="text-4xl md:text-6xl font-bold mb-4">
+                  KTTY Mining Colony
+                </h3>
+                <p className="text-base md:text-xl text-gray-300 leading-relaxed">
+                  Send your KTTY Companions into the mines and form a mining
+                  colony to retrieve back resources and rare catalysts.
+                </p>
+              </div>
+              {/* KTTY Mining Colonies */}
+              <div className="flex justify-center">
+                <div className="relative w-full max-w-md aspect-square bg-white/10 border border-white/20 rounded-md overflow-hidden">
+                  <Image
+                    src="/images/mine.png"
+                    alt="Mine"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               </div>
             </motion.div>
           )}
@@ -159,10 +180,14 @@ export default function InfoSection() {
             >
               {/* Artwork */}
               <div className="flex justify-center">
-                <div className="relative w-full max-w-md aspect-square bg-white/10 border-white/20 rounded-md flex items-center justify-center">
-                  <span className="text-sm text-gray-400">
-                    Artwork Placeholder
-                  </span>
+                <div className="relative w-full max-w-md aspect-square bg-white/10 border-white/20 rounded-md overflow-hidden">
+                  <Image
+                    src="/images/leaderboard.png"
+                    alt="Leaderboard"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
 
@@ -171,9 +196,9 @@ export default function InfoSection() {
                 <h3 className="text-4xl md:text-6xl font-bold mb-4">
                   Leaderboard
                 </h3>
-                <p className="text-base md:text-xl text-gray-300 leading-relaxed">
-                  Climb the ranks by minting. There are glorious prizes to be
-                  awarded to the Top 3!
+                <p className="text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed text-center">
+                  Climb the ranks by minting — prizes go to the
+                  Top&nbsp;3 KTTY Collectors!
                 </p>
               </div>
             </motion.div>

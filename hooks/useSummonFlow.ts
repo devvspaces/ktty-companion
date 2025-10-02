@@ -53,19 +53,20 @@ export function useSummonFlow({
   const [selectedRarity, setSelectedRarity] = useState<
     "normal" | "rare" | "ultra" | undefined
   >();
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   const [cursor, setCursor] = useState(0);
   const [message] = useState(
     "These books contain a magic spell that will help you summon KTTYs! Open them to see what's inside."
   );
 
+  // 🔑 main video ref to control play/pause
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [bookSelectOpen, setBookSelectOpen] = useState(false);
   const [countRequired, setCountRequired] = useState<number>(1);
 
-  // TYPEWRITER
+  // 📝 typewriter
   useEffect(() => {
     if (cursor < message.length) {
       const t = setTimeout(() => setCursor((c) => c + 1), 35);
@@ -73,7 +74,7 @@ export function useSummonFlow({
     }
   }, [cursor, message]);
 
-  // Pick the video theme
+  // 🎨 pick cinematic theme
   function getBatchTheme(selection: Record<string, number>) {
     const hierarchy = ["corrupt", "lucky", "bsmith", "oneeye"];
     for (const key of hierarchy) {
@@ -89,7 +90,7 @@ export function useSummonFlow({
       : "ruby";
   }
 
-  // Start the animation after tx success
+  // ▶️ start cinematic after tx
   function startSummonAnimation(
     selectedBooks: BookDetail[],
     selection: Record<string, number>
@@ -103,18 +104,15 @@ export function useSummonFlow({
     const theme = getBatchTheme(selection);
     setSelectedBookColor(theme);
 
-    // 🎲 RANDOMLY CHOOSE CINEMATIC TIER (weighted 60 / 30 / 10)
+    // weighted random tier
     const rand = Math.random();
     let randomTier: "normal" | "rare" | "ultra";
-    if (rand < 0.6)
-      randomTier = "normal"; // 60%
-    else if (rand < 0.9)
-      randomTier = "rare"; // next 30%
-    else randomTier = "ultra"; // final 10%
-
+    if (rand < 0.6) randomTier = "normal";
+    else if (rand < 0.9) randomTier = "rare";
+    else randomTier = "ultra";
     setSelectedRarity(randomTier);
 
-    // Prepare rewards
+    // prepare mock rewards
     const mock: Reward[] = selectedBooks.map((book) => {
       const color = seriesToColor[book.series] || "purple";
       const bookContent = books[book.id.toString() as keyof typeof books];
@@ -133,18 +131,18 @@ export function useSummonFlow({
     });
     setRewards(mock);
 
-    // Switch to animation step after short flash
+    // move to animation step after flash
     setTimeout(() => setStep("animation"), 500);
-    // NOTE: we will hide flash in AnimationView onCanPlay, not here
   }
 
-  // NAVIGATION HANDLERS
+  // ⏪ back
   function handleBack() {
     setStep("idle");
     setFadeOut(false);
     setRewards([]);
   }
 
+  // ⏩ skip cinematic
   function skipSummon() {
     setFadeOut(true);
     setTimeout(() => {
@@ -166,7 +164,7 @@ export function useSummonFlow({
     setStep("grid");
   }
 
-  // MODAL
+  // 📚 modal controls
   function openBookSelect(count: number) {
     setCountRequired(count);
     setBookSelectOpen(true);
@@ -175,6 +173,7 @@ export function useSummonFlow({
     setBookSelectOpen(false);
   }
 
+  // 🟢 user clicks "Confirm Open"
   async function confirmBookSelect(
     selectedBooks: BookDetail[],
     selection: Record<string, number>
@@ -183,16 +182,28 @@ export function useSummonFlow({
     setSelectedBooksForSummon(selectedBooks);
     setPendingSelection(selection);
 
+    // 🔑 pre-mount & grant autoplay
+    if (videoRef.current) {
+      try {
+        await videoRef.current.play(); // start under gesture
+        videoRef.current.pause(); // immediately pause
+        videoRef.current.currentTime = 0; // rewind
+        console.log("✅ pre-mounted summon video buffered & paused");
+      } catch (err) {
+        console.warn("⚠️ pre-play failed:", err);
+      }
+    }
+
     const ids = extractBookIds(selectedBooks);
     try {
-      await openBooks(ids); // triggers wallet + tx
+      await openBooks(ids); // triggers wallet tx
     } catch (err) {
       console.error("openBooks failed:", err);
       setStep("idle");
     }
   }
 
-  // WATCHER
+  // 👀 watcher for tx success
   useEffect(() => {
     console.log("Watcher check:", {
       hasBooks: selectedBooksForSummon.length,
@@ -208,10 +219,16 @@ export function useSummonFlow({
       !isOpeningBooks &&
       !isWaitingForOpen
     ) {
-      console.log("▶️  Starting animation after tx");
+      console.log("▶️ starting animation after tx success");
       startSummonAnimation(selectedBooksForSummon, pendingRef.current);
       setSelectedBooksForSummon([]);
       setPendingSelection({});
+      // ✅ resume play once visible
+      requestAnimationFrame(() => {
+        videoRef.current
+          ?.play()
+          .catch((err) => console.log("resume play failed", err));
+      });
     }
   }, [
     openTxHash,
@@ -252,6 +269,6 @@ export function useSummonFlow({
     confirmBookSelect,
     countRequired,
 
-    videoRef,
+    videoRef, // 🔑 pass down to AnimationView
   };
 }

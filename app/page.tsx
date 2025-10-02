@@ -27,12 +27,12 @@ const steps = [
     key: "summon",
     title: "Summon KTTYs",
     description:
-      "Use your Summoning Books to summon your magical KTTY companion and begin your journey in the world of Felysia.",
+      "Enter the KTTY Summoning Altar once it opens and you will be able to summon your magical KTTY companions. Good Luck!",
     image: "/images/howto/howto3.png",
   },
 ];
 
-export default function NewsPage() {
+export default function MintPage() {
   const [openStep, setOpenStep] = useState<string | null>(steps[0].key);
   const [activeHighlight, setActiveHighlight] = useState(0);
 
