@@ -96,6 +96,7 @@ export function useUserBooks(): UserBooksData {
       }
     },
   });
+  
 
   useWatchKttyWorldMintingBookOpenedEvent({
     address: contractAddress,
