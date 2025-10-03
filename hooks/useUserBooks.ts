@@ -58,11 +58,12 @@ const getUserNFTs = async (walletAddress: string): Promise<number[]> => {
 
 export function useUserBooks(): UserBooksData {
   const { address } = useAccount();
+  // const address = "0x51970de41d642b2f901d7970187358eeA66a723A".toLowerCase(); // temp for testing
   const [error, setError] = useState<string | null>(null);
-  const [userBookIds, setUserBookIds] = useState<number[]>([]);
-  const [isLoadingBookIds, setIsLoadingBookIds] = useState(false);
+  // const [userBookIds, setUserBookIds] = useState<number[]>([]);
+  // const [isLoadingBookIds, setIsLoadingBookIds] = useState(false);
 
-  console.log(userBookIds)
+  // console.log(userBookIds)
 
   // Handle contract address
   let contractAddress: `0x${string}` | undefined;
@@ -96,66 +97,66 @@ export function useUserBooks(): UserBooksData {
     query: { enabled: Boolean(address) }, // prevent call when address is null
   });
 
-  console.log("userBooksData:", userBooksData);
+  // console.log("userBooksData:", userBooksData);
 
   // Read user book IDs
-  // const {
-  //   data: userBookIds,
-  //   isLoading: isLoadingBookIds,
-  //   error: bookIdsError,
-  //   refetch: refetchBookIds,
-  // } = useReadKttyWorldBooksGetUserBooks({
-  //   address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
-  //   args: address ? [address] : undefined,
-  //   query: {
-  //     enabled: Boolean(address),
-  //     retry: 3,
-  //     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-  //     staleTime: 5000,
-  //     refetchOnWindowFocus: false,
-  //   },
-  // });
+  const {
+    data: userBookIds,
+    isLoading: isLoadingBookIds,
+    error: bookIdsError,
+    refetch: refetchBookIds,
+  } = useReadKttyWorldBooksGetUserBooks({
+    address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: Boolean(address),
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5000,
+      refetchOnWindowFocus: false,
+    },
+  });
 
   // Use getUserNFTs async method instead
-  useEffect(() => {
-    const fetchUserBookIds = async () => {
-      if (!address) {
-        setUserBookIds([]);
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchUserBookIds = async () => {
+  //     if (!address) {
+  //       setUserBookIds([]);
+  //       return;
+  //     }
 
-      setIsLoadingBookIds(true);
-      try {
-        const nftIds = await getUserNFTs(address);
-        setUserBookIds(nftIds);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching user book IDs:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch user book IDs');
-        setUserBookIds([]);
-      } finally {
-        setIsLoadingBookIds(false);
-      }
-    };
+  //     setIsLoadingBookIds(true);
+  //     try {
+  //       const nftIds = await getUserNFTs(address);
+  //       setUserBookIds(nftIds);
+  //       setError(null);
+  //     } catch (err) {
+  //       console.error('Error fetching user book IDs:', err);
+  //       setError(err instanceof Error ? err.message : 'Failed to fetch user book IDs');
+  //       setUserBookIds([]);
+  //     } finally {
+  //       setIsLoadingBookIds(false);
+  //     }
+  //   };
 
-    fetchUserBookIds();
-  }, [address]);
+  //   fetchUserBookIds();
+  // }, [address]);
 
-  const refetchBookIds = async () => {
-    if (!address) return;
+  // const refetchBookIds = async () => {
+  //   if (!address) return;
     
-    setIsLoadingBookIds(true);
-    try {
-      const nftIds = await getUserNFTs(address);
-      setUserBookIds(nftIds);
-      setError(null);
-    } catch (err) {
-      console.error('Error refetching user book IDs:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch user book IDs');
-    } finally {
-      setIsLoadingBookIds(false);
-    }
-  };
+  //   setIsLoadingBookIds(true);
+  //   try {
+  //     const nftIds = await getUserNFTs(address);
+  //     setUserBookIds(nftIds);
+  //     setError(null);
+  //   } catch (err) {
+  //     console.error('Error refetching user book IDs:', err);
+  //     setError(err instanceof Error ? err.message : 'Failed to fetch user book IDs');
+  //   } finally {
+  //     setIsLoadingBookIds(false);
+  //   }
+  // };
 
   // Watch mint/open events
   useWatchKttyWorldMintingBooksMintedEvent({
