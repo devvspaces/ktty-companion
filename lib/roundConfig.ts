@@ -36,7 +36,7 @@ export const ROUND_CONFIG: Record<number, RoundConfig> = {
   4: {
     id: 4,
     title: "Public Round",
-    description: "This round is available to those affiliated with the One Eye Clan. Help break the cycle by taking your rightful place in the world that Mr Null will create by claiming an all powerful NULL KTTY.",
+    description: "Mint your KTTY Summoning Books in this public Round. What you receive is down to fate...Good Luck Tamer!",
     eligibility: ["Open to All"],
     includes: ["1 Random KTTY NFT", "3 × Forge Tools", "Possible Golden Ticket"],
   },
