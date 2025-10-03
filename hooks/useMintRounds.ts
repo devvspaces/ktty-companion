@@ -197,30 +197,16 @@ export function useMintRounds(): MintRoundsData {
       }
 
       case 3: {
-        // ✅ freeze Round 3 once we move to Round 4
-        if (currentRound >= 4 && allRoundsData) {
-          const minted = Number(allRoundsData[2]?.minted ?? 0);
-          const supply = Number(allRoundsData[2]?.supply ?? 0);
-          return {
-            minted,
-            supply,
-            progress: supply > 0 ? Math.round((minted / supply) * 100) : 0,
-          };
-        }
-
-        // live calc while round 3 is active
-        const totalSupply = poolStatus.bucketsTotal.reduce((s, v) => s + v, 0);
-        const totalRemaining = poolStatus.bucketsRemaining.reduce(
-          (s, v) => s + v,
-          0
-        );
-        const minted = totalSupply - totalRemaining;
-        return {
-          minted,
-          supply: totalSupply,
-          progress:
-            totalSupply > 0 ? Math.round((minted / totalSupply) * 100) : 0,
-        };
+    {
+      // Show the historic round-3 snapshot
+      const minted = Number(allRoundsData?.[2]?.minted ?? 0);
+      const supply = Number(allRoundsData?.[2]?.supply ?? 0);
+      return {
+        minted,
+        supply,
+        progress: supply > 0 ? Math.round((minted / supply) * 100) : 0,
+      };
+    }
       }
 
       case 4: {
