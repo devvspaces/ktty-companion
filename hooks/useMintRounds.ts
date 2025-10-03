@@ -7,9 +7,11 @@ import {
   useReadKttyWorldMintingGetPoolAndBucketStatus,
   useWatchKttyWorldMintingBooksMintedEvent,
   useWatchKttyWorldMintingRoundUpdatedEvent,
+  useReadKttyWorldBooksBalanceOf,
 } from "@/src/generated";
 import { getContractAddress } from "@/lib/contracts";
 import { getRoundConfig, type RoundConfig } from "@/lib/roundConfig";
+import { formatEther } from "viem";
 
 export interface PaymentOption {
   nativeAmount: bigint;
@@ -81,6 +83,19 @@ export function useMintRounds(): MintRoundsData {
   }
 
   // ===== Read on-chain data
+
+
+  const {
+    data: mainBalance,
+    isLoading: isLoadingMainBalance,
+    error: mainBalanceError,
+    refetch: refetchMainBalance,
+  } = useReadKttyWorldBooksBalanceOf({
+    address: "0x9c17B842B39f9443F1108a147C4100a374Ff0E55",
+    args: contractAddress ? [contractAddress] : undefined,
+    query: { enabled: Boolean(contractAddress) },
+  });
+
   const {
     data: allRoundsData,
     isLoading: isLoadingRounds,
@@ -111,6 +126,7 @@ export function useMintRounds(): MintRoundsData {
       refetchCurrentRound();
       refetchPoolStatus();
       refetchRounds();
+      refetchMainBalance();
     },
   });
 
@@ -120,12 +136,13 @@ export function useMintRounds(): MintRoundsData {
       refetchCurrentRound();
       refetchPoolStatus();
       refetchRounds();
+      refetchMainBalance();
     },
   });
 
   // ===== Error handler
   useEffect(() => {
-    const errors = [roundsError, currentRoundError, poolStatusError].filter(
+    const errors = [roundsError, currentRoundError, poolStatusError, mainBalanceError].filter(
       Boolean
     );
     if (errors.length > 0) {
@@ -197,37 +214,39 @@ export function useMintRounds(): MintRoundsData {
       }
 
       case 3: {
-    {
-      // Show the historic round-3 snapshot
-      const minted = Number(allRoundsData?.[2]?.minted ?? 0);
-      const supply = Number(allRoundsData?.[2]?.supply ?? 0);
-      return {
-        minted,
-        supply,
-        progress: supply > 0 ? Math.round((minted / supply) * 100) : 0,
-      };
-    }
+        const totalSupply = poolStatus.bucketsTotal.reduce(
+          (s, v) => s + v,
+          0
+        );
+        const totalRemaining = poolStatus.bucketsRemaining.reduce(
+          (s, v) => s + v,
+          0
+        );
+        const minted = totalSupply - totalRemaining;
+        return {
+          minted,
+          supply: totalSupply,
+          progress:
+            totalSupply > 0 ? Math.round((minted / totalSupply) * 100) : 0,
+        };
       }
 
       case 4: {
-        if (currentRound >= 4) {
-          const totalSupply = poolStatus.bucketsTotal.reduce(
-            (s, v) => s + v,
-            0
-          );
-          const totalRemaining = poolStatus.bucketsRemaining.reduce(
-            (s, v) => s + v,
-            0
-          );
-          const minted = totalSupply - totalRemaining;
-          return {
-            minted,
-            supply: totalSupply,
-            progress:
-              totalSupply > 0 ? Math.round((minted / totalSupply) * 100) : 0,
-          };
-        }
-        return { minted: 0, supply: 0, progress: 0 };
+        const totalSupply = poolStatus.bucketsTotal.reduce(
+          (s, v) => s + v,
+          0
+        );
+        const totalRemaining = poolStatus.bucketsRemaining.reduce(
+          (s, v) => s + v,
+          0
+        );
+        const minted = totalSupply - totalRemaining;
+        return {
+          minted,
+          supply: totalSupply,
+          progress:
+            totalSupply > 0 ? Math.round((minted / totalSupply) * 100) : 0,
+        };
       }
 
       default:
@@ -263,14 +282,15 @@ export function useMintRounds(): MintRoundsData {
   }, [allRoundsData, currentRoundData, poolStatus]);
 
   const isLoading =
-    isLoadingRounds || isLoadingCurrentRound || isLoadingPoolStatus;
+    isLoadingRounds || isLoadingCurrentRound || isLoadingPoolStatus || isLoadingMainBalance;
 
   // ===== Global totals
   const TOTAL_SUPPLY = 10000;
   const RESERVED_SUPPLY = 430;
 
-  const mintedFromRounds = rounds.reduce((sum, r) => sum + r.minted, 0);
-  const overallMinted = RESERVED_SUPPLY + mintedFromRounds;
+  const INITIAL_SUPPLY = TOTAL_SUPPLY - RESERVED_SUPPLY;
+  const totalMinted = INITIAL_SUPPLY - (Number(mainBalance) || 0);
+  const overallMinted = RESERVED_SUPPLY + Number(totalMinted);
 
   return {
     rounds,
