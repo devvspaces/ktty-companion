@@ -47,7 +47,7 @@ export interface MintRoundsData {
   isLoading: boolean;
   error: string | null;
 
-  // ✅ Added for global progress bar
+  // ✅ for global progress bar
   overallMinted: number;
   overallSupply: number;
 }
@@ -55,7 +55,7 @@ export interface MintRoundsData {
 export function useMintRounds(): MintRoundsData {
   const [error, setError] = useState<string | null>(null);
 
-  // Handle contract address
+  // ===== Contract address
   let contractAddress: `0x${string}` | undefined;
   try {
     contractAddress = getContractAddress("KttyWorldMinting");
@@ -80,7 +80,7 @@ export function useMintRounds(): MintRoundsData {
     };
   }
 
-  // ===== Read contract data =====
+  // ===== Read on-chain data
   const {
     data: allRoundsData,
     isLoading: isLoadingRounds,
@@ -104,7 +104,7 @@ export function useMintRounds(): MintRoundsData {
     address: contractAddress,
   });
 
-  // ===== Watch contract events for live updates =====
+  // ===== Watch contract events for live updates
   useWatchKttyWorldMintingBooksMintedEvent({
     address: contractAddress,
     onLogs: () => {
@@ -123,7 +123,7 @@ export function useMintRounds(): MintRoundsData {
     },
   });
 
-  // ===== Handle errors =====
+  // ===== Error handler
   useEffect(() => {
     const errors = [roundsError, currentRoundError, poolStatusError].filter(
       Boolean
@@ -135,7 +135,7 @@ export function useMintRounds(): MintRoundsData {
     }
   }, [roundsError, currentRoundError, poolStatusError]);
 
-  // ===== Pool status =====
+  // ===== Pool status
   const poolStatus = useMemo((): PoolStatus => {
     if (!poolAndBucketData) {
       return {
@@ -158,21 +158,18 @@ export function useMintRounds(): MintRoundsData {
       bucketStats,
     ] = poolAndBucketData;
 
-    const bucketsRemaining = bucketStats.map((bucket) => Number(bucket[0]));
-    const bucketsTotal = bucketStats.map((bucket) => Number(bucket[1]));
-
     return {
       pool1Length: Number(pool1Length),
       pool1Remaining: Number(pool1Remaining),
       pool2Length: Number(pool2Length),
       pool2Remaining: Number(pool2Remaining),
       currentBucket: Number(currentBucket),
-      bucketsRemaining,
-      bucketsTotal,
+      bucketsRemaining: bucketStats.map((b) => Number(b[0])),
+      bucketsTotal: bucketStats.map((b) => Number(b[1])),
     };
   }, [poolAndBucketData]);
 
-  // ===== Per-round progress calculation =====
+  // ===== Per-round progress calc
   const calculateRoundProgress = (
     roundId: number
   ): { minted: number; supply: number; progress: number } => {
@@ -180,79 +177,71 @@ export function useMintRounds(): MintRoundsData {
 
     switch (roundId) {
       case 1: {
-        const pool1Minted = poolStatus.pool1Length - poolStatus.pool1Remaining;
+        const minted = poolStatus.pool1Length - poolStatus.pool1Remaining;
+        const supply = poolStatus.pool1Length;
         return {
-          minted: pool1Minted,
-          supply: poolStatus.pool1Length,
-          progress:
-            poolStatus.pool1Length > 0
-              ? Math.round((pool1Minted / poolStatus.pool1Length) * 100)
-              : 0,
+          minted,
+          supply,
+          progress: supply > 0 ? Math.round((minted / supply) * 100) : 0,
         };
       }
 
       case 2: {
-        const pool2Minted = poolStatus.pool2Length - poolStatus.pool2Remaining;
+        const minted = poolStatus.pool2Length - poolStatus.pool2Remaining;
+        const supply = poolStatus.pool2Length;
         return {
-          minted: pool2Minted,
-          supply: poolStatus.pool2Length,
-          progress:
-            poolStatus.pool2Length > 0
-              ? Math.round((pool2Minted / poolStatus.pool2Length) * 100)
-              : 0,
+          minted,
+          supply,
+          progress: supply > 0 ? Math.round((minted / supply) * 100) : 0,
         };
       }
 
       case 3: {
-        if (currentRound >= 3) {
-          const totalBucketSupply = poolStatus.bucketsTotal.reduce(
-            (s, v) => s + v,
-            0
-          );
-          const totalBucketRemaining = poolStatus.bucketsRemaining.reduce(
-            (s, v) => s + v,
-            0
-          );
-          const bucketMinted = totalBucketSupply - totalBucketRemaining;
+        // ✅ freeze Round 3 once we move to Round 4
+        if (currentRound >= 4 && allRoundsData) {
+          const minted = Number(allRoundsData[2]?.minted ?? 0);
+          const supply = Number(allRoundsData[2]?.supply ?? 0);
           return {
-            minted: bucketMinted,
-            supply: totalBucketSupply,
-            progress:
-              totalBucketSupply > 0
-                ? Math.round((bucketMinted / totalBucketSupply) * 100)
-                : 0,
+            minted,
+            supply,
+            progress: supply > 0 ? Math.round((minted / supply) * 100) : 0,
           };
-        } else {
-          const totalBucketSupply = poolStatus.bucketsTotal.reduce(
-            (s, v) => s + v,
-            0
-          );
-          return { minted: 0, supply: totalBucketSupply, progress: 0 };
         }
+
+        // live calc while round 3 is active
+        const totalSupply = poolStatus.bucketsTotal.reduce((s, v) => s + v, 0);
+        const totalRemaining = poolStatus.bucketsRemaining.reduce(
+          (s, v) => s + v,
+          0
+        );
+        const minted = totalSupply - totalRemaining;
+        return {
+          minted,
+          supply: totalSupply,
+          progress:
+            totalSupply > 0 ? Math.round((minted / totalSupply) * 100) : 0,
+        };
       }
 
       case 4: {
         if (currentRound >= 4) {
-          const totalBucketSupply = poolStatus.bucketsTotal.reduce(
+          const totalSupply = poolStatus.bucketsTotal.reduce(
             (s, v) => s + v,
             0
           );
-          const totalBucketRemaining = poolStatus.bucketsRemaining.reduce(
+          const totalRemaining = poolStatus.bucketsRemaining.reduce(
             (s, v) => s + v,
             0
           );
-          const bucketMinted = totalBucketSupply - totalBucketRemaining;
+          const minted = totalSupply - totalRemaining;
           return {
-            minted: bucketMinted,
-            supply: totalBucketSupply,
+            minted,
+            supply: totalSupply,
             progress:
-              totalBucketSupply > 0
-                ? Math.round((bucketMinted / totalBucketSupply) * 100)
-                : 0,
+              totalSupply > 0 ? Math.round((minted / totalSupply) * 100) : 0,
           };
-        } else {
-          return { minted: 0, supply: 0, progress: 0 };
         }
+        return { minted: 0, supply: 0, progress: 0 };
       }
 
       default:
@@ -260,7 +249,7 @@ export function useMintRounds(): MintRoundsData {
     }
   };
 
-  // ===== Rounds data =====
+  // ===== Build rounds list
   const rounds = useMemo((): RoundData[] => {
     if (!allRoundsData) return [];
 
@@ -290,7 +279,7 @@ export function useMintRounds(): MintRoundsData {
   const isLoading =
     isLoadingRounds || isLoadingCurrentRound || isLoadingPoolStatus;
 
-  // ===== Global totals for display =====
+  // ===== Global totals
   const TOTAL_SUPPLY = 10000;
   const RESERVED_SUPPLY = 430;
 
@@ -303,8 +292,6 @@ export function useMintRounds(): MintRoundsData {
     poolStatus,
     isLoading,
     error,
-
-    // ✅ Expose global progress data
     overallMinted,
     overallSupply: TOTAL_SUPPLY,
   };

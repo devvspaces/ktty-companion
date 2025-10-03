@@ -31,6 +31,19 @@ function getCountdownData(
   endTime: number,
   roundId: number
 ) {
+  // 👉 Public round has no countdown
+  if (roundId === 4) {
+    return {
+      label: "",
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      ended: false,
+      active: true,
+    };
+  }
+
   const startMs = startTime * 1000;
   const endMs = endTime * 1000;
 
@@ -39,21 +52,14 @@ function getCountdownData(
   let ended = false;
 
   if (now < startMs) {
-    // Before start
     label = "Starts in:";
     diff = startMs - now;
-  } else if (roundId !== 4 && now < endMs) {
-    // Active but has an end
+  } else if (now < endMs) {
     label = "Ends in:";
     diff = endMs - now;
-  } else if (roundId !== 4 && now >= endMs) {
-    // Ended for non-public rounds
+  } else {
     label = "Ended";
     ended = true;
-    diff = 0;
-  } else {
-    // Round 4: public & indefinite → no countdown
-    label = "";
     diff = 0;
   }
 
@@ -62,16 +68,9 @@ function getCountdownData(
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  return {
-    label,
-    days,
-    hours,
-    minutes,
-    seconds,
-    ended,
-    active: now >= startMs && (roundId === 4 || now < endMs),
-  };
+  return { label, days, hours, minutes, seconds, ended, active: now >= startMs && now < endMs };
 }
+;
 
 export default function MintRounds() {
   const mounted = useMounted();
@@ -335,7 +334,7 @@ export default function MintRounds() {
                 </div>
 
                 {/* Countdown (moves below on mobile via flex-col wrapper) */}
-                {mounted && !ended && (
+                {mounted && !ended && round.id !== 4 && (
                   <span className="hidden md:inline text-xl font-mono text-white whitespace-nowrap">
                     {label}{" "}
                     {`${days.toString().padStart(2, "0")}D 
@@ -347,7 +346,7 @@ export default function MintRounds() {
               </div>
 
               {/* Mobile-only countdown (full-width, below title + arrow) */}
-              {mounted && !ended && (
+              {mounted && !ended && round.id !== 4 && (
                 <div className="mt-2 md:hidden text-base font-mono text-white">
                   {label}{" "}
                   {`${days.toString().padStart(2, "0")}D 
