@@ -77,11 +77,9 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            {/* Deactivated Summon link */}
             <Link
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              className="text-gray-500 hover:text-gray-500 transition-all pointer-events-none"
+              href="/summon"
+              className=" hover:text-purple-300 transition-all"
             >
               Summon
             </Link>
@@ -151,11 +149,9 @@ export default function NavBar() {
                 </Link>
               </li>
               <li>
-                {/* Deactivated Summon link for mobile */}
                 <Link
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-gray-500 hover:text-gray-500 transition-all pointer-events-none"
+                  href="/summon"
+                  className=" hover:text-purple-300 transition-all"
                 >
                   Summon
                 </Link>

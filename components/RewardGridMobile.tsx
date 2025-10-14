@@ -15,9 +15,33 @@ const cardVariants: Variants = {
     transition: { ease: "easeOut", duration: 0.4 },
   },
 };
+
 const containerVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
+};
+
+// 🔹 Gradient for main KTTY Family types
+const getFamilyGradient = (family?: string) => {
+  switch (family) {
+    case "1 of 1 KTTY":
+      return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+    case "Null KTTY":
+      return "linear-gradient(90deg, #3b0764, #7e22ce, #6d28d9, #3b0764)";
+    case "Core KTTY":
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+    default:
+      return "linear-gradient(90deg, #ffffff, #d9d9d9)";
+  }
+};
+
+// 🔹 Gradient animation for minor item borders
+const getItemGradient = (name: string) => {
+  if (name.includes("Prismatic") || name.includes("Golden Ticket"))
+    return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+  if (name.includes("Advanced"))
+    return "linear-gradient(90deg, #fff7b0, #ffd700, #fff7b0)";
+  return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
 };
 
 export default function RewardGridMobile({
@@ -48,6 +72,7 @@ export default function RewardGridMobile({
     corrupt: "/images/badges/corruptedbadge.png",
   };
 
+  // Collect minor items and stack counts
   const minorItems: Record<
     string,
     { name: string; image: string; count: number }
@@ -60,36 +85,17 @@ export default function RewardGridMobile({
     })
   );
 
-  const rarityGlow: Record<string, { border: string; shadow: string }> = {
-    Standard: {
-      border: "#cd7f32",
-      shadow: "0 0 12px #cd7f32, 0 0 24px #b87333",
-    },
-    Advanced: {
-      border: "#C0C0C0",
-      shadow: "0 0 12px #C0C0C0, 0 0 24px #A9A9A9",
-    },
-    Prismatic: {
-      border: "#FFD700",
-      shadow: "0 0 12px #FFD700, 0 0 24px #FFA500",
-    },
-  };
-  const getRarityStyle = (name: string) =>
-    name.includes("Prismatic")
-      ? rarityGlow.Prismatic
-      : name.includes("Advanced")
-        ? rarityGlow.Advanced
-        : rarityGlow.Standard;
-
   return (
     <div className="fixed inset-0 z-[999] flex flex-col text-white bg-gradient-to-b from-[#0a1d3b] to-[#091024] p-6 sm:hidden">
       <h2 className="text-2xl font-bold mb-6 text-center">
         Your New KTTY Friends!
       </h2>
 
-      {/* KTTY rewards */}
+      {/* 🐾 KTTY Rewards */}
       <motion.div
-        className="flex flex-col gap-6 items-center w-full"
+        className={`flex flex-col items-center w-full ${
+          isTenPull ? "gap-4" : "gap-6"
+        }`}
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -99,42 +105,63 @@ export default function RewardGridMobile({
             {Array.from({ length: count }).map(() => {
               const reward = kttyRewards[kttyIndex++];
               if (!reward) return null;
-              const glow = reward.borderColor || "#a855f7";
+
+              const gradient = getFamilyGradient(reward.family);
+              const displayName = `KTTY #${reward.id}`;
 
               return (
                 <motion.div
                   key={reward.id}
-                  className="relative bg-black/40 rounded-lg p-2 flex flex-col items-center"
+                  className="relative rounded-lg p-[2px] flex flex-col items-center"
                   style={{
-                    border: `2px solid ${glow}`,
-                    boxShadow: `0 0 12px ${glow}, 0 0 24px ${glow}`,
+                    background: gradient,
+                    backgroundSize: "300% 300%",
+                  }}
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{
+                    duration:
+                      reward.family === "1 of 1 KTTY"
+                        ? 3
+                        : reward.family === "Null KTTY"
+                          ? 6
+                          : 8,
+                    ease: "linear",
+                    repeat: Infinity,
                   }}
                   variants={cardVariants}
                 >
-                  {reward.book && bookBadges[reward.book] && (
-                    <div className="absolute -top-2 -left-2 w-6 h-6 bg-black/70 rounded-full flex items-center justify-center border border-white/40 shadow-md z-20">
+                  <div className="bg-black/60 rounded-lg flex flex-col items-center p-2 relative">
+                    {/* Badge */}
+                    {reward.book && bookBadges[reward.book] && (
+                      <div className="absolute -top-2 -left-2 w-5 h-5 bg-black/70 rounded-full flex items-center justify-center border border-white/40 shadow-md z-20">
+                        <Image
+                          src={bookBadges[reward.book]}
+                          alt={`${reward.book} badge`}
+                          width={20}
+                          height={20}
+                          className="object-contain"
+                        />
+                      </div>
+                    )}
+                    {/* Image */}
+                    <div
+                      className={`relative mb-2 ${
+                        isTenPull ? "w-14 h-14" : "w-20 h-20"
+                      }`}
+                    >
                       <Image
-                        src={bookBadges[reward.book]}
-                        alt={`${reward.book} badge`}
-                        width={24}
-                        height={24}
-                        className="object-contain"
+                        src={reward.image}
+                        alt={reward.name}
+                        fill
+                        className="object-contain rounded"
                       />
                     </div>
-                  )}
-                  <div
-                    className={`relative mb-2 ${isTenPull ? "w-16 h-16" : "w-20 h-20"}`}
-                  >
-                    <Image
-                      src={reward.image}
-                      alt={reward.name}
-                      fill
-                      className="object-contain rounded"
-                    />
+                    <p className="text-xs font-bold text-center whitespace-nowrap">
+                      {displayName}
+                    </p>
                   </div>
-                  <p className="text-xs font-bold text-center whitespace-nowrap">
-                    {reward.name} #{reward.id}
-                  </p>
                 </motion.div>
               );
             })}
@@ -142,12 +169,16 @@ export default function RewardGridMobile({
         ))}
       </motion.div>
 
-      {/* Minor rewards */}
-      <div className="w-full mt-6 flex-1 flex flex-col">
+      {/* ✨ Minor Rewards */}
+      <div className="w-full mt-5 flex-1 flex flex-col">
         <h3 className="text-xl font-semibold mb-4 text-center">
           Other Rewards
         </h3>
-        <div className="overflow-y-auto h-40">
+        <div
+          className={`overflow-y-auto ${
+            isTenPull ? "h-[10.5rem]" : "h-[12.5rem]"
+          }`}
+        >
           <motion.div
             className="grid grid-cols-5 gap-2 justify-items-center"
             variants={containerVariants}
@@ -155,20 +186,32 @@ export default function RewardGridMobile({
             animate="show"
           >
             {Object.values(minorItems).map((item, idx) => {
-              const { border, shadow } = getRarityStyle(item.name);
+              const gradient = getItemGradient(item.name);
+
               return (
                 <motion.div
                   key={idx}
-                  className="bg-black/40 rounded-lg relative"
-                  style={{ border: `2px solid ${border}`, boxShadow: shadow }}
+                  className="relative rounded-lg p-[2px]"
+                  style={{
+                    background: gradient,
+                    backgroundSize: "300% 300%",
+                  }}
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{
+                    duration: 4,
+                    ease: "linear",
+                    repeat: Infinity,
+                  }}
                   variants={cardVariants}
                 >
-                  <div className="relative w-12 h-12">
+                  <div className="bg-black/60 rounded-lg overflow-hidden flex items-center justify-center w-12 h-12">
                     <Image
                       src={item.image}
                       alt={item.name}
                       fill
-                      className="object-contain rounded"
+                      className="object-contain rounded-lg"
                     />
                   </div>
                   {item.count > 1 && (
@@ -208,7 +251,7 @@ export default function RewardGridMobile({
         )}
       </div>
 
-      {/* Summon Options Modal */}
+      {/* Summon Options */}
       <SummonOptionsModal
         isOpen={showOptions}
         onClose={() => setShowOptions(false)}

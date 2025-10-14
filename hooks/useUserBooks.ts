@@ -37,24 +37,26 @@ export interface BookDetail {
 
 const getUserNFTs = async (walletAddress: string): Promise<number[]> => {
   try {
-    const response = await fetch(`/api/user-nfts?address=${encodeURIComponent(walletAddress)}`);
-    
+    const response = await fetch(
+      `/api/user-nfts?address=${encodeURIComponent(walletAddress)}`
+    );
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     if (data.error) {
       throw new Error(data.error);
     }
-    
+
     return data.nftIds || [];
   } catch (error) {
-    console.error('Error fetching NFTs from API:', error);
+    console.error("Error fetching NFTs from API:", error);
     throw error;
   }
-}
+};
 
 export function useUserBooks(): UserBooksData {
   const { address } = useAccount();
@@ -144,7 +146,7 @@ export function useUserBooks(): UserBooksData {
 
   // const refetchBookIds = async () => {
   //   if (!address) return;
-    
+
   //   setIsLoadingBookIds(true);
   //   try {
   //     const nftIds = await getUserNFTs(address);
@@ -186,7 +188,6 @@ export function useUserBooks(): UserBooksData {
       }
     },
   });
-  
 
   useWatchKttyWorldMintingBookOpenedEvent({
     address: contractAddress,

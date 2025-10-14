@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import MintRounds from "./MintRounds";
 import ImageWall from "./ImageWall";
 import LeaderboardModal from "./LeaderboardModal";
@@ -129,16 +130,16 @@ export default function MintSection() {
           )}
         </div>
 
-        {/* Inactive Summon button */}
-        <button
-          onClick={(e) => e.preventDefault()}
+        {/* Active Summon button (matching My Bag style) */}
+        <Link
+          href="/summon"
           className="w-full py-2 md:py-3 text-xs md:text-sm lg:text-base 
-                     bg-black/40 border border-white/20 rounded-md font-semibold 
-                     text-gray-400 hover:text-gray-400 hover:bg-black/40 transition"
+             bg-black/60 border border-white/20 rounded-md font-semibold 
+             text-white hover:bg-black/80 transition text-center"
         >
           <span className="block md:hidden">Summon</span>
           <span className="hidden md:block">Summon KTTYs</span>
-        </button>
+        </Link>
       </div>
 
       {/* Leaderboard Modal */}

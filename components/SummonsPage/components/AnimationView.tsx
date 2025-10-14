@@ -32,6 +32,8 @@ export default function AnimationView({
   const [videoReady, setVideoReady] = useState(false);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
+  const [isIOS, setIsIOS] = useState(false);
+  const [primed, setPrimed] = useState(false);
 
   const videoURL =
     summonVideos[selectedBookColor]?.[selectedRarity ?? "normal"] ??
@@ -43,49 +45,129 @@ export default function AnimationView({
     console.log(`[${t}] ${msg}`);
   };
 
-  // Mount → autoplay muted → pause at first frame
+  // 🔍 Detect iOS Safari / WKWebView
+  useEffect(() => {
+    const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isiOS =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    setIsIOS(isiOS);
+    log(`Detected iOS: ${isiOS}`);
+  }, []);
+
+  // 🧠 Setup video event handlers
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
 
-    vid.muted = true;
-    vid.play().catch(() => log("Autoplay attempt pending (iOS)"));
-
     const handleCanPlay = () => {
-      if (vid.readyState >= 2) {
-        vid.pause();
-        vid.currentTime = 0;
-        log("Pre-mounted & paused at first frame");
+      log("onCanPlay → first frame ready");
+      setVideoReady(true);
+    };
+
+    const handleEnded = () => {
+      log("onEnded → setFadeOut(true)");
+      setFadeOut(true);
+    };
+
+    const handleTimeUpdate = () => {
+      if (!vid || fadeOut) return;
+      const remaining = vid.duration - vid.currentTime;
+      if (remaining < 0.5 || vid.currentTime > 12) {
+        log(`⏳ Triggering fadeOut (remaining=${remaining.toFixed(2)})`);
+        setFadeOut(true);
       }
     };
 
-    vid.addEventListener("canplay", handleCanPlay, { once: true });
-    return () => vid.removeEventListener("canplay", handleCanPlay);
-  }, []);
+    vid.addEventListener("canplay", handleCanPlay);
+    vid.addEventListener("ended", handleEnded);
+    vid.addEventListener("timeupdate", handleTimeUpdate);
 
-  // Reveal / hide
+    return () => {
+      vid.removeEventListener("canplay", handleCanPlay);
+      vid.removeEventListener("ended", handleEnded);
+      vid.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, [videoRef, fadeOut]);
+
+  // 🎬 Handle playback when visible
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
+    let cancelled = false;
+    let hasStarted = false;
 
-    if (isVisible) {
-      log("isVisible → resume from 0");
-      vid.currentTime = 0;
-    } else {
+    const startPlayback = async () => {
+      if (cancelled || hasStarted) return;
+      hasStarted = true;
+      log(`▶️ startPlayback (iOS=${isIOS})`);
+      try {
+        vid.muted = isIOS ? true : muted;
+        await vid.play();
+        log("✅ Video play() success");
+      } catch (e) {
+        log(`⚠️ play() error: ${e}`);
+        if (isIOS && !cancelled) {
+          log("Retrying iOS play() in 500ms...");
+          setTimeout(() => startPlayback(), 500);
+        }
+      }
+    };
+
+    if (isVisible && (primed || !isIOS)) {
+      log(`isVisible=true → preparing playback (iOS=${isIOS})`);
+      if (!vid.src.endsWith(videoURL)) {
+        vid.src = videoURL;
+        vid.load();
+        log("🎬 Video source set & load() called");
+      }
+      setTimeout(() => {
+        if (!cancelled) startPlayback();
+      }, 150);
+    } else if (!isVisible) {
       log("isVisible=false → pause & reset");
+      cancelled = true;
       vid.pause();
       vid.currentTime = 0;
+      setVideoReady(false);
     }
-  }, [isVisible]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isVisible, videoURL, isIOS, muted, primed]);
+
+  // ✅ Trigger onFinish when fade-out completes
+  useEffect(() => {
+    if (fadeOut) {
+      log("Fade-out flag triggered → onFinish()");
+      const t = setTimeout(() => {
+        log("Fade-out → onFinish() executing");
+        onFinish();
+      }, 700);
+      return () => clearTimeout(t);
+    }
+  }, [fadeOut]);
+
+  // 🖱️ Handle iOS tap-to-summon unlock
+  const handleTapToSummon = async () => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    try {
+      vid.muted = true;
+      await vid.play();
+      setPrimed(true);
+      log("🎥 iOS video unlocked on tap");
+    } catch (err) {
+      log(`⚠️ Unlock failed: ${err}`);
+    }
+  };
 
   return (
     <>
-      {/* Mute toggle */}
+      {/* 🔈 Mute Toggle */}
       <button
-        onClick={() => {
-          setMuted((m) => !m);
-          log(`Muted → ${!muted}`);
-        }}
+        onClick={() => setMuted((m) => !m)}
         className="fixed top-4 left-4 z-[10015] p-2 rounded-full bg-black/40 hover:bg-black/60 transition"
       >
         {muted ? (
@@ -95,20 +177,14 @@ export default function AnimationView({
         )}
       </button>
 
-      {/* Video wrapper */}
+      {/* 🎥 Video Wrapper */}
       <div
         className={`fixed inset-0 z-[10000] transition-opacity duration-700 ${
           isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
-        onTransitionEnd={() => {
-          if (fadeOut) {
-            log("Fade-out finished → onFinish()");
-            onFinish();
-          }
-        }}
       >
-        {/* Spinner */}
-        {!videoReady && (
+        {/* Spinner (non-iOS only) */}
+        {!videoReady && !isIOS && (
           <div className="absolute inset-0 flex items-center justify-center bg-black">
             <motion.div
               initial={{ rotate: 0 }}
@@ -119,54 +195,42 @@ export default function AnimationView({
           </div>
         )}
 
+        {/* Tap-to-Summon Overlay (iOS only) */}
+        {!primed && isIOS && isVisible && (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-black cursor-pointer z-[10010]"
+            onClick={handleTapToSummon}
+          >
+            <p className="text-3xl font-bold text-white animate-pulse-summon select-none">
+              Tap to Summon ✨
+            </p>
+          </div>
+        )}
+
         {/* Video */}
         <video
           ref={videoRef}
+          autoPlay
           muted={muted}
           playsInline
           preload="auto"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
           poster="/images/fallbackPoster.jpg"
           className={`absolute inset-0 w-full h-full object-cover z-[10005] transition-opacity duration-500 ${
             videoReady ? "opacity-100" : "opacity-0"
           }`}
-          onLoadStart={() => log(`Video loading → ${videoURL}`)}
-          onCanPlay={() => {
-            setVideoReady(true);
-            log("onCanPlay → first frame ready");
-          }}
-          onPlay={() => log("onPlay → started")}
-          onWaiting={() => log("onWaiting → buffering")}
-          onPlaying={() => log("onPlaying → resumed")}
           onError={(e) => {
             const err = e.currentTarget.error;
-            log(`onError → code=${err?.code} msg=${err?.message}`);
+            log(`onError → code=${err?.code}`);
             setVideoError(`Playback error code=${err?.code}`);
-          }}
-          onTimeUpdate={(e) => {
-            if (e.currentTarget.currentTime >= 12 && !fadeOut) {
-              log("Time ≥12s → triggering fadeOut");
-              setFadeOut(true);
-            }
           }}
         >
           <source src={videoURL} type="video/mp4" />
         </video>
-
-        {/* Debug overlay */}
-        <div className="absolute bottom-0 left-0 w-full bg-black/70 text-green-400 text-xs font-mono max-h-[40%] overflow-y-auto p-2 z-[10050]">
-          <div className="text-blue-300 break-all mb-1">
-            Video URL: {videoURL}
-          </div>
-          {logs.slice(0, 12).map((l, i) => (
-            <div key={i}>{l}</div>
-          ))}
-          {videoError && (
-            <div className="text-red-400">Error: {videoError}</div>
-          )}
-        </div>
       </div>
 
-      {/* Skip */}
+      {/* ⏩ Skip Button */}
       {isVisible && (
         <button
           onClick={() => {
@@ -178,6 +242,27 @@ export default function AnimationView({
           Skip &gt;
         </button>
       )}
+
+      <style jsx>{`
+        @keyframes pulseSummon {
+          0%,
+          100% {
+            opacity: 1;
+            text-shadow:
+              0 0 10px white,
+              0 0 20px white;
+          }
+          50% {
+            opacity: 0.5;
+            text-shadow:
+              0 0 25px #ffffff,
+              0 0 50px #ffffff;
+          }
+        }
+        .animate-pulse-summon {
+          animation: pulseSummon 1.6s ease-in-out infinite;
+        }
+      `}</style>
     </>
   );
 }

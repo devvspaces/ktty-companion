@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
+import WalletButton from "@/components/WalletButton";
 import { BookDetail } from "@/hooks/useUserBooks";
 import { selectBooksFromMap, validateBookSelection } from "@/lib/bookSelection";
 import { showErrorNotification } from "@/lib/notifications";
@@ -31,6 +33,7 @@ export default function SummonBookModal({
   inventory: Book[];
   booksMap: Record<string, BookDetail[]>;
 }) {
+  const { address } = useAccount();
   const [selection, setSelection] = useState<Record<string, number>>({});
 
   useEffect(() => {
@@ -220,62 +223,77 @@ export default function SummonBookModal({
 
   return (
     <div className="fixed inset-0 z-[20000] bg-black/70 flex items-center justify-center p-4">
-      <div className="bg-gradient-to-b from-[#0a1d3b] to-[#091024] py-8 px-6 rounded-lg w-full max-w-md md:max-w-2xl lg:max-w-5xl text-white shadow-xl">
+      <div className="relative bg-gradient-to-b from-[#0a1d3b] to-[#091024] py-8 px-6 rounded-lg w-full max-w-md md:max-w-2xl lg:max-w-5xl text-white shadow-xl">
         <h2 className="text-lg md:text-2xl font-bold mb-8 text-center">
           Choose your Summoning Book{countRequired > 1 ? "s" : ""}
         </h2>
 
-        {/* Mobile layout */}
-        <div className="mb-10">
-          <div className="flex sm:hidden flex-col items-center gap-4">
-            <div className="flex justify-center gap-2">
-              {inventory.slice(0, 2).map((book) => renderBookCard(book))}
-            </div>
-            <div className="flex justify-center gap-2">
-              {inventory.slice(2, 5).map((book) => renderBookCard(book))}
-            </div>
-            <div className="flex justify-center gap-2">
-              {inventory.slice(5, 7).map((book) => renderBookCard(book))}
-            </div>
-          </div>
-
-          {/* Tablet/Desktop layout */}
-          <div className="hidden sm:flex flex-wrap justify-center gap-6">
-            {inventory.map((book) => renderBookCard(book))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        {countRequired > 1 ? (
-          <>
-            <p className="text-center text-sm md:text-base mb-6">
-              Selected: {totalSelected} / {countRequired}
+        {/* Wallet not connected overlay */}
+        {!address && (
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center z-20">
+            <p className="text-lg md:text-xl text-gray-200 mb-4 text-center">
+              Please connect your wallet to continue
             </p>
-            <div className="flex justify-between gap-4">
-              <button
-                onClick={onClose}
-                className="flex-1 px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleMultipleBookConfirm}
-                className="flex-1 px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 disabled:opacity-50"
-                disabled={totalSelected !== countRequired}
-              >
-                Confirm
-              </button>
-            </div>
-          </>
-        ) : (
-          <div className="flex justify-center">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
-            >
-              Cancel
-            </button>
+            <WalletButton />
           </div>
+        )}
+
+        {/* Books grid (only visible if connected) */}
+        {address && (
+          <>
+            {/* Mobile layout */}
+            <div className="mb-10">
+              <div className="flex sm:hidden flex-col items-center gap-4">
+                <div className="flex justify-center gap-2">
+                  {inventory.slice(0, 2).map((book) => renderBookCard(book))}
+                </div>
+                <div className="flex justify-center gap-2">
+                  {inventory.slice(2, 5).map((book) => renderBookCard(book))}
+                </div>
+                <div className="flex justify-center gap-2">
+                  {inventory.slice(5, 7).map((book) => renderBookCard(book))}
+                </div>
+              </div>
+
+              {/* Tablet/Desktop layout */}
+              <div className="hidden sm:flex flex-wrap justify-center gap-6">
+                {inventory.map((book) => renderBookCard(book))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            {countRequired > 1 ? (
+              <>
+                <p className="text-center text-sm md:text-base mb-6">
+                  Selected: {totalSelected} / {countRequired}
+                </p>
+                <div className="flex justify-between gap-4">
+                  <button
+                    onClick={onClose}
+                    className="flex-1 px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleMultipleBookConfirm}
+                    className="flex-1 px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 disabled:opacity-50"
+                    disabled={totalSelected !== countRequired}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex justify-center">
+                <button
+                  onClick={onClose}
+                  className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

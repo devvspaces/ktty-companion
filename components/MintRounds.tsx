@@ -68,10 +68,16 @@ function getCountdownData(
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  return { label, days, hours, minutes, seconds, ended, active: now >= startMs && now < endMs };
+  return {
+    label,
+    days,
+    hours,
+    minutes,
+    seconds,
+    ended,
+    active: now >= startMs && now < endMs,
+  };
 }
-;
-
 export default function MintRounds() {
   const mounted = useMounted();
   const [openRound, setOpenRound] = useState<number | null>(null);
@@ -79,7 +85,6 @@ export default function MintRounds() {
   const [now, setNow] = useState(Date.now());
   const { isConnected } = useAccount(); // check wallet state
   const [showConnectOverlay, setShowConnectOverlay] = useState(false); // toggle overlay
-  
 
   // Timer for countdown updates
   useEffect(() => {
@@ -420,7 +425,7 @@ export default function MintRounds() {
                         const maxSupply = round.id === 3 ? cap : round.supply;
                         const progress = Math.min(
                           100,
-                          Math.round((minted / maxSupply) * 100)
+                          Math.floor((minted / maxSupply) * 100)
                         );
 
                         return (

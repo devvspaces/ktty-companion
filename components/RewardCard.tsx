@@ -5,18 +5,116 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Reward } from "@/lib/reward";
 
-// 🔹 Aurora gradient settings
-const auroraSettings = {
-  voidPurple: {
-    from: "#8B5CF6", // violet-500
-    via: "#6D28D9", // violet-700
-    to: "#8B5CF6",
-  },
-  gold: {
-    from: "#FACC15", // yellow-400
-    via: "#FBBF24", // amber-400
-    to: "#FACC15",
-  },
+// 🔹 Display shortened KTTY name
+const getDisplayName = (fullName: string, id: string | number) => {
+  const match = fullName.match(/#?(\d+)/);
+  const idNumber = match ? match[1] : id;
+  return `KTTY #${idNumber}`;
+};
+
+// 🔹 Gradient for main family border
+const getFamilyGradient = (family?: string) => {
+  switch (family) {
+    case "Core KTTY":
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+    case "Null KTTY":
+      return "linear-gradient(90deg, #3b0764, #7e22ce, #6d28d9, #3b0764)";
+    case "1 of 1 KTTY":
+      return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+    default:
+      return "linear-gradient(90deg, #ffffff, #d9d9d9)";
+  }
+};
+
+// 🔹 Gradient for animated text (same as before)
+const getRarityGradient = (
+  type: "Family" | "Breed" | "Identity" | "Expression",
+  value: string
+) => {
+  switch (type) {
+    case "Family":
+      if (value === "1 of 1 KTTY")
+        return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+      if (value === "Null KTTY")
+        return "linear-gradient(90deg, #3b0764, #7e22ce, #6d28d9, #3b0764)";
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+    case "Breed":
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+    case "Identity": {
+      const tier1 = ["Origin", "Abyss", "Catastrophe", "Infinity"];
+      const tier2 = [
+        "Anima",
+        "Chronos",
+        "Fury",
+        "Tyrant",
+        "Hollow",
+        "Eclipse",
+        "Illumia",
+        "Glory",
+      ];
+      const tier3 = [
+        "Dawn",
+        "Aurora",
+        "Dusk",
+        "Shadow",
+        "Fang",
+        "Beast",
+        "Elemental",
+        "Celestial",
+      ];
+      if (tier1.includes(value))
+        return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+      if (tier2.includes(value))
+        return "linear-gradient(90deg, #fff7b0, #ffd700, #fff7b0)";
+      if (tier3.includes(value))
+        return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+    }
+    case "Expression": {
+      const specialist = [
+        "Champion",
+        "Absolute",
+        "Clairvoyant",
+        "Ascendant",
+        "Singularity",
+      ];
+      if (specialist.includes(value))
+        return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+    }
+    default:
+      return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
+  }
+};
+
+// 🔹 Animated Value Renderer
+const AnimatedValue = ({
+  type,
+  value,
+}: {
+  type: "Family" | "Breed" | "Identity" | "Expression";
+  value: string;
+}) => (
+  <motion.span
+    initial={{ backgroundPosition: "0% 50%" }}
+    animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+    transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+    className="font-normal text-transparent bg-clip-text bg-[length:200%_200%]"
+    style={{
+      backgroundImage: getRarityGradient(type, value),
+    }}
+  >
+    {value}
+  </motion.span>
+);
+
+// 🔹 Animated border gradient for lesser rewards
+const getItemGradient = (name: string) => {
+  if (name.includes("Prismatic") || name.includes("Golden Ticket"))
+    return "linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff)";
+  if (name.includes("Advanced"))
+    return "linear-gradient(90deg, #fff7b0, #ffd700, #fff7b0)";
+  return "linear-gradient(90deg, #ffffff, #d9d9d9, #f8f8f8)";
 };
 
 export default function RewardCard({
@@ -36,23 +134,18 @@ export default function RewardCard({
   isLast?: boolean;
   onSkipToGrid?: () => void;
 }) {
-  const glow = reward.borderColor || "#3b82f6"; // fallback glow
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Pick gradient colors based on breed
-  const getGradient = () => {
-    if (reward.breed === "Null KTTY") {
-      return `${auroraSettings.voidPurple.from}, ${auroraSettings.voidPurple.via}, ${auroraSettings.voidPurple.to}`;
-    }
-    if (reward.breed === "1 of 1 KTTY") {
-      return `${auroraSettings.gold.from}, ${auroraSettings.gold.via}, ${auroraSettings.gold.to}`;
-    }
-    return "white, white";
-  };
+  const familyGlow =
+    reward.family === "1 of 1 KTTY"
+      ? "drop-shadow(0 0 25px rgba(255,255,255,0.6))"
+      : reward.family === "Null KTTY"
+        ? "drop-shadow(0 0 25px rgba(139,92,246,0.6))"
+        : "drop-shadow(0 0 20px rgba(255,255,255,0.3))";
 
   return (
     <div className="fixed inset-0 z-[999] flex flex-col items-center justify-between text-white bg-gradient-to-b from-[#0a1d3b] to-[#091024]">
-      {/* Skip button for multi-pulls */}
+      {/* Skip for multipulls */}
       {mode === "multi" && onSkipToGrid && (
         <button
           onClick={onSkipToGrid}
@@ -62,7 +155,7 @@ export default function RewardCard({
         </button>
       )}
 
-      {/* Animated reward transition */}
+      {/* Core content */}
       <AnimatePresence mode="wait">
         <motion.div
           key={reward.id}
@@ -72,20 +165,33 @@ export default function RewardCard({
           transition={{ duration: 0.6, ease: "easeInOut" }}
           className="flex flex-col items-center justify-center flex-1 px-4 md:flex-row md:gap-16 lg:gap-24 w-full"
         >
-          {/* Reward image container */}
-          <div
-            className="relative mb-6 md:mb-0 rounded-lg border-4 w-40 h-40 md:w-80 md:h-80 lg:w-[32rem] lg:h-[32rem]"
+          {/* Main KTTY image */}
+          <motion.div
+            className="relative mb-6 md:mb-0 rounded-2xl p-[3px] w-40 h-40 md:w-80 md:h-80 lg:w-[32rem] lg:h-[32rem]"
             style={{
-              borderColor: glow,
-              boxShadow: `0 0 20px ${glow}, 0 0 40px ${glow}`,
+              background: getFamilyGradient(reward.family),
+              backgroundSize: "300% 300%",
+              filter: familyGlow,
+            }}
+            animate={{
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+            }}
+            transition={{
+              duration:
+                reward.family === "1 of 1 KTTY"
+                  ? 3
+                  : reward.family === "Null KTTY"
+                    ? 6
+                    : 8,
+              ease: "linear",
+              repeat: Infinity,
             }}
           >
-            {/* Spinner overlay */}
-            <AnimatePresence>
+            <div className="w-full h-full rounded-2xl overflow-hidden bg-[#0a1d3b] flex items-center justify-center relative">
               {!isLoaded && (
                 <motion.div
                   key="spinner"
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg z-10"
+                  className="absolute inset-0 flex items-center justify-center bg-black/20 z-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -102,64 +208,41 @@ export default function RewardCard({
                   />
                 </motion.div>
               )}
-            </AnimatePresence>
+              <Image
+                src={reward.image}
+                alt={reward.name}
+                fill
+                className="object-contain rounded-2xl"
+                onLoad={() => setIsLoaded(true)}
+              />
+            </div>
+          </motion.div>
 
-            {/* Reward image */}
-            <Image
-              src={reward.image}
-              alt={reward.name}
-              fill
-              className="object-contain rounded-lg"
-              onLoad={() => setIsLoaded(true)}
-            />
-          </div>
-
-          {/* Reward details */}
+          {/* Details */}
           <div className="flex flex-col items-center text-center">
-            {/* Animated Name */}
-            <motion.h2
-              initial={{ backgroundPosition: "200% 50%" }}
-              animate={{ backgroundPosition: ["200% 50%", "-200% 50%"] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-              className="text-5xl md:text-4xl lg:text-7xl font-bold mb-4 md:mb-6 lg:mb-10
-                         bg-clip-text text-transparent bg-[length:200%_200%]"
-              style={{
-                backgroundImage: `linear-gradient(90deg, ${getGradient()})`,
-              }}
-            >
-              {reward.name}
-            </motion.h2>
+            <h2 className="text-5xl md:text-4xl lg:text-7xl font-bold mb-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+              {getDisplayName(reward.name, reward.id)}
+            </h2>
 
-            {/* Family */}
-            <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6">
-              Family: {reward.family}
-            </p>
+            <div className="space-y-4 text-xl md:text-2xl lg:text-4xl">
+              <p className="font-bold">
+                Family: <AnimatedValue type="Family" value={reward.family} />
+              </p>
+              <p className="font-bold">
+                Breed: <AnimatedValue type="Breed" value={reward.breed} />
+              </p>
+              <p className="font-bold">
+                Identity:{" "}
+                <AnimatedValue type="Identity" value={reward.identity} />
+              </p>
+              <p className="font-bold">
+                Expression:{" "}
+                <AnimatedValue type="Expression" value={reward.expression} />
+              </p>
+            </div>
 
-            {/* Animated Breed */}
-            <motion.p
-              initial={{ backgroundPosition: "200% 50%" }}
-              animate={{ backgroundPosition: ["200% 50%", "-200% 50%"] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-              className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6 
-                         font-extrabold bg-clip-text text-transparent 
-                         bg-[length:200%_200%]"
-              style={{
-                backgroundImage: `linear-gradient(90deg, ${getGradient()})`,
-              }}
-            >
-              Breed: {reward.breed}
-            </motion.p>
-
-            {/* Other stats */}
-            <p className="text-xl md:text-xl lg:text-4xl mb-2 md:mb-6 lg:mb-6">
-              Identity: {reward.identity}
-            </p>
-            <p className="text-xl md:text-xl lg:text-4xl mb-6 md:mb-10 lg:mb-12">
-              Expression: {reward.expression}
-            </p>
-
-            {/* Minor items */}
-            <div className="flex justify-center md:justify-start gap-6 mb-10">
+            {/* 🔹 Lesser Rewards */}
+            <div className="flex justify-center md:justify-start gap-6 mt-10 mb-10">
               {reward.items.slice(0, 3).map((item, i) => (
                 <motion.div
                   key={i}
@@ -168,14 +251,32 @@ export default function RewardCard({
                   transition={{ duration: 0.5, delay: 1 + i * 0.2 }}
                   className="flex flex-col items-center"
                 >
-                  <div className="relative w-16 h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 mb-6 rounded-lg border-2 border-yellow-400 shadow-[0_0_15px_rgba(255,215,0,0.9)]">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-contain rounded-lg"
-                    />
-                  </div>
+                  {/* Animated Gradient Border */}
+                  <motion.div
+                    className="relative w-16 h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 mb-6 rounded-lg p-[2px]"
+                    style={{
+                      background: getItemGradient(item.name),
+                      backgroundSize: "300% 300%",
+                    }}
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{
+                      duration: 4,
+                      ease: "linear",
+                      repeat: Infinity,
+                    }}
+                  >
+                    <div className="w-full h-full rounded-lg bg-[#0a1d3b] flex items-center justify-center overflow-hidden">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain rounded-lg"
+                      />
+                    </div>
+                  </motion.div>
+
                   <span className="text-md md:text-base lg:text-lg text-center break-words max-w-[6rem]">
                     {item.name}
                   </span>
@@ -186,7 +287,7 @@ export default function RewardCard({
         </motion.div>
       </AnimatePresence>
 
-      {/* Buttons */}
+      {/* Footer buttons */}
       <div className="w-full flex justify-center pb-8 px-4">
         {mode === "single" ? (
           <div className="flex flex-row gap-4 w-full max-w-md">
