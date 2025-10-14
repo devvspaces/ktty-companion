@@ -13,6 +13,12 @@ const KTTY_COMPANIONS_ADDRESS = "0xbBDAFc390E221bb55F47bfB354CBcAa8876CF57a";
 const TOOLS_ADDRESS = "0x3D9C67Ac7243480B656abCE6042E97416298Bd0e";
 const COLLECTIBLES_ADDRESS = "0x5F9096FDC7ffD34Df0d33041ef0e9655d0A61527";
 
+function normalizeSeriesName(name: string) {
+  return name
+    .replace(/[’']/g, "'") // normalize curly quotes to straight
+    .trim();
+}
+
 // Minimal ABIs
 const booksAbi = [
   {
@@ -233,7 +239,8 @@ export function useSummonFlow({
         };
       }
 
-      const color = seriesToColor[series] || "purple";
+      const normalizedSeries = normalizeSeriesName(series);
+      const color = seriesToColor[normalizedSeries] || "purple";
 
       return {
         id: kttyReward.id,
@@ -344,7 +351,8 @@ export function useSummonFlow({
         };
       }
 
-      const color = seriesToColor[series] || "purple";
+      const normalizedSeries = normalizeSeriesName(series);
+      const color = seriesToColor[normalizedSeries] || "purple";
 
       rewardsArray.push({
         id: kttyReward.id,

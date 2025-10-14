@@ -1,4 +1,4 @@
-import { BookDetail } from '@/hooks/useUserBooks';
+import { BookDetail } from "@/hooks/useUserBooks";
 
 /**
  * Randomly select books from the available books map based on selection requirements
@@ -17,19 +17,25 @@ export function selectBooksFromMap(
     if (quantityNeeded <= 0) continue;
 
     // Get available books for this series
-    const availableBooks = booksMap[seriesName] || [];
-    
+    const normalizedSeriesName = seriesName
+      .replace(/[’']/g, "'")
+      .trim()
+      .toLowerCase();
+    const availableBooks = booksMap[normalizedSeriesName] || [];
+
     if (availableBooks.length === 0) {
       throw new Error(`No ${seriesName} books available`);
     }
 
     if (availableBooks.length < quantityNeeded) {
-      throw new Error(`Not enough ${seriesName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`);
+      throw new Error(
+        `Not enough ${seriesName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`
+      );
     }
 
     // Create a copy of available books to avoid mutating original
     const booksCopy = [...availableBooks];
-    
+
     // Randomly select the required quantity
     for (let i = 0; i < quantityNeeded; i++) {
       const randomIndex = Math.floor(Math.random() * booksCopy.length);
@@ -47,7 +53,7 @@ export function selectBooksFromMap(
  * @returns Array of book IDs as bigint
  */
 export function extractBookIds(selectedBooks: BookDetail[]): bigint[] {
-  return selectedBooks.map(book => book.id);
+  return selectedBooks.map((book) => book.id);
 }
 
 /**
@@ -64,18 +70,18 @@ export function validateBookSelection(
     if (quantityNeeded <= 0) continue;
 
     const availableBooks = booksMap[seriesName] || [];
-    
+
     if (availableBooks.length === 0) {
       return {
         isValid: false,
-        error: `No ${seriesName} books available`
+        error: `No ${seriesName} books available`,
       };
     }
 
     if (availableBooks.length < quantityNeeded) {
       return {
         isValid: false,
-        error: `Not enough ${seriesName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`
+        error: `Not enough ${seriesName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`,
       };
     }
   }
