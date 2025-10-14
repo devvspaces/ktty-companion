@@ -17,15 +17,16 @@ export function selectBooksFromMap(
     if (quantityNeeded <= 0) continue;
 
     // Get available books for this series
-    const availableBooks = booksMap[seriesName] || [];
+    const correctedName = seriesName.replace(/'/g, "’")
+    const availableBooks = booksMap[correctedName] || [];
 
     if (availableBooks.length === 0) {
-      throw new Error(`No ${seriesName} books available`);
+      throw new Error(`No ${correctedName} books available`);
     }
 
     if (availableBooks.length < quantityNeeded) {
       throw new Error(
-        `Not enough ${seriesName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`
+        `Not enough ${correctedName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`
       );
     }
 
@@ -65,19 +66,20 @@ export function validateBookSelection(
   for (const [seriesName, quantityNeeded] of Object.entries(selectionMap)) {
     if (quantityNeeded <= 0) continue;
 
-    const availableBooks = booksMap[seriesName] || [];
-
+    const correctedName = seriesName.replace(/'/g, "’");
+    const availableBooks = booksMap[correctedName] || [];
+    
     if (availableBooks.length === 0) {
       return {
         isValid: false,
-        error: `No ${seriesName} books available`,
+        error: `No ${correctedName} books available`,
       };
     }
 
     if (availableBooks.length < quantityNeeded) {
       return {
         isValid: false,
-        error: `Not enough ${seriesName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`,
+        error: `Not enough ${correctedName} books available. Need ${quantityNeeded}, have ${availableBooks.length}`,
       };
     }
   }
