@@ -17,11 +17,7 @@ export function selectBooksFromMap(
     if (quantityNeeded <= 0) continue;
 
     // Get available books for this series
-    const normalizedSeriesName = seriesName
-      .replace(/[’']/g, "'")
-      .trim()
-      .toLowerCase();
-    const availableBooks = booksMap[normalizedSeriesName] || [];
+    const availableBooks = booksMap[seriesName] || [];
 
     if (availableBooks.length === 0) {
       throw new Error(`No ${seriesName} books available`);
