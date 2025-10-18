@@ -242,8 +242,8 @@ export default function RewardCard({
             </div>
 
             {/* 🔹 Lesser Rewards */}
-            <div className="flex justify-center md:justify-start gap-6 mt-10 mb-10">
-              {reward.items.slice(0, 3).map((item, i) => (
+            <div className="flex justify-center flex-wrap gap-6 mt-10 mb-10">
+              {reward.items.map((item, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
