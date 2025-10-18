@@ -342,7 +342,7 @@ export function useSummonFlow({
           address: COLLECTIBLES_ADDRESS as `0x${string}`,
           abi: erc721TokenUriAbi,
           functionName: "tokenURI",
-          args: [goldenTicketId],
+          args: [BigInt(1)],
         });
         const meta = await safeFetchJson(ticketUri);
         ticket = {

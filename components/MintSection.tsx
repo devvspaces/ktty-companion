@@ -49,10 +49,9 @@ export default function MintSection() {
   };
 
   // ===== Global Mint Progress =====
-  const percent = Math.min(
-    100,
-    Math.round((overallMinted / overallSupply) * 100)
-  );
+  const progress = (overallMinted / overallSupply) * 100;
+  const percent = Math.min(100, progress);
+  const displayPercent = percent.toFixed(1);
 
   return (
     <section
@@ -67,7 +66,7 @@ export default function MintSection() {
       {/* === Global Progress bar === */}
       <div className="w-full mb-10">
         <div className="flex justify-between text-base md:text-xl mb-3 px-1">
-          <span className="text-gray-300">{percent}% minted</span>
+          <span className="text-gray-300">{displayPercent}% minted</span>
           <span className="font-semibold">
             {overallMinted.toLocaleString()}/{overallSupply.toLocaleString()}
           </span>
