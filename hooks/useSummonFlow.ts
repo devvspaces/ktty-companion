@@ -160,106 +160,6 @@ export function useSummonFlow({
       : "ruby";
   }
 
-  // 🚀 Fetch on-chain contents per book
-  async function fetchContents(bookId: bigint) {
-    try {
-      const bookData = (await readContract(config, {
-        address: BOOKS_ADDRESS as `0x${string}`,
-        abi: booksAbi,
-        functionName: "getBook",
-        args: [bookId],
-      })) as {
-        nftId: bigint;
-        toolIds: readonly bigint[];
-        goldenTicketId: bigint;
-        hasGoldenTicket: boolean;
-        series: string;
-      };
-
-      const { nftId, toolIds, goldenTicketId, hasGoldenTicket, series } =
-        bookData;
-
-      // KTTY
-      const kttyUri = (await readContract(config, {
-        address: KTTY_COMPANIONS_ADDRESS as `0x${string}`,
-        abi: erc721TokenUriAbi,
-        functionName: "tokenURI",
-        args: [nftId],
-      })) as string;
-
-      const kttyMeta = await safeFetchJson(kttyUri);
-      const attributes: Record<string, string> = {};
-      if (Array.isArray(kttyMeta?.attributes)) {
-        for (const attr of kttyMeta.attributes) {
-          if (attr.trait_type && attr.value)
-            attributes[attr.trait_type] = attr.value;
-        }
-      }
-
-      const kttyReward = {
-        id: nftId.toString(),
-        name: kttyMeta?.name || `KTTY #${nftId}`,
-        image: normalizeUri(kttyMeta?.image),
-        family: attributes["Family"] || "Unknown",
-        breed: attributes["Breed"] || "Unknown",
-        identity: attributes["Identity"] || "Unknown",
-        expression: attributes["Expression"] || "Unknown",
-      };
-
-      // Tools
-      const tools = await Promise.all(
-        [...toolIds].map(async (id) => {
-          const uri = (await readContract(config, {
-            address: TOOLS_ADDRESS as `0x${string}`,
-            abi: erc1155UriAbi,
-            functionName: "uri",
-            args: [id],
-          })) as string;
-          const meta = await safeFetchJson(uri);
-          return {
-            name: meta?.name || `Tool #${id}`,
-            image: normalizeUri(meta?.image),
-          };
-        })
-      );
-
-      // Ticket
-      let ticket: { name: string; image: string } | null = null;
-      if (hasGoldenTicket) {
-        const ticketUri = (await readContract(config, {
-          address: COLLECTIBLES_ADDRESS as `0x${string}`,
-          abi: erc721TokenUriAbi,
-          functionName: "tokenURI",
-          args: [goldenTicketId],
-        })) as string;
-        const meta = await safeFetchJson(ticketUri);
-        ticket = {
-          name: meta?.name || "Golden Ticket",
-          image: normalizeUri(meta?.image) || "/images/otherrewards/gtix.png",
-        };
-      }
-
-      const normalizedSeries = normalizeSeriesName(series);
-      const color = seriesToColor[normalizedSeries] || "purple";
-
-      return {
-        id: kttyReward.id,
-        name: kttyReward.name,
-        image: kttyReward.image,
-        family: kttyReward.family,
-        breed: kttyReward.breed,
-        identity: kttyReward.identity,
-        expression: kttyReward.expression,
-        borderColor: color,
-        book: color,
-        items: [...tools, ...(ticket ? [ticket] : [])],
-      } as Reward;
-    } catch (err) {
-      console.error("fetchBookContents failed:", err);
-      return null;
-    }
-  }
-
   async function startSummonAnimation(
     selectedBooks: BookDetail[],
     selection: Record<string, number>
@@ -288,7 +188,7 @@ export function useSummonFlow({
       const bookData = cached[b.id.toString()];
       if (!bookData) continue;
 
-      const { nftId, toolIds, goldenTicketId, hasGoldenTicket, series } =
+      const { nftId, toolIds, hasGoldenTicket, series } =
         bookData;
 
       // Fetch the freshly-minted Companion metadata
@@ -338,12 +238,7 @@ export function useSummonFlow({
       // Ticket
       let ticket: { name: string; image: string } | null = null;
       if (hasGoldenTicket) {
-        const ticketUri = await readContract(config, {
-          address: COLLECTIBLES_ADDRESS as `0x${string}`,
-          abi: erc721TokenUriAbi,
-          functionName: "tokenURI",
-          args: [BigInt(1)],
-        });
+        const ticketUri = "https://amber-eligible-dragon-276.mypinata.cloud/ipfs/bafybeie3jqdfavz4uazvslmq77hfnfncggwwismd3ts7amfad7or4i3fei/1.json"
         const meta = await safeFetchJson(ticketUri);
         ticket = {
           name: meta?.name || "Golden Ticket",
